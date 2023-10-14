@@ -7,6 +7,7 @@ function App() {
       <Boton
         texto="Hola mundo"
         icono={<ArrowForwardIcon />}
+        tipo="secundario"
         color="amarillo"
         sombra={true}
         onClick={() => "Hola mundo"}
