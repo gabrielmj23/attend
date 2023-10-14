@@ -1,16 +1,25 @@
-import Boton from "./components/Boton";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import CardClase from "./components/CardClase";
 
 function App() {
   return (
     <div className="p-3">
-      <Boton
-        texto="Hola mundo"
-        icono={<ArrowForwardIcon />}
-        tipo="secundario"
+      <CardClase
+        id="a"
+        nombre="Algebra Lineal"
+        horario={["Martes: 7:00 am a 10:00 am", "Viernes: 12:00 pm a 2:00 pm"]}
         color="amarillo"
-        sombra={true}
-        onClick={() => "Hola mundo"}
+      />
+      <CardClase
+        id="a"
+        nombre="Algebra Lineal"
+        horario={["Martes: 7:00 am a 10:00 am", "Viernes: 12:00 pm a 2:00 pm"]}
+        color="azul"
+      />
+      <CardClase
+        id="a"
+        nombre="Algebra Lineal"
+        horario={["Martes: 7:00 am a 10:00 am", "Viernes: 12:00 pm a 2:00 pm"]}
+        color="verde"
       />
     </div>
   );
