@@ -1,8 +1,10 @@
+import AppHeader from "./components/AppHeader";
 import CardClase from "./components/CardClase";
 
 function App() {
   return (
-    <div className="p-3">
+    <div className="flex flex-col gap-4">
+      <AppHeader titulo="Tus Clases" color="amarillo" />
       <CardClase
         id="a"
         nombre="Algebra Lineal"

@@ -12,7 +12,7 @@ function CardClase({ id, nombre, horario, color }) {
       <div>
         <p className="text-lg font-semibold">{nombre}</p>
         {horario.map((hora, index) => (
-          <p key={index} className="text-xs text-zinc-600">
+          <p key={index} className="text-sm text-zinc-600">
             {hora}
           </p>
         ))}
