@@ -5,8 +5,13 @@ import Clase from "./routes/docente/Clase.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AjustesDocente from "./routes/docente/AjustesDocente.jsx";
+import App from "./App.jsx";
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
   {
     path: "/docente",
     element: <HomeDocente />,
