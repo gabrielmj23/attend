@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { BORDES } from "../constants/colores";
 import Boton from "./Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Link } from "react-router-dom";
 
 function CardClase({ id, nombre, horario, color }) {
   const classNames =
@@ -18,12 +19,14 @@ function CardClase({ id, nombre, horario, color }) {
         ))}
       </div>
       <div className="flex flex-row justify-center">
-        <Boton
-          texto="Ver clase"
-          icono={<ArrowForwardIcon />}
-          tipo="primario"
-          color={color}
-        />
+        <Link to={`/docente/clases/${id}`}>
+          <Boton
+            texto="Ver clase"
+            icono={<ArrowForwardIcon />}
+            tipo="primario"
+            color={color}
+          />
+        </Link>
       </div>
     </div>
   );
