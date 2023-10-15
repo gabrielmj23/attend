@@ -1,3 +1,4 @@
+import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
 import Etiqueta from "./components/Etiqueta";
 
 function App() {
@@ -14,14 +15,14 @@ function App() {
       <Etiqueta
         texto="Fecha de finalización"
         texto2="Fecha de finalización"
+        icono={<EventOutlinedIcon/>}
       />
       <Etiqueta
         texto="Duración(semanas)"
         texto2="Duración(semanas)"
       />
-    </div>
+    </div>    
   );
 }
 
 export default App;
-
