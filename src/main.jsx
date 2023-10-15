@@ -4,6 +4,7 @@ import HomeDocente from "./routes/docente/HomeDocente.jsx";
 import Clase from "./routes/docente/Clase.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AjustesDocente from "./routes/docente/AjustesDocente.jsx";
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ const router = createBrowserRouter([
   {
     path: "/docente/clases/:id",
     element: <Clase />,
-  }
+  },
+  {
+    path: "/docente/ajustes",
+    element: <AjustesDocente />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
