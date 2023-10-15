@@ -1,27 +1,21 @@
-import EventOutlinedIcon from '@mui/icons-material/EventOutlined';
-import Etiqueta from "./components/Etiqueta";
+import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+import Input from "./components/Input";
 
 function App() {
   return (
     <div className="p-3">
-      <Etiqueta
-        texto="Nombre del periodo"
-        texto2="Nombre del periodo"
+      <Input
+        id="periodo"
+        textoLabel="Nombre del periodo"
+        textoPlaceholder="Nombre del periodo"
       />
-      <Etiqueta
-        texto="Fecha de inicio"
-        texto2="Fecha de inicio"
+      <Input
+        id="fechaFin"
+        textoLabel="Fecha de finalización"
+        textoPlaceholder="Fecha de finalización"
+        icono={<EventOutlinedIcon />}
       />
-      <Etiqueta
-        texto="Fecha de finalización"
-        texto2="Fecha de finalización"
-        icono={<EventOutlinedIcon/>}
-      />
-      <Etiqueta
-        texto="Duración(semanas)"
-        texto2="Duración(semanas)"
-      />
-    </div>    
+    </div>
   );
 }
 
