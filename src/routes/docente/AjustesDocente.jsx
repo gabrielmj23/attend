@@ -1,46 +1,31 @@
 import AppHeader from "../../components/AppHeader";
-import AppNav from "../../components/AppNav";
-import NavElem from "../../components/NavElem";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import SchoolOutlinedIcon from "@mui/icons-material/SchoolOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import { NavDocenteContext } from "./RootDocente";
+import { useContext } from "react";
+import { useEffect } from "react";
 
 function AjustesDocente() {
+  // Guardar contexto de la navegación actual
+  const { navSetter } = useContext(NavDocenteContext);
+  useEffect(() => {
+    navSetter((prev) => ({
+      Clases: { ruta: prev["Clases"].ruta, activo: false },
+      "Nueva Clase": { ruta: prev["Nueva Clase"].ruta, activo: false },
+      Ajustes: { ruta: "/docente/ajustes", activo: true },
+    }));
+  });
+
   return (
     <div className="flex flex-col gap-4">
       <AppHeader titulo="Ajustes" color="amarillo" />
-      <div className="flex flex-row ps-5 pt-2 gap-5 align-middle">
+      <div className="flex flex-row gap-5 ps-5 pt-2 align-middle">
         <PersonOutlineIcon fontSize="large" className="my-auto scale-125" />
         <div className="flex flex-col">
           <p className="text-xl font-semibold">Nombre profesor</p>
-          <p className="text-gris text-sm font-semibold">Correo profesor</p>
+          <p className="text-sm font-semibold text-gris">Correo profesor</p>
         </div>
       </div>
-      <p className="text-sm text-red-700 ps-5 underline">Cerrar sesión</p>
-      <AppNav
-        elementos={[
-          <NavElem
-            key={1}
-            icono={<SchoolOutlinedIcon />}
-            label="Clases"
-            ruta="/docente"
-          />,
-          <NavElem
-            key={2}
-            icono={<AddCircleOutlineOutlinedIcon />}
-            label="Nueva Clase"
-            ruta="/docente/clases/nueva"
-          />,
-          <NavElem
-            key={3}
-            icono={<SettingsOutlinedIcon />}
-            label="Ajustes"
-            ruta="/docente/ajustes"
-            activo="true"
-          />,
-        ]}
-      />
+      <p className="ps-5 text-sm text-red-700 underline">Cerrar sesión</p>
     </div>
   );
 }

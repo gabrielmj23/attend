@@ -5,24 +5,35 @@ import Clase from "./routes/docente/Clase.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AjustesDocente from "./routes/docente/AjustesDocente.jsx";
-import App from "./App.jsx";
+import Landing from "./Landing.jsx";
+import { RootDocente } from "./routes/docente/RootDocente.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: <Landing />,
   },
   {
     path: "/docente",
-    element: <HomeDocente />,
-  },
-  {
-    path: "/docente/clases/:id",
-    element: <Clase />,
-  },
-  {
-    path: "/docente/ajustes",
-    element: <AjustesDocente />,
+    element: <RootDocente />,
+    children: [
+      {
+        path: "",
+        element: <HomeDocente />,
+      },
+      {
+        path: "clases/nueva",
+        element: <Clase />,
+      },
+      {
+        path: "clases/:id",
+        element: <Clase />,
+      },
+      {
+        path: "ajustes",
+        element: <AjustesDocente />,
+      },
+    ],
   },
 ]);
 
