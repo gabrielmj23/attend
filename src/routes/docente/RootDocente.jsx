@@ -5,7 +5,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { Outlet } from "react-router-dom";
 import { createContext } from "react";
-import { useState } from "react";
+import { useReducer } from "react";
 
 /**
  * Contexto de la navegación del docente
@@ -22,10 +22,40 @@ const NavDocenteContext = createContext({
 });
 
 /**
+ * Función reducer para la navegación de docente
+ * El parámetro action contiene en el type la ruta en la que guardar contexto,
+ * y en la ruta el nuevo contexto
+ */
+function navReducer(state, action) {
+  switch (action.type) {
+    case "Clases":
+      return {
+        Clases: { ruta: action.ruta, activo: true },
+        "Nueva Clase": { ruta: state["Nueva Clase"].ruta, activo: false },
+        Ajustes: { ruta: state["Ajustes"].ruta, activo: false },
+      };
+    case "Nueva Clase":
+      return {
+        Clases: { ruta: state["Clases"].ruta, activo: false },
+        "Nueva Clase": { ruta: action.ruta, activo: true },
+        Ajustes: { ruta: state["Ajustes"].ruta, activo: false },
+      };
+    case "Ajustes":
+      return {
+        Clases: { ruta: state["Clases"].ruta, activo: false },
+        "Nueva Clase": { ruta: state["Nueva Clase"].ruta, activo: false },
+        Ajustes: { ruta: action.ruta, activo: true },
+      };
+    default:
+      return state;
+  }
+}
+
+/**
  * Componente base de las rutas que inician con /docente
  */
 function RootDocente() {
-  const [navDocente, setNavDocente] = useState({
+  const [navDocente, dispatchNav] = useReducer(navReducer, {
     Clases: { ruta: "/docente", activo: true },
     "Nueva Clase": { ruta: "/docente/clases/nueva", activo: false },
     Ajustes: { ruta: "/docente/ajustes", activo: false },
@@ -33,7 +63,7 @@ function RootDocente() {
 
   return (
     <NavDocenteContext.Provider
-      value={{ nav: navDocente, navSetter: setNavDocente }}
+      value={{ nav: navDocente, navSetter: dispatchNav }}
     >
       <Outlet />
       <AppNav>

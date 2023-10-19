@@ -7,11 +7,7 @@ function Clase() {
   // Guardar contexto de la navegación actual
   const { navSetter } = useContext(NavDocenteContext);
   useEffect(() => {
-    navSetter((prev) => ({
-      Clases: { ruta: "/docente/clases/1", activo: true },
-      "Nueva Clase": { ruta: prev["Nueva Clase"].ruta, activo: false },
-      Ajustes: { ruta: prev["Ajustes"].ruta, activo: false },
-    }));
+    navSetter({ type: "Clases", ruta: "/docente/clases/1" });
   }, [navSetter]);
 
   return (

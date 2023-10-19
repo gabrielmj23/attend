@@ -12,12 +12,8 @@ function HomeDocente() {
   // Guardar contexto de la navegación actual
   const { navSetter } = useContext(NavDocenteContext);
   useEffect(() => {
-    navSetter((prev) => ({
-      Clases: { ruta: "/docente", activo: true },
-      "Nueva Clase": { ruta: prev["Nueva Clase"].ruta, activo: false },
-      Ajustes: { ruta: prev["Ajustes"].ruta, activo: false },
-    }));
-  });
+    navSetter({ type: "Clases", ruta: "/docente" });
+  }, [navSetter]);
 
   return (
     <div className="flex flex-col gap-4">
