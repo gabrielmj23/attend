@@ -7,6 +7,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AjustesDocente from "./routes/docente/AjustesDocente.jsx";
 import Landing from "./Landing.jsx";
 import { RootDocente } from "./routes/docente/RootDocente.jsx";
+import HomeAdmin from "./routes/admin/HomeAdmin.jsx";
+import LoginAdmin from "./routes/admin/LoginAdmin.jsx";
+import SignUpAdmin from "./routes/admin/SignUpAdmin.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,23 @@ const router = createBrowserRouter([
       {
         path: "ajustes",
         element: <AjustesDocente />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    children: [
+      {
+        path: "login",
+        element: <LoginAdmin />,
+      },
+      {
+        path: "signup",
+        element: <SignUpAdmin />,
+      },
+      {
+        path: "home",
+        element: <HomeAdmin />,
       },
     ],
   },

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-function Input({ id, textoLabel, textoPlaceholder, icono }) {
+function Input({ id, textoLabel, textoPlaceholder, type, icono }) {
   let classNames = "flex flex-row gap-2 rounded-md p-2";
 
   const estiloInput = {
@@ -23,7 +23,11 @@ function Input({ id, textoLabel, textoPlaceholder, icono }) {
     <div>
       <label htmlFor={id}>{textoLabel}</label>
       <div className={classNames} style={estiloEtiquetaContenedor}>
-        <input type="text" style={estiloInput} placeholder={textoPlaceholder} />
+        <input
+          type={type || "text"}
+          style={estiloInput}
+          placeholder={textoPlaceholder}
+        />
         {icono}
       </div>
     </div>
@@ -34,6 +38,7 @@ Input.propTypes = {
   id: PropTypes.string.isRequired,
   textoLabel: PropTypes.string.isRequired,
   textoPlaceholder: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(["text", "password", "number"]),
   icono: PropTypes.element,
 };
 

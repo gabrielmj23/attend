@@ -13,8 +13,8 @@ export default {
           'activo': '#0d9488',
         },
         'verde': {
-          DEFAULT: '#74f953',
-          'activo': '#27ac06',
+          DEFAULT: '#22c55e',
+          'activo': '#15803d',
         },
         'gris': {
           DEFAULT: '#7e8188',
