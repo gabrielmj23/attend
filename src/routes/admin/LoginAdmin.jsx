@@ -5,6 +5,10 @@ import Input from "../../components/Input";
 import Boton from "../../components/Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { loginUser } from "../../api/auth";
+import { useContext } from "react";
+import { AdminAuthContext } from "./RootAdmin";
 
 const adminSchema = yup.object().shape({
   correo: yup
@@ -20,9 +24,22 @@ function LoginAdmin() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(adminSchema) });
+  const navigate = useNavigate();
+  const { userSetter } = useContext(AdminAuthContext);
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    try {
+      const user = await loginUser({
+        correo: data.correo,
+        password: data.password,
+        tipo: "admins",
+      });
+      console.log(user);
+      userSetter({ type: "login", user });
+      navigate("/admin/home");
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   return (
@@ -36,7 +53,7 @@ function LoginAdmin() {
           className="flex flex-col gap-4 text-start"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <formgroup>
+          <fieldset>
             <Input
               id="correo"
               textoLabel="Correo electrónico"
@@ -48,8 +65,8 @@ function LoginAdmin() {
                 {errors.correo?.message}
               </p>
             )}
-          </formgroup>
-          <formgroup>
+          </fieldset>
+          <fieldset>
             <Input
               id="password"
               textoLabel="Contraseña"
@@ -62,7 +79,7 @@ function LoginAdmin() {
                 {errors.password?.message}
               </p>
             )}
-          </formgroup>
+          </fieldset>
           <div className="flex flex-row justify-center">
             <Boton
               texto="Iniciar sesión"

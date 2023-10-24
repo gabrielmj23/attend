@@ -5,6 +5,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
+import { signUpAdmin } from "../../api/auth";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AdminAuthContext } from "./RootAdmin";
 
 // Esquema de validación de registro
 const adminSchema = yup.object().shape({
@@ -29,9 +33,21 @@ function SignUpAdmin() {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(adminSchema) });
+  const navigate = useNavigate();
+  const { userSetter } = useContext(AdminAuthContext);
 
-  function onSubmit(data) {
-    console.log(data);
+  async function onSubmit(data) {
+    try {
+      const user = await signUpAdmin({
+        correo: data.correo,
+        nombre: data.nombre,
+        password: data.password,
+      });
+      userSetter({ type: "login", user });
+      navigate("/admin/home");
+    } catch (error) {
+      alert(error.message);
+    }
   }
 
   return (
@@ -45,7 +61,7 @@ function SignUpAdmin() {
           className="flex flex-col gap-4 text-start"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <formgroup>
+          <fieldset>
             <Input
               id="nombre"
               textoLabel="Nombre completo"
@@ -57,8 +73,8 @@ function SignUpAdmin() {
                 {errors.nombre?.message}
               </p>
             )}
-          </formgroup>
-          <formgroup>
+          </fieldset>
+          <fieldset>
             <Input
               id="correo"
               textoLabel="Correo electrónico"
@@ -70,8 +86,8 @@ function SignUpAdmin() {
                 {errors.correo?.message}
               </p>
             )}
-          </formgroup>
-          <formgroup>
+          </fieldset>
+          <fieldset>
             <Input
               id="password"
               textoLabel="Contraseña"
@@ -84,8 +100,8 @@ function SignUpAdmin() {
                 {errors.password?.message}
               </p>
             )}
-          </formgroup>
-          <formgroup>
+          </fieldset>
+          <fieldset>
             <Input
               id="confirmacion"
               textoLabel="Confirmación de la contraseña"
@@ -98,7 +114,7 @@ function SignUpAdmin() {
                 {errors.confirmacion?.message}
               </p>
             )}
-          </formgroup>
+          </fieldset>
           <div className="flex flex-row justify-center">
             <Boton
               texto="Registrarte"
