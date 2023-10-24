@@ -1,9 +1,9 @@
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { app } from "./firebase";
 
-const db = getFirestore();
+const db = getFirestore(app);
 
 /**
- *
  * @param {Object} admin
  * @param {string} admin.id
  * @param {string} admin.nombre

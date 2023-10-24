@@ -13,6 +13,7 @@ import {
 } from "firebase/auth";
 import { app } from "./firebase";
 import { agregarAdmin } from "./admin";
+import { agregarDocente } from "./docente";
 
 const auth = initializeAuth(app);
 
@@ -37,6 +38,26 @@ export async function signUpAdmin({ correo, nombre, password }) {
 }
 
 /**
+ * @param {Object} docente
+ * @param {string} docente.correo
+ * @param {string} docente.nombre
+ * @param {string} docente.password
+ */
+export async function signupDocente({ correo, nombre, password }) {
+  try {
+    // Guardar cuenta de docente
+    const creds = await createUserWithEmailAndPassword(auth, correo, password);
+    await updateProfile(creds.user, { displayName: nombre });
+    await agregarDocente({ id: creds.user.uid, nombre, correo });
+    // Devolver datos de docente
+    return auth.currentUser;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Ocurrió un error al crear el usuario");
+  }
+}
+
+/**
  * @param {Object} user
  * @param {string} user.correo
  * @param {string} user.password
@@ -53,6 +74,7 @@ export async function loginUser({ correo, password, tipo }) {
       throw new Error(`Usuario no es de tipo ${tipo}`);
     }
     // Iniciar sesión
+    // eslint-disable-next-line no-unused-vars
     const creds = await signInWithEmailAndPassword(auth, correo, password);
     return auth.currentUser;
   } catch (error) {

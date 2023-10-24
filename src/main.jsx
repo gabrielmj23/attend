@@ -11,6 +11,8 @@ import HomeAdmin from "./routes/admin/HomeAdmin.jsx";
 import LoginAdmin from "./routes/admin/LoginAdmin.jsx";
 import SignUpAdmin from "./routes/admin/SignUpAdmin.jsx";
 import { RootAdmin } from "./routes/admin/RootAdmin.jsx";
+import VerDocentes from "./routes/admin/docentes/VerDocentes.jsx";
+import NuevoDocente from "./routes/admin/docentes/NuevoDocente.jsx";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +56,14 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <HomeAdmin />,
+      },
+      {
+        path: "docentes",
+        element: <VerDocentes />,
+      },
+      {
+        path: "docentes/nuevo",
+        element: <NuevoDocente />,
       },
     ],
   },

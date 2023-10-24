@@ -8,7 +8,6 @@ const AdminAuthContext = createContext({
 });
 
 function authReducer(state, action) {
-  console.log("Reducing", action);
   switch (action.type) {
     case "login":
       return {
