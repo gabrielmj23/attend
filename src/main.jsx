@@ -13,6 +13,7 @@ import SignUpAdmin from "./routes/admin/SignUpAdmin.jsx";
 import { RootAdmin } from "./routes/admin/RootAdmin.jsx";
 import VerDocentes from "./routes/admin/docentes/VerDocentes.jsx";
 import NuevoDocente from "./routes/admin/docentes/NuevoDocente.jsx";
+import LoginDocente from "./routes/docente/LoginDocente.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,7 +25,11 @@ const router = createBrowserRouter([
     element: <RootDocente />,
     children: [
       {
-        path: "",
+        path: "login",
+        element: <LoginDocente />,
+      },
+      {
+        path: "home",
         element: <HomeDocente />,
       },
       {

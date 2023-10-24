@@ -16,7 +16,8 @@ const BOTONES_PRIMARIO = {
   azul: "bg-azul hover:bg-azul-activo active:bg-azul-activo",
   verde: "bg-verde hover:bg-verde-activo active:bg-verde-activo",
   gris: "bg-gris hover:bg-gris-activo active:bg-gris-activo",
-}
+  blanco: "bg-blanco hover:bg-blanco-activo active:bg-blanco-activo",
+};
 
 /**
  * Nombres de clases para el header de la aplicacion
@@ -24,6 +25,6 @@ const BOTONES_PRIMARIO = {
 const APP_HEADER = {
   amarillo: "bg-amarillo",
   azul: "bg-azul",
-}
+};
 
 export { BORDES, BOTONES_PRIMARIO, APP_HEADER };

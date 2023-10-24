@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import AppHeader from "../../components/AppHeader";
-import { NavDocenteContext } from "./RootDocente";
+import { DocenteContext } from "./RootDocente";
 import { useEffect } from "react";
 
 function Clase() {
   // Guardar contexto de la navegación actual
-  const { navSetter } = useContext(NavDocenteContext);
+  const { navSetter } = useContext(DocenteContext);
   useEffect(() => {
     navSetter({ type: "Clases", ruta: "/docente/clases/1" });
   }, [navSetter]);
