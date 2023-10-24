@@ -34,7 +34,6 @@ function LoginAdmin() {
         password: data.password,
         tipo: "admins",
       });
-      console.log(user);
       userSetter({ type: "login", user });
       navigate("/admin/home");
     } catch (error) {
