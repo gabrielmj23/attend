@@ -1,12 +1,12 @@
 import AppHeader from "../../components/AppHeader";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { NavDocenteContext } from "./RootDocente";
+import { DocenteContext } from "./RootDocente";
 import { useContext } from "react";
 import { useEffect } from "react";
 
 function AjustesDocente() {
   // Guardar contexto de la navegación actual
-  const { navSetter } = useContext(NavDocenteContext);
+  const { navSetter } = useContext(DocenteContext);
   useEffect(() => {
     navSetter({ type: "Ajustes", ruta: "/docente/ajustes" });
   }, [navSetter]);

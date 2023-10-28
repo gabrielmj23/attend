@@ -12,13 +12,16 @@ import { useReducer } from "react";
  * nav: Objeto con rutas y estado de activo
  * navSetter: Función para modificar el estado de nav
  */
-const NavDocenteContext = createContext({
+const DocenteContext = createContext({
   nav: {
     Clases: { ruta: "/docente", activo: true },
     "Nueva Clase": { ruta: "/docente/clases/nueva", activo: false },
     Ajustes: { ruta: "/docente/ajustes", activo: false },
+    visible: false,
   },
   navSetter: () => {},
+  user: null,
+  userSetter: () => {},
 });
 
 /**
@@ -33,21 +36,47 @@ function navReducer(state, action) {
         Clases: { ruta: action.ruta, activo: true },
         "Nueva Clase": { ruta: state["Nueva Clase"].ruta, activo: false },
         Ajustes: { ruta: state["Ajustes"].ruta, activo: false },
+        visible: true,
       };
     case "Nueva Clase":
       return {
         Clases: { ruta: state["Clases"].ruta, activo: false },
         "Nueva Clase": { ruta: action.ruta, activo: true },
         Ajustes: { ruta: state["Ajustes"].ruta, activo: false },
+        visible: true,
       };
     case "Ajustes":
       return {
         Clases: { ruta: state["Clases"].ruta, activo: false },
         "Nueva Clase": { ruta: state["Nueva Clase"].ruta, activo: false },
         Ajustes: { ruta: action.ruta, activo: true },
+        visible: true,
+      };
+    case "Visible":
+      return {
+        ...state,
+        visible: !state.visible,
       };
     default:
       return state;
+  }
+}
+
+function authReducer(state, action) {
+  switch (action.type) {
+    case "login":
+      return {
+        user: action.user,
+      };
+    case "data":
+      return {
+        user: action.user,
+        data: action.data,
+      };
+    case "logout":
+      return {
+        user: null,
+      };
   }
 }
 
@@ -59,14 +88,22 @@ function RootDocente() {
     Clases: { ruta: "/docente", activo: true },
     "Nueva Clase": { ruta: "/docente/clases/nueva", activo: false },
     Ajustes: { ruta: "/docente/ajustes", activo: false },
+    visible: false,
   });
 
+  const [userDocente, dispatchUser] = useReducer(authReducer, { user: null });
+
   return (
-    <NavDocenteContext.Provider
-      value={{ nav: navDocente, navSetter: dispatchNav }}
+    <DocenteContext.Provider
+      value={{
+        nav: navDocente,
+        navSetter: dispatchNav,
+        user: userDocente,
+        userSetter: dispatchUser,
+      }}
     >
       <Outlet />
-      <AppNav>
+      <AppNav visible={navDocente.visible}>
         <NavElem
           icono={<SchoolOutlinedIcon />}
           label="Clases"
@@ -86,8 +123,8 @@ function RootDocente() {
           activo={navDocente["Ajustes"].activo}
         />
       </AppNav>
-    </NavDocenteContext.Provider>
+    </DocenteContext.Provider>
   );
 }
 
-export { RootDocente, NavDocenteContext };
+export { RootDocente, DocenteContext };
