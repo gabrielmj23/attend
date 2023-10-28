@@ -8,6 +8,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { loginUser } from "../../api/auth";
+import { useMutation } from "@tanstack/react-query";
 
 const docenteSchema = yup.object().shape({
   correo: yup
@@ -26,19 +27,22 @@ function LoginDocente() {
   const navigate = useNavigate();
   const { userSetter } = useContext(DocenteContext);
 
-  async function onSubmit(data) {
-    try {
-      const user = await loginUser({
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return loginUser({
         correo: data.correo,
         password: data.password,
         tipo: "docentes",
       });
-      userSetter({ type: "login", user });
+    },
+    onSuccess: (data) => {
+      userSetter({ type: "login", user: data });
       navigate("/docente/home");
-    } catch (error) {
+    },
+    onError: (error) => {
       alert(error.message);
-    }
-  }
+    },
+  });
 
   return (
     <div className="flex h-screen flex-col justify-center gap-5 bg-amarillo">
@@ -47,7 +51,7 @@ function LoginDocente() {
         Inicia sesión como docente
       </h2>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(mutation.mutate)}
         className="flex flex-col justify-center gap-4 pe-10 ps-8"
       >
         <fieldset>
@@ -81,6 +85,7 @@ function LoginDocente() {
           />
         </div>
       </form>
+      {mutation.isPending && <p className="text-center">Iniciando sesión...</p>}
     </div>
   );
 }

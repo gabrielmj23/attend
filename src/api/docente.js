@@ -14,6 +14,7 @@ export async function agregarDocente({ id, nombre, correo }) {
     await setDoc(doc(db, "docentes", id), {
       nombre,
       correo,
+      resumen_clases: [],
     });
   } catch (error) {
     console.error(error);

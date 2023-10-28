@@ -6,6 +6,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { Outlet } from "react-router-dom";
 import { createContext } from "react";
 import { useReducer } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 /**
  * Contexto de la navegación del docente
@@ -92,38 +93,41 @@ function RootDocente() {
   });
 
   const [userDocente, dispatchUser] = useReducer(authReducer, { user: null });
+  const queryClient = new QueryClient();
 
   return (
-    <DocenteContext.Provider
-      value={{
-        nav: navDocente,
-        navSetter: dispatchNav,
-        user: userDocente,
-        userSetter: dispatchUser,
-      }}
-    >
-      <Outlet />
-      <AppNav visible={navDocente.visible}>
-        <NavElem
-          icono={<SchoolOutlinedIcon />}
-          label="Clases"
-          ruta={navDocente["Clases"].ruta || "/docente"}
-          activo={navDocente["Clases"].activo}
-        />
-        <NavElem
-          icono={<AddCircleOutlineOutlinedIcon />}
-          label="Nueva Clase"
-          ruta={navDocente["Nueva Clase"].ruta || "/docente/clases/nueva"}
-          activo={navDocente["Nueva Clase"].activo}
-        />
-        <NavElem
-          icono={<SettingsOutlinedIcon />}
-          label="Ajustes"
-          ruta={navDocente["Ajustes"].ruta || "/docente/ajustes"}
-          activo={navDocente["Ajustes"].activo}
-        />
-      </AppNav>
-    </DocenteContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <DocenteContext.Provider
+        value={{
+          nav: navDocente,
+          navSetter: dispatchNav,
+          user: userDocente,
+          userSetter: dispatchUser,
+        }}
+      >
+        <Outlet />
+        <AppNav visible={navDocente.visible}>
+          <NavElem
+            icono={<SchoolOutlinedIcon />}
+            label="Clases"
+            ruta={navDocente["Clases"].ruta || "/docente"}
+            activo={navDocente["Clases"].activo}
+          />
+          <NavElem
+            icono={<AddCircleOutlineOutlinedIcon />}
+            label="Nueva Clase"
+            ruta={navDocente["Nueva Clase"].ruta || "/docente/clases/nueva"}
+            activo={navDocente["Nueva Clase"].activo}
+          />
+          <NavElem
+            icono={<SettingsOutlinedIcon />}
+            label="Ajustes"
+            ruta={navDocente["Ajustes"].ruta || "/docente/ajustes"}
+            activo={navDocente["Ajustes"].activo}
+          />
+        </AppNav>
+      </DocenteContext.Provider>
+    </QueryClientProvider>
   );
 }
 

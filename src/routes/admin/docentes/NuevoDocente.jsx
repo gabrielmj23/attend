@@ -8,6 +8,7 @@ import * as yup from "yup";
 import Boton from "../../../components/Boton";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import { signupDocente } from "../../../api/auth";
+import { useMutation } from "@tanstack/react-query";
 
 const docenteSchema = yup.object().shape({
   nombre: yup.string().required("Ingresa el nombre"),
@@ -33,18 +34,21 @@ function NuevoDocente() {
   } = useForm({ resolver: yupResolver(docenteSchema) });
   const navigate = useNavigate();
 
-  async function onSubmit(data) {
-    try {
-      const user = await signupDocente({
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return signupDocente({
         correo: data.correo,
         nombre: data.nombre,
         password: data.password,
       });
-      navigate("/admin/docentes/" + user.uid);
-    } catch (error) {
+    },
+    onSuccess: (data) => {
+      navigate("/admin/docentes/" + data.uid);
+    },
+    onError: (error) => {
       alert(error.message);
-    }
-  }
+    },
+  });
 
   return (
     <div>
@@ -62,7 +66,7 @@ function NuevoDocente() {
       <h1 className="py-8 ps-16 text-2xl font-semibold">Agregar un docente</h1>
       <div className="flex w-screen flex-row justify-center">
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(mutation.mutate)}
           className="flex w-1/2 max-w-lg flex-col gap-6"
         >
           <fieldset>
@@ -129,6 +133,9 @@ function NuevoDocente() {
                 type="submit"
               />
             </div>
+            {mutation.isPending && (
+              <p className="text-center">Agregando docente...</p>
+            )}
           </div>
         </form>
       </div>

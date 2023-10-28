@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/auth";
 import { useContext } from "react";
 import { AdminAuthContext } from "./RootAdmin";
+import { useMutation } from "@tanstack/react-query";
 
 const adminSchema = yup.object().shape({
   correo: yup
@@ -27,19 +28,22 @@ function LoginAdmin() {
   const navigate = useNavigate();
   const { userSetter } = useContext(AdminAuthContext);
 
-  async function onSubmit(data) {
-    try {
-      const user = await loginUser({
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return loginUser({
         correo: data.correo,
         password: data.password,
         tipo: "admins",
       });
-      userSetter({ type: "login", user });
+    },
+    onSuccess: (data) => {
+      userSetter({ type: "login", user: data });
       navigate("/admin/home");
-    } catch (error) {
+    },
+    onError: (error) => {
       alert(error.message);
-    }
-  }
+    },
+  });
 
   return (
     <div className="flex h-screen flex-row items-center justify-center">
@@ -50,7 +54,7 @@ function LoginAdmin() {
         </h2>
         <form
           className="flex flex-col gap-4 text-start"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(mutation.mutate)}
         >
           <fieldset>
             <Input
@@ -89,6 +93,9 @@ function LoginAdmin() {
               type="submit"
             />
           </div>
+          {mutation.isPending && (
+            <p className="text-center">Iniciando sesión...</p>
+          )}
           <div className="flex flex-row justify-center">
             <Link to="/admin/signup" className="underline">
               No tengo cuenta

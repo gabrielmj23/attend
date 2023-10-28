@@ -9,6 +9,7 @@ import { signUpAdmin } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AdminAuthContext } from "./RootAdmin";
+import { useMutation } from "@tanstack/react-query";
 
 // Esquema de validación de registro
 const adminSchema = yup.object().shape({
@@ -36,19 +37,22 @@ function SignUpAdmin() {
   const navigate = useNavigate();
   const { userSetter } = useContext(AdminAuthContext);
 
-  async function onSubmit(data) {
-    try {
-      const user = await signUpAdmin({
+  const mutation = useMutation({
+    mutationFn: (data) => {
+      return signUpAdmin({
         correo: data.correo,
         nombre: data.nombre,
         password: data.password,
       });
-      userSetter({ type: "login", user });
+    },
+    onSuccess: (data) => {
+      userSetter({ type: "login", user: data });
       navigate("/admin/home");
-    } catch (error) {
+    },
+    onError: (error) => {
       alert(error.message);
-    }
-  }
+    },
+  });
 
   return (
     <div className="flex h-screen flex-row items-center justify-center">
@@ -59,7 +63,7 @@ function SignUpAdmin() {
         </h2>
         <form
           className="flex flex-col gap-4 text-start"
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(mutation.mutate)}
         >
           <fieldset>
             <Input
@@ -125,6 +129,9 @@ function SignUpAdmin() {
               type="submit"
             />
           </div>
+          {mutation.isPending && (
+            <p className="text-center">Creando tu cuenta...</p>
+          )}
           <div className="flex flex-row justify-center">
             <Link to="/admin/login" className="underline">
               Ya tengo cuenta
