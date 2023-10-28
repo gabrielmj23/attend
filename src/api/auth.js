@@ -50,7 +50,12 @@ export async function signupDocente({ correo, nombre, password }) {
     await updateProfile(creds.user, { displayName: nombre });
     await agregarDocente({ id: creds.user.uid, nombre, correo });
     // Devolver datos de docente
-    return auth.currentUser;
+    return {
+      uid: creds.user.uid,
+      nombre: nombre,
+      correo: correo,
+      resumen_clases: [],
+    };
   } catch (error) {
     console.error(error);
     throw new Error("Ocurrió un error al crear el usuario");
@@ -74,10 +79,9 @@ export async function loginUser({ correo, password, tipo }) {
       throw new Error(`Usuario no es de tipo ${tipo}`);
     }
     // Iniciar sesión
-    // eslint-disable-next-line no-unused-vars
-    const creds = await signInWithEmailAndPassword(auth, correo, password);
-    return auth.currentUser;
+    await signInWithEmailAndPassword(auth, correo, password);
+    return snapshot.docs[0].data();
   } catch (error) {
-    throw new Error("Ocucrió un error al iniciar sesión");
+    throw new Error("Usuario o contraseña incorrectos");
   }
 }
