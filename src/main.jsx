@@ -39,6 +39,11 @@ const router = createBrowserRouter([
       {
         path: "clases/:id",
         element: <Clase />,
+        loader: ({ params }) => {
+          return {
+            id: params.id,
+          };
+        },
       },
       {
         path: "ajustes",

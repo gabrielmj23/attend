@@ -1,4 +1,4 @@
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "./firebase";
 
 const db = getFirestore(app);
@@ -19,5 +19,26 @@ export async function agregarDocente({ id, nombre, correo }) {
   } catch (error) {
     console.error(error);
     throw new Error("Ocurrió un error al agregar el docente");
+  }
+}
+
+/**
+ * @param {Object} obj
+ * @param {string} obj.idDocente
+ * @param {string} obj.idClase
+ */
+export async function obtenerClase({ idDocente, idClase }) {
+  try {
+    console.log(idDocente, idClase);
+    const snapshot = await getDoc(
+      doc(db, "docentes", idDocente, "clases", idClase),
+    );
+    if (snapshot.exists) {
+      return snapshot.data();
+    }
+    throw new Error("Clase no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
