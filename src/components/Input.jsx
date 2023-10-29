@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { forwardRef } from "react";
 
 const Input = forwardRef(
-  ({ id, name, onChange, textoLabel, textoPlaceholder, type, icono }, ref) => {
+  ({ id, name, onChange, textoLabel, textoPlaceholder, type, icono, value }, ref) => {
     let classNames = "flex flex-row gap-2 rounded-md p-2";
 
     const estiloInput = {
@@ -30,6 +30,7 @@ const Input = forwardRef(
             name={name}
             onChange={onChange}
             type={type || "text"}
+            value={value}
             accept={type === "file" ? ".xls,.xlsx" : ""}
             style={estiloInput}
             placeholder={textoPlaceholder}
@@ -50,6 +51,7 @@ Input.propTypes = {
   textoPlaceholder: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["text", "password", "number", "file"]),
   icono: PropTypes.element,
+  value: PropTypes.any,
 };
 
 Input.displayName = "Input";

@@ -29,7 +29,6 @@ export async function agregarDocente({ id, nombre, correo }) {
  */
 export async function obtenerClase({ idDocente, idClase }) {
   try {
-    console.log(idDocente, idClase);
     const snapshot = await getDoc(
       doc(db, "docentes", idDocente, "clases", idClase),
     );
