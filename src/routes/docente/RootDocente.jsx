@@ -15,7 +15,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
  */
 const DocenteContext = createContext({
   nav: {
-    Clases: { ruta: "/docente", activo: true },
+    Clases: { ruta: "/docente/home", activo: true },
     "Nueva Clase": { ruta: "/docente/clases/nueva", activo: false },
     Ajustes: { ruta: "/docente/ajustes", activo: false },
     visible: false,
@@ -86,7 +86,7 @@ function authReducer(state, action) {
  */
 function RootDocente() {
   const [navDocente, dispatchNav] = useReducer(navReducer, {
-    Clases: { ruta: "/docente", activo: true },
+    Clases: { ruta: "/docente/home", activo: true },
     "Nueva Clase": { ruta: "/docente/clases/nueva", activo: false },
     Ajustes: { ruta: "/docente/ajustes", activo: false },
     visible: false,

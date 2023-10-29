@@ -30,6 +30,7 @@ const Input = forwardRef(
             name={name}
             onChange={onChange}
             type={type || "text"}
+            accept={type === "file" ? ".xls,.xlsx" : ""}
             style={estiloInput}
             placeholder={textoPlaceholder}
             ref={ref}
@@ -47,7 +48,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   textoLabel: PropTypes.string.isRequired,
   textoPlaceholder: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "password", "number"]),
+  type: PropTypes.oneOf(["text", "password", "number", "file"]),
   icono: PropTypes.element,
 };
 
