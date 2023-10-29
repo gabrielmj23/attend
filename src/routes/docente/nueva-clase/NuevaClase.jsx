@@ -10,13 +10,16 @@ import { useEffect } from "react";
 import { useContext } from "react";
 import { DocenteContext } from "../RootDocente";
 import { parseArchivo } from "../../../constants/excelSchemas";
+import { agregarClase } from "../../../api/docente";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 function NuevaClase() {
   // Estados del formulario
   const [step, setStep] = useState(1);
   const [puedeAvanzar, setPuedeAvanzar] = useState(false);
   const [formdata, setFormdata] = useState({
-    nombre: null,
+    nombre: "",
     horario: null,
     alumnos: null,
     plan: null,
@@ -26,10 +29,30 @@ function NuevaClase() {
   const [filasPlan, setFilasPlan] = useState(null);
 
   // Guardar contexto de la navegación actual
-  const { navSetter } = useContext(DocenteContext);
+  const { user, navSetter } = useContext(DocenteContext);
+  const navigate = useNavigate();
   useEffect(() => {
     navSetter({ type: "Nueva Clase", ruta: "/docente/clases/nueva" });
   }, [navSetter]);
+
+  // Para subir el formulario
+  const mutation = useMutation({
+    mutationFn: () => {
+      return agregarClase({
+        idDocente: user.user.uid,
+        nombre: formdata.nombre,
+        horario: filasHorario,
+        alumnos: filasAlumnos,
+        plan: filasPlan,
+      });
+    },
+    onSuccess: (data) => {
+      navigate("/docente/clases/" + data);
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
 
   return (
     <div className="flex flex-col gap-4">
@@ -278,8 +301,10 @@ function NuevaClase() {
               disabled={!puedeAvanzar}
               tipo="primario"
               type="button"
+              onClick={() => mutation.mutate()}
             />
           </div>
+          {mutation.isPending && <p>Guardando...</p>}
         </div>
       )}
     </div>

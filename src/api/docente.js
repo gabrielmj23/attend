@@ -1,4 +1,11 @@
-import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getFirestore,
+  setDoc,
+} from "firebase/firestore";
 import { app } from "./firebase";
 
 const db = getFirestore(app);
@@ -36,6 +43,37 @@ export async function obtenerClase({ idDocente, idClase }) {
       return snapshot.data();
     }
     throw new Error("Clase no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+/**
+ *
+ * @param {Object} clase
+ * @param {string} clase.idDocente
+ * @param {string} clase.nombre
+ * @param {Array} clase.horario
+ * @param {Array} clase.alumnos
+ * @param {Array} clase.plan
+ */
+export async function agregarClase({
+  idDocente,
+  nombre,
+  horario,
+  alumnos,
+  plan,
+}) {
+  try {
+    const clasesDocente = collection(db, "docentes", idDocente, "clases");
+    const claseRef = await addDoc(clasesDocente, {
+      nombre,
+      horario,
+      alumnos,
+      plan,
+    });
+    return claseRef.id;
   } catch (error) {
     console.error(error);
     throw error;
