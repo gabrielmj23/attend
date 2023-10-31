@@ -6,7 +6,7 @@ import Boton from "./Boton";
 
 function CardAsistencia({ fecha, contenido, color }) {
   let classNames =
-    "flex flex-col justify-center gap-4 rounded-xl w-1/2 h-44 mx-6 py-3 px-2 border-4 shadow-lg " +
+    "flex flex-col justify-center gap-4 rounded-xl min-w-[150px] h-44 py-3 px-2 border-4 shadow-lg " +
     BORDES[color];
 
   let fechaActual = new Date();

@@ -80,7 +80,7 @@ export async function loginUser({ correo, password, tipo }) {
     }
     // Iniciar sesión
     await signInWithEmailAndPassword(auth, correo, password);
-    return snapshot.docs[0].data();
+    return { ...snapshot.docs[0].data(), uid: auth.currentUser.uid };
   } catch (error) {
     throw new Error("Usuario o contraseña incorrectos");
   }

@@ -14,6 +14,7 @@ import { RootAdmin } from "./routes/admin/RootAdmin.jsx";
 import VerDocentes from "./routes/admin/docentes/VerDocentes.jsx";
 import NuevoDocente from "./routes/admin/docentes/NuevoDocente.jsx";
 import LoginDocente from "./routes/docente/LoginDocente.jsx";
+import NuevaClase from "./routes/docente/nueva-clase/NuevaClase.jsx";
 
 const router = createBrowserRouter([
   {
@@ -34,11 +35,16 @@ const router = createBrowserRouter([
       },
       {
         path: "clases/nueva",
-        element: <Clase />,
+        element: <NuevaClase />,
       },
       {
         path: "clases/:id",
         element: <Clase />,
+        loader: ({ params }) => {
+          return {
+            id: params.id,
+          };
+        },
       },
       {
         path: "ajustes",

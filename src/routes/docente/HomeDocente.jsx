@@ -3,6 +3,9 @@ import AppHeader from "../../components/AppHeader";
 import CardClase from "../../components/CardClase";
 import { DocenteContext } from "./RootDocente";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
+
+const COLORES = ["amarillo", "azul", "verde"];
 
 /**
  * Página mostrada por la ruta /docente/
@@ -10,32 +13,35 @@ import { useEffect } from "react";
  */
 function HomeDocente() {
   // Guardar contexto de la navegación actual
-  const { navSetter } = useContext(DocenteContext);
+  const { user, navSetter } = useContext(DocenteContext);
   useEffect(() => {
-    navSetter({ type: "Clases", ruta: "/docente" });
+    navSetter({ type: "Clases", ruta: "/docente/home" });
   }, [navSetter]);
 
   return (
     <div className="flex flex-col gap-4">
       <AppHeader titulo="Tus Clases" color="amarillo" />
-      <CardClase
-        id="1"
-        nombre="Algebra Lineal"
-        horario={["Martes: 7:00 am a 10:00 am", "Viernes: 12:00 pm a 2:00 pm"]}
-        color="amarillo"
-      />
-      <CardClase
-        id="2"
-        nombre="Algebra Lineal"
-        horario={["Martes: 7:00 am a 10:00 am", "Viernes: 12:00 pm a 2:00 pm"]}
-        color="azul"
-      />
-      <CardClase
-        id="3"
-        nombre="Algebra Lineal"
-        horario={["Martes: 7:00 am a 10:00 am", "Viernes: 12:00 pm a 2:00 pm"]}
-        color="verde"
-      />
+      {user.user.resumen_clases?.length === 0 ? (
+        <div>
+          <p className="text-center">No tiene clases registradas</p>
+          <Link to="/docente/nueva-clase" className="text-center underline">
+            Agrega una nueva
+          </Link>
+        </div>
+      ) : (
+        user.user.resumen_clases.map((clase, index) => (
+          <CardClase
+            id={clase.uid}
+            key={clase.uid}
+            nombre={clase.nombre}
+            horario={clase.horario.map(
+              (horario) =>
+                `${horario.dia}: ${horario.horaInicio} - ${horario.horaFin}`,
+            )}
+            color={COLORES[index % COLORES.length]}
+          />
+        ))
+      )}
     </div>
   );
 }

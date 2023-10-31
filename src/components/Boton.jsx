@@ -44,8 +44,7 @@ Boton.propTypes = {
   texto: PropTypes.string.isRequired,
   icono: PropTypes.element.isRequired,
   tipo: PropTypes.oneOf(["primario", "secundario"]).isRequired,
-  color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris", "blanco"])
-    .isRequired,
+  color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris", "blanco"]),
   sombra: PropTypes.bool,
   type: PropTypes.oneOf(["button", "submit"]),
   onClick: PropTypes.func,
