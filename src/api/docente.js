@@ -1,10 +1,12 @@
 import {
   addDoc,
+  arrayUnion,
   collection,
   doc,
   getDoc,
   getFirestore,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { app } from "./firebase";
 
@@ -67,11 +69,20 @@ export async function agregarClase({
 }) {
   try {
     const clasesDocente = collection(db, "docentes", idDocente, "clases");
+    // Crear clase
     const claseRef = await addDoc(clasesDocente, {
       nombre,
       horario,
       alumnos,
       plan,
+    });
+    // Actualizar resumen de clases del docente
+    await updateDoc(doc(db, "docentes", idDocente), {
+      resumen_clases: arrayUnion({
+        horario,
+        nombre,
+        uid: claseRef.id,
+      }),
     });
     return claseRef.id;
   } catch (error) {

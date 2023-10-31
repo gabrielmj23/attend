@@ -34,7 +34,10 @@ function HomeDocente() {
             id={clase.uid}
             key={clase.uid}
             nombre={clase.nombre}
-            horario={clase.horario}
+            horario={clase.horario.map(
+              (horario) =>
+                `${horario.dia}: ${horario.horaInicio} - ${horario.horaFin}`,
+            )}
             color={COLORES[index % COLORES.length]}
           />
         ))
