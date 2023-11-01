@@ -3,6 +3,7 @@ import { BORDES } from "../constants/colores";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import Boton from "./Boton";
+import { Link } from "react-router-dom";
 
 function CardAsistencia({ fecha, contenido, color }) {
   let classNames =
@@ -21,13 +22,15 @@ function CardAsistencia({ fecha, contenido, color }) {
     fecha.getYear() === fechaActual.getYear()
   ) {
     boton = (
-      <Boton
-        texto="Tomar asistencia"
-        icono={iconos[1]}
-        tipo="primario"
-        color={color}
-        textSize="text-xs"
-      />
+      <Link>
+        <Boton
+          texto="Tomar asistencia"
+          icono={iconos[1]}
+          tipo="primario"
+          color={color}
+          textSize="text-xs"
+        />
+      </Link>
     );
   } else if (fechaActual > fecha) {
     boton = (

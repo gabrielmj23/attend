@@ -6,6 +6,7 @@ import { useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { obtenerClase } from "../../api/docente";
 import CarruselAsistencia from "../../components/CarruselAsistencia";
+import Input from "../../components/Input";
 
 function Clase() {
   const { id } = useLoaderData();
@@ -30,8 +31,17 @@ function Clase() {
         <>
           <AppHeader titulo={data.nombre} color="amarillo" />
           <div>
-            <h2 className="ps-4 py-3 text-2xl font-semibold">Asistencias</h2>
+            <h2 className="py-3 ps-4 text-2xl font-semibold">Asistencias</h2>
             <CarruselAsistencia plan={data.plan} />
+          </div>
+          <div>
+            <h2 className="py-3 ps-4 text-2xl font-semibold">Reportes</h2>
+            <Input
+              id="nombre"
+              name="nombre"
+              textoLabel="Buscar un estudiante"
+              textoPlaceholder="Buscar"
+            />
           </div>
         </>
       )}
