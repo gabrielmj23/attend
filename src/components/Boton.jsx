@@ -4,7 +4,7 @@ import { BOTONES_PRIMARIO } from "../constants/colores";
 function Boton({
   texto,
   icono,
-  tipo,
+  tipo = "primario",
   color,
   sombra,
   type,
