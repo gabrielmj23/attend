@@ -34,14 +34,16 @@ function Clase() {
             <h2 className="py-3 ps-4 text-2xl font-semibold">Asistencias</h2>
             <CarruselAsistencia plan={data.plan} />
           </div>
-          <div>
+          <div className="flex w-4/5 flex-col">
             <h2 className="py-3 ps-4 text-2xl font-semibold">Reportes</h2>
-            <Input
-              id="nombre"
-              name="nombre"
-              textoLabel="Buscar un estudiante"
-              textoPlaceholder="Buscar"
-            />
+            <div className="flex justify-center place-self-center ps-[60px]">
+              <Input
+                id="nombre"
+                name="nombre"
+                textoLabel="Buscar un estudiante"
+                textoPlaceholder="Buscar"
+              />
+            </div>
           </div>
         </>
       )}
