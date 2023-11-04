@@ -6,7 +6,6 @@ import Boton from "./Boton";
 import { Link } from "react-router-dom";
 
 function CardAsistencia({ idClase, fecha, contenido, color }) {
-  console.log(fecha);
   let classNames =
     "flex flex-col justify-center gap-4 rounded-xl min-w-[150px] h-44 py-3 px-2 border-4 shadow-lg " +
     BORDES[color];

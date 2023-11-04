@@ -1,4 +1,4 @@
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { app } from "./firebase";
 
 const db = getFirestore(app);
@@ -14,6 +14,18 @@ export async function getAsistencia(dir) {
     } else {
       return null;
     }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function agregarAsistencia({ dir, fecha, asistencia }) {
+  try {
+    await setDoc(doc(db, "asistencias", dir), {
+      fecha: new Date(fecha),
+      asistencia,
+    });
   } catch (error) {
     console.error(error);
     throw error;

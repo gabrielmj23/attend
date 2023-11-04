@@ -33,7 +33,12 @@ function PaginaAsistencia() {
       ) : data ? (
         <VerAsistencia />
       ) : (
-        <TomarAsistencia nombreClase={nombreClase} lista={lista} />
+        <TomarAsistencia
+          idClase={idClase}
+          fecha={fecha}
+          nombreClase={nombreClase}
+          lista={lista}
+        />
       )}
     </div>
   );

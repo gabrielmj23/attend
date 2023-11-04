@@ -8,8 +8,13 @@ import Quagga from "@ericblade/quagga2";
 import { useState } from "react";
 import { useRef } from "react";
 import BotonAsistencia from "../../components/BotonAsistencia";
+import { useMutation } from "@tanstack/react-query";
+import { agregarAsistencia } from "../../api/asistencia";
+import { useContext } from "react";
+import { DocenteContext } from "./RootDocente";
+import { useNavigate } from "react-router-dom";
 
-function TomarAsistencia({ nombreClase, lista }) {
+function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
   // Estado del escáner
   const [camaras, setCamaras] = useState([]);
   const [errorCamara, setErrorCamara] = useState(null);
@@ -22,6 +27,25 @@ function TomarAsistencia({ nombreClase, lista }) {
       return { ...alumno, asistente: false };
     }),
   );
+
+  // Guardar asistencia en la base de datos
+  const { user } = useContext(DocenteContext);
+  const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: () => {
+      return agregarAsistencia({
+        dir: `${user.user.uid}-${idClase}-${fecha}`,
+        asistencia,
+        fecha,
+      });
+    },
+    onSuccess: () => {
+      navigate("/docente/clases/" + idClase);
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
 
   // Solicitar acceso y activar cámara al momento de montar el componente
   useEffect(() => {
@@ -145,15 +169,21 @@ function TomarAsistencia({ nombreClase, lista }) {
             texto="Guardar"
             tipo="primario"
             color="amarillo"
+            onClick={() => mutation.mutate()}
             icono={<SaveOutlinedIcon />}
           />
         </div>
+        {mutation.isPending && (
+          <p className="text-center">Guardando asistencia...</p>
+        )}
       </div>
     </div>
   );
 }
 
 TomarAsistencia.propTypes = {
+  idClase: PropTypes.string.isRequired,
+  fecha: PropTypes.string.isRequired,
   nombreClase: PropTypes.string.isRequired,
   lista: PropTypes.array.isRequired,
 };
