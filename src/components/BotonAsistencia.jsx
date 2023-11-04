@@ -1,22 +1,19 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
 
-function BotonAsistencia({ id, cambiarAsistencia }) {
-  const [asistente, setAsistente] = useState(false);
+function BotonAsistencia({ id, asistencia, cambiarAsistencia }) {
   return (
     <button
       className="pt-1 hover:scale-105"
       type="button"
       onClick={() => {
         cambiarAsistencia(id);
-        setAsistente(!asistente);
       }}
     >
       <img
         width="28"
         height="28"
-        src={asistente ? "/asistente.png" : "/inasistente.png"}
-        alt={asistente ? "Asistente" : "Inasistente"}
+        src={asistencia[id].asistente ? "/asistente.png" : "/inasistente.png"}
+        alt={asistencia[id].asistente ? "Asistente" : "Inasistente"}
       ></img>
     </button>
   );
@@ -24,7 +21,7 @@ function BotonAsistencia({ id, cambiarAsistencia }) {
 
 BotonAsistencia.propTypes = {
   id: PropTypes.number.isRequired,
-  asistente: PropTypes.bool.isRequired,
+  asistencia: PropTypes.arrayOf(PropTypes.object).isRequired,
   cambiarAsistencia: PropTypes.func.isRequired,
 };
 

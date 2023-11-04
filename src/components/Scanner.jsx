@@ -61,20 +61,9 @@ function Scanner({
   );
 
   const handleProcesado = (resultado) => {
-    const ctxDibujo = Quagga.canvas.ctx.overlay;
-    ctxDibujo.font = "24px Arial";
-    ctxDibujo.fillStyle = "green";
-
     if (resultado) {
-      if (resultado.box) {
-        Quagga.ImageDebug.drawPath(resultado.box, { x: 0, y: 1 }, ctxDibujo, {
-          color: "blue",
-          lineWidth: 2,
-        });
-      }
       if (resultado.codeResult && resultado.codeResult.code) {
-        ctxDibujo.font = "24px Arial";
-        ctxDibujo.fillText(resultado.codeResult.code, 10, 20);
+        onDetected(resultado.codeResult.code);
       }
     }
   };

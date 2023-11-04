@@ -15,6 +15,7 @@ function TomarAsistencia({ nombreClase, lista }) {
   const [errorCamara, setErrorCamara] = useState(null);
   const [idCamara, setIdCamara] = useState(null);
   const scannerRef = useRef(null);
+
   // Estado de la asistencia
   const [asistencia, setAsistencia] = useState(
     lista.map((alumno) => {
@@ -45,7 +46,7 @@ function TomarAsistencia({ nombreClase, lista }) {
   return (
     <div className="flex flex-col gap-4">
       <AppHeader color="amarillo" titulo={nombreClase} />
-      <div>
+      <div className="flex flex-col">
         <h2 className="ps-3 text-2xl font-semibold">
           Escanea el código de barras detrás de tu carnet
         </h2>
@@ -80,7 +81,25 @@ function TomarAsistencia({ nombreClase, lista }) {
           <Scanner
             scannerRef={scannerRef}
             cameraId={idCamara}
-            onDetected={() => console.log("detectado")}
+            onDetected={(resultado) => {
+              const cedula = resultado.substring(1, resultado.length - 1);
+              setAsistencia((prev) => {
+                const index = prev.findIndex(
+                  (alumno) => alumno.cedula === cedula,
+                );
+                if (index !== -1) {
+                  return asistencia.map((alumno, idx) => {
+                    if (index === idx) {
+                      return { ...alumno, asistente: true };
+                    }
+                    return alumno;
+                  });
+                } else {
+                  alert("El estudiante no se encuentra inscrito en la clase");
+                }
+                return prev;
+              });
+            }}
           />
         </div>
       </div>
@@ -94,13 +113,19 @@ function TomarAsistencia({ nombreClase, lista }) {
                 <td>{alumno.nombre}</td>
                 <td>
                   <BotonAsistencia
+                    key={alumno.cedula}
                     id={index}
                     cambiarAsistencia={(id) =>
-                      setAsistencia((prev) => {
-                        prev[id].asistente = !prev[id].asistente;
-                        return prev;
-                      })
+                      setAsistencia(
+                        asistencia.map((alumno, index) => {
+                          if (index === id) {
+                            return { ...alumno, asistente: !alumno.asistente };
+                          }
+                          return alumno;
+                        }),
+                      )
                     }
+                    asistencia={asistencia}
                   />
                 </td>
               </tr>
