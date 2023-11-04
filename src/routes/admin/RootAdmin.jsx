@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { createContext } from "react";
 import { useReducer } from "react";
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 const AdminAuthContext = createContext({
   user: null,
   userSetter: () => {},
@@ -30,11 +30,16 @@ function authReducer(state, action) {
  */
 function RootAdmin() {
   const [auth, dispatchAuth] = useReducer(authReducer, { user: null });
+  const queryClient = new QueryClient();
 
   return (
-    <AdminAuthContext.Provider value={{ user: auth, userSetter: dispatchAuth }}>
-      <Outlet />
-    </AdminAuthContext.Provider>
+    <QueryClientProvider client={queryClient}>
+      <AdminAuthContext.Provider
+        value={{ user: auth, userSetter: dispatchAuth }}
+      >
+        <Outlet />
+      </AdminAuthContext.Provider>
+    </QueryClientProvider>
   );
 }
 
