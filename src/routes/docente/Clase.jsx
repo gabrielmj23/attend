@@ -10,7 +10,8 @@ import Input from "../../components/Input";
 
 function Clase() {
   const { idClase } = useLoaderData();
-  const { user, navSetter } = useContext(DocenteContext);
+  const { user, navSetter, setLista, setNombreClase } =
+    useContext(DocenteContext);
 
   // Obtener informacion de la clase
   const { isPending, data } = useQuery({
@@ -22,6 +23,12 @@ function Clase() {
   useEffect(() => {
     navSetter({ type: "Clases", ruta: "/docente/clases/" + idClase });
   }, [navSetter, idClase]);
+
+  // Guardar nombre y lista de la clase una vez haya sido cargada
+  if (!isPending) {
+    setNombreClase(data.nombre);
+    setLista(data.alumnos);
+  }
 
   return (
     <div className="flex flex-col gap-4">

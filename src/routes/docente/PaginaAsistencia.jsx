@@ -9,7 +9,7 @@ import VerAsistencia from "./VerAsistencia";
 
 function PaginaAsistencia() {
   const { idClase, fecha } = useLoaderData();
-  const { user, navSetter } = useContext(DocenteContext);
+  const { user, navSetter, nombreClase, lista } = useContext(DocenteContext);
 
   // Verificar si se ha hecho o no la asistencia
   const { isPending, data } = useQuery({
@@ -33,7 +33,7 @@ function PaginaAsistencia() {
       ) : data ? (
         <VerAsistencia />
       ) : (
-        <TomarAsistencia />
+        <TomarAsistencia nombreClase={nombreClase} lista={lista} />
       )}
     </div>
   );
