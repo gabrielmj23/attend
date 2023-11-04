@@ -8,8 +8,13 @@ import Quagga from "@ericblade/quagga2";
 import { useState } from "react";
 import { useRef } from "react";
 import BotonAsistencia from "../../components/BotonAsistencia";
+import { useMutation } from "@tanstack/react-query";
+import { agregarAsistencia } from "../../api/asistencia";
+import { useContext } from "react";
+import { DocenteContext } from "./RootDocente";
+import { useNavigate } from "react-router-dom";
 
-function TomarAsistencia({ nombreClase, lista }) {
+function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
   // Estado del escáner
   const [camaras, setCamaras] = useState([]);
   const [errorCamara, setErrorCamara] = useState(null);
@@ -22,6 +27,25 @@ function TomarAsistencia({ nombreClase, lista }) {
       return { ...alumno, asistente: false };
     }),
   );
+
+  // Guardar asistencia en la base de datos
+  const { user } = useContext(DocenteContext);
+  const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: () => {
+      return agregarAsistencia({
+        dir: `${user.user.uid}-${idClase}-${fecha}`,
+        asistencia,
+        fecha,
+      });
+    },
+    onSuccess: () => {
+      navigate("/docente/clases/" + idClase);
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
 
   // Solicitar acceso y activar cámara al momento de montar el componente
   useEffect(() => {
@@ -44,9 +68,9 @@ function TomarAsistencia({ nombreClase, lista }) {
   }, []);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-12 overflow-y-auto pb-32">
       <AppHeader color="amarillo" titulo={nombreClase} />
-      <div className="flex flex-col">
+      <div className="flex flex-col justify-center">
         <h2 className="ps-3 text-2xl font-semibold">
           Escanea el código de barras detrás de tu carnet
         </h2>
@@ -58,25 +82,28 @@ function TomarAsistencia({ nombreClase, lista }) {
         {camaras.length === 0 ? (
           <p className="text-center text-lg">Identificando cámaras...</p>
         ) : (
-          <form>
+          <form className="z-50">
             <select onChange={(e) => setIdCamara(e.target.value)}>
               {camaras.map((camara, index) => (
-                <option key={camara.deviceId} value={`Cámara ${index}`}>
-                  {camara.label || camara.deviceId}
+                <option key={camara.deviceId} value={camara.deviceId}>
+                  {camara.label || "Cámara " + index}
                 </option>
               ))}
             </select>
           </form>
         )}
-        <div ref={scannerRef}>
+        <div
+          ref={scannerRef}
+          className="flex max-h-[270px] max-w-[360px] flex-col"
+        >
           <canvas
             className="drawingBuffer"
             style={{
               position: "absolute",
               top: "0px",
             }}
-            width="640"
-            height="480"
+            width="360"
+            height="270"
           />
           <Scanner
             scannerRef={scannerRef}
@@ -103,49 +130,60 @@ function TomarAsistencia({ nombreClase, lista }) {
           />
         </div>
       </div>
-      <div className="flex flex-col">
-        <h2 className="ps-3 text-2xl font-semibold">Marca manualmente</h2>
-        <table className="w-11/12 text-center">
-          <tbody>
-            {lista.map((alumno, index) => (
-              <tr key={alumno.cedula} className="align-middle">
-                <td>{alumno.cedula}</td>
-                <td>{alumno.nombre}</td>
-                <td>
-                  <BotonAsistencia
-                    key={alumno.cedula}
-                    id={index}
-                    cambiarAsistencia={(id) =>
-                      setAsistencia(
-                        asistencia.map((alumno, index) => {
-                          if (index === id) {
-                            return { ...alumno, asistente: !alumno.asistente };
-                          }
-                          return alumno;
-                        }),
-                      )
-                    }
-                    asistencia={asistencia}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="flex flex-row justify-center">
-        <Boton
-          texto="Guardar"
-          tipo="primario"
-          color="amarillo"
-          icono={<SaveOutlinedIcon />}
-        />
+      <div className="flex flex-col gap-5">
+        <div className="flex flex-col">
+          <h2 className="ps-3 text-2xl font-semibold">O marca manualmente</h2>
+          <table className="w-11/12 text-center">
+            <tbody>
+              {lista.map((alumno, index) => (
+                <tr key={alumno.cedula} className="align-middle">
+                  <td>{alumno.cedula}</td>
+                  <td>{alumno.nombre}</td>
+                  <td>
+                    <BotonAsistencia
+                      key={alumno.cedula}
+                      id={index}
+                      cambiarAsistencia={(id) =>
+                        setAsistencia(
+                          asistencia.map((alumno, index) => {
+                            if (index === id) {
+                              return {
+                                ...alumno,
+                                asistente: !alumno.asistente,
+                              };
+                            }
+                            return alumno;
+                          }),
+                        )
+                      }
+                      asistencia={asistencia}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="flex flex-row justify-center">
+          <Boton
+            texto="Guardar"
+            tipo="primario"
+            color="amarillo"
+            onClick={() => mutation.mutate()}
+            icono={<SaveOutlinedIcon />}
+          />
+        </div>
+        {mutation.isPending && (
+          <p className="text-center">Guardando asistencia...</p>
+        )}
       </div>
     </div>
   );
 }
 
 TomarAsistencia.propTypes = {
+  idClase: PropTypes.string.isRequired,
+  fecha: PropTypes.string.isRequired,
   nombreClase: PropTypes.string.isRequired,
   lista: PropTypes.array.isRequired,
 };

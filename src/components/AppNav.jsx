@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 function AppNav({ visible, children }) {
   if (!visible) return;
   return (
-    <div className="absolute bottom-0 flex w-full flex-row justify-center gap-10 p-2">
+    <div className="fixed bottom-0 flex w-full flex-row bg-blanco justify-center gap-10 p-2">
       {children}
     </div>
   );
