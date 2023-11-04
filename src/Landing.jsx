@@ -42,7 +42,7 @@ function Landing() {
           <h2 className="text-center text-2xl font-bold">Soy alumno</h2>
           <p className="text-center">
             Haz un seguimiento de tu asistencia a clases
-          </p>{" "}
+          </p>
           <Link to="/alumno/login">
             <Boton
               color="blanco"

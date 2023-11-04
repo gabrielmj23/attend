@@ -4,7 +4,7 @@ import Quagga from "@ericblade/quagga2";
 
 /**
  *
- * @param {Array<number>} arr
+ * @param {number[]} arr
  * @returns
  */
 function mediana(arr) {
@@ -62,27 +62,10 @@ function Scanner({
 
   const handleProcesado = (resultado) => {
     const ctxDibujo = Quagga.canvas.ctx.overlay;
-    const canvasDibujo = Quagga.canvas.dom.overlay;
     ctxDibujo.font = "24px Arial";
     ctxDibujo.fillStyle = "green";
 
     if (resultado) {
-      if (resultado.boxes) {
-        ctxDibujo.clearRect(
-          0,
-          0,
-          parseInt(canvasDibujo.getAttribute("width")),
-          parseInt(canvasDibujo.getAttribute("height")),
-        );
-        resultado.boxes
-          .filter((box) => box !== resultado.box)
-          .forEach((box) => {
-            Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, ctxDibujo, {
-              color: "purple",
-              lineWidth: 2,
-            });
-          });
-      }
       if (resultado.box) {
         Quagga.ImageDebug.drawPath(resultado.box, { x: 0, y: 1 }, ctxDibujo, {
           color: "blue",
@@ -100,7 +83,7 @@ function Scanner({
     let ignorar = false;
     const init = async () => {
       // Esperar un tick
-      await new Promise((resolve) => setTimeout(resolve, 1));
+      await new Promise((resolve) => setTimeout(resolve, 5));
       if (ignorar) {
         return;
       }

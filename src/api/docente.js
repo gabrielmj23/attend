@@ -41,7 +41,7 @@ export async function obtenerClase({ idDocente, idClase }) {
     const snapshot = await getDoc(
       doc(db, "docentes", idDocente, "clases", idClase),
     );
-    if (snapshot.exists) {
+    if (snapshot.exists()) {
       return snapshot.data();
     }
     throw new Error("Clase no existe");

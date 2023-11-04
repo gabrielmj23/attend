@@ -23,16 +23,16 @@ function TomarAsistencia({ nombreClase, lista }) {
       await Quagga.CameraAccess.release();
     };
     const enumerarCamaras = async () => {
-      return await Quagga.CameraAccess.enumerateVideoDevices;
+      return await Quagga.CameraAccess.enumerateVideoDevices();
     };
-    activarCamara
+    activarCamara()
       .then(desactivarCamara)
       .then(enumerarCamaras)
       .then((camaras) => setCamaras(camaras))
       .then(() => Quagga.CameraAccess.disableTorch())
       .catch((err) => setErrorCamara(err));
     return () => desactivarCamara();
-  });
+  }, []);
 
   return (
     <div className="flex flex-col gap-4">
@@ -43,7 +43,7 @@ function TomarAsistencia({ nombreClase, lista }) {
         </h2>
         {errorCamara ? (
           <p className="text-center text-lg font-semibold text-red-800">
-            Error activando camara
+            Error activando camara - {errorCamara.toString()}
           </p>
         ) : null}
         {camaras.length === 0 ? (
@@ -51,8 +51,8 @@ function TomarAsistencia({ nombreClase, lista }) {
         ) : (
           <form>
             <select onChange={(e) => setIdCamara(e.target.value)}>
-              {camaras.map((camara) => (
-                <option key={camara.deviceId} value={camara.deviceId}>
+              {camaras.map((camara, index) => (
+                <option key={camara.deviceId} value={`Cámara ${index}`}>
                   {camara.label || camara.deviceId}
                 </option>
               ))}
@@ -60,7 +60,15 @@ function TomarAsistencia({ nombreClase, lista }) {
           </form>
         )}
         <div ref={scannerRef}>
-          <canvas width="640" height="480" />
+          <canvas
+            className="drawingBuffer"
+            style={{
+              position: "absolute",
+              top: "0px",
+            }}
+            width="640"
+            height="480"
+          />
           <Scanner
             scannerRef={scannerRef}
             cameraId={idCamara}
@@ -68,9 +76,7 @@ function TomarAsistencia({ nombreClase, lista }) {
           />
         </div>
       </div>
-      <div>
-        <h2 className="text-2xl font-semibold">Marca manualmente</h2>
-      </div>
+      <h2 className="text-2xl font-semibold">Marca manualmente</h2>
       <div className="flex flex-row justify-center">
         <Boton
           texto="Guardar"

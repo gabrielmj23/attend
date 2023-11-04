@@ -15,6 +15,7 @@ import VerDocentes from "./routes/admin/docentes/VerDocentes.jsx";
 import NuevoDocente from "./routes/admin/docentes/NuevoDocente.jsx";
 import LoginDocente from "./routes/docente/LoginDocente.jsx";
 import NuevaClase from "./routes/docente/nueva-clase/NuevaClase.jsx";
+import PaginaAsistencia from "./routes/docente/PaginaAsistencia.jsx";
 
 const router = createBrowserRouter([
   {
@@ -38,11 +39,21 @@ const router = createBrowserRouter([
         element: <NuevaClase />,
       },
       {
-        path: "clases/:id",
+        path: "clases/:idClase",
         element: <Clase />,
         loader: ({ params }) => {
           return {
-            id: params.id,
+            idClase: params.idClase,
+          };
+        },
+      },
+      {
+        path: "clases/:idClase/:fecha",
+        element: <PaginaAsistencia />,
+        loader: ({ params }) => {
+          return {
+            idClase: params.idClase,
+            fecha: params.fecha,
           };
         },
       },
