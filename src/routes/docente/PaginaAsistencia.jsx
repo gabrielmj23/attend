@@ -31,7 +31,7 @@ function PaginaAsistencia() {
       {isPending ? (
         <p className="mt-8 text-center">Cargando la asistencia...</p>
       ) : data ? (
-        <VerAsistencia />
+        <VerAsistencia idClase={idClase} asistencia={data} />
       ) : (
         <TomarAsistencia
           idClase={idClase}
