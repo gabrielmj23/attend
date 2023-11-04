@@ -10,11 +10,11 @@ function Landing() {
         <p className="text-center text-xl">
           La asistencia, <strong>reinventada</strong>
         </p>
-        <p className="pb-3 pt-6">
+        <p className="pb-3 pt-6 px-4">
           Con Attend, buscamos crear un nuevo modelo para el control de
           asistencias en la universidad, logrando:
         </p>
-        <ul>
+        <ul className="px-8">
           <li>- Disminuir el uso de papel</li>
           <li>- Agilizar la toma de asistencia</li>
           <li>- Facilitar los procesos administrativos</li>
@@ -42,7 +42,7 @@ function Landing() {
           <h2 className="text-center text-2xl font-bold">Soy alumno</h2>
           <p className="text-center">
             Haz un seguimiento de tu asistencia a clases
-          </p>{" "}
+          </p>
           <Link to="/alumno/login">
             <Boton
               color="blanco"

@@ -7,11 +7,18 @@ import { Outlet } from "react-router-dom";
 import { createContext } from "react";
 import { useReducer } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 
 /**
  * Contexto de la navegación del docente
  * nav: Objeto con rutas y estado de activo
  * navSetter: Función para modificar el estado de nav
+ * user: Usuario actual
+ * userSetter: Función para modificar el usuario actual
+ * lista: Lista de estudiantes de la clase actual
+ * setLista: Función para modificar la lista de estudiantes de la clase actual
+ * nombreClase: Nombre de la clase actual
+ * setNombreClase: Función para modificar el nombre de la clase actual
  */
 const DocenteContext = createContext({
   nav: {
@@ -23,6 +30,10 @@ const DocenteContext = createContext({
   navSetter: () => {},
   user: null,
   userSetter: () => {},
+  lista: null,
+  setLista: () => {},
+  nombreClase: null,
+  setNombreClase: () => {},
 });
 
 /**
@@ -63,6 +74,9 @@ function navReducer(state, action) {
   }
 }
 
+/**
+ * Función reducer para la autenticación
+ */
 function authReducer(state, action) {
   switch (action.type) {
     case "login":
@@ -85,14 +99,18 @@ function authReducer(state, action) {
  * Componente base de las rutas que inician con /docente
  */
 function RootDocente() {
+  // Navegación
   const [navDocente, dispatchNav] = useReducer(navReducer, {
     Clases: { ruta: "/docente/home", activo: true },
     "Nueva Clase": { ruta: "/docente/clases/nueva", activo: false },
     Ajustes: { ruta: "/docente/ajustes", activo: false },
     visible: false,
   });
-
+  // Autenticación
   const [userDocente, dispatchUser] = useReducer(authReducer, { user: null });
+  // Clase
+  const [lista, setLista] = useState(null);
+  const [nombreClase, setNombreClase] = useState(null);
   const queryClient = new QueryClient();
 
   return (
@@ -103,6 +121,10 @@ function RootDocente() {
           navSetter: dispatchNav,
           user: userDocente,
           userSetter: dispatchUser,
+          lista,
+          setLista,
+          nombreClase,
+          setNombreClase,
         }}
       >
         <Outlet />

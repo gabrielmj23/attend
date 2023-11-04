@@ -5,7 +5,8 @@ import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import Boton from "./Boton";
 import { Link } from "react-router-dom";
 
-function CardAsistencia({ fecha, contenido, color }) {
+function CardAsistencia({ idClase, fecha, contenido, color }) {
+  console.log(fecha);
   let classNames =
     "flex flex-col justify-center gap-4 rounded-xl min-w-[150px] h-44 py-3 px-2 border-4 shadow-lg " +
     BORDES[color];
@@ -21,8 +22,11 @@ function CardAsistencia({ fecha, contenido, color }) {
     fecha.getMonth() === fechaActual.getMonth() &&
     fecha.getYear() === fechaActual.getYear()
   ) {
+    const urlAsistencia = `/docente/clases/${idClase}/${
+      fecha.getMonth() + 1
+    }-${fecha.getDate()}-${fecha.getYear() % 100}`;
     boton = (
-      <Link>
+      <Link to={urlAsistencia}>
         <Boton
           texto="Tomar asistencia"
           icono={iconos[1]}
@@ -62,6 +66,7 @@ function CardAsistencia({ fecha, contenido, color }) {
 }
 
 CardAsistencia.propTypes = {
+  idClase: PropTypes.string.isRequired,
   fecha: PropTypes.instanceOf(Date).isRequired,
   contenido: PropTypes.string.isRequired,
   color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]).isRequired,
