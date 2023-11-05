@@ -5,7 +5,7 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 function Landing() {
   return (
     <div className="flex h-screen w-screen flex-col md:flex-row">
-      <div className="flex h-full w-full flex-col justify-center bg-gradient-to-br from-amarillo to-cyan-300 px-16 py-16 align-middle md:p-0">
+      <div className="to-degradado2 flex h-full w-full flex-col justify-center bg-gradient-to-br from-degradado px-16 py-16 align-middle md:p-0">
         <h1 className="text-center text-4xl font-bold">Attend</h1>
         <p className="text-center text-xl">
           La asistencia, <strong>reinventada</strong>

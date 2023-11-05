@@ -15,6 +15,11 @@ import VerDocentes from "./routes/admin/docentes/VerDocentes.jsx";
 import NuevoDocente from "./routes/admin/docentes/NuevoDocente.jsx";
 import LoginDocente from "./routes/docente/LoginDocente.jsx";
 import NuevaClase from "./routes/docente/nueva-clase/NuevaClase.jsx";
+import LoginAlumno from "./routes/alumno/LoginAlumno.jsx";
+import SignUpAlumno from "./routes/alumno/SignUpAlumno.jsx";
+import HomeAlumno from "./routes/alumno/HomeAlumno.jsx";
+import AjustesAlumno from "./routes/alumno/AjustesAlumno.jsx";
+import { RootAlumno } from "./routes/alumno/RootAlumno.jsx";
 
 const router = createBrowserRouter([
   {
@@ -75,6 +80,28 @@ const router = createBrowserRouter([
       {
         path: "docentes/nuevo",
         element: <NuevoDocente />,
+      },
+    ],
+  },
+  {
+    path: "/alumno",
+    element: <RootAlumno />,
+    children: [
+      {
+        path: "login",
+        element: <LoginAlumno />,
+      },
+      {
+        path: "signup",
+        element: <SignUpAlumno />,
+      },
+      {
+        path: "home",
+        element: <HomeAlumno />,
+      },
+      {
+        path: "ajustes",
+        element: <AjustesAlumno />,
       },
     ],
   },
