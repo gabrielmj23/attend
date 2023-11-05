@@ -13,7 +13,7 @@ function VerPeriodo() {
                 Docentes
                 </Link>
             </WebNav>
-            <h2 className="py-8 ps-16 text-2xl pl- font-semibold">Periodo Academico Actual</h2>
+            <h2 className="py-8 ps-16 text-2xl pl- font-semibold">Periodo: {nombre}</h2>
             <div className="ps-16 pl- flex w-1/2 max-w-lg flex-col gap-6">
                 <Input
                 id="buscar"

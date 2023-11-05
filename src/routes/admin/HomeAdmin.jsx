@@ -8,9 +8,10 @@ import { obtenerPeriodos } from "../../api/admin";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
 
+
 function HomeAdmin() {
   const [periodoExistente, setPeriodoExistente] = useState(false); // Inicialmente, no hay periodo
-
+  
   // Obtener informacion de los periodos
   const { isPending, data } = useQuery({
     queryKey: ["obtenerPeriodos"],
@@ -18,14 +19,23 @@ function HomeAdmin() {
   });
 
   const D = new Date(); // Fecha actual
-  /*const periodoActual = data.find((periodo) => periodo.fechaInicio<=D && periodo.fechaFin>=D); // Busca el periodo actual
+  let periodoActual; // Periodo actual
+
+  function obtenerPeridoActual() {
+    console.log("sissiufiwufbu",data);
+    console.log("elpepepepepepe",data.find((periodo) => periodo.fechaInicio.toDate()<=D && periodo.fechaFin.toDate()>=D));  
+    return data.find((periodo) => periodo.fechaInicio.toDate()<=D && periodo.fechaFin.toDate()>=D); // Busca el periodo actual
+  }
+
+  isPending ? (console.log("no")) : (periodoActual = obtenerPeridoActual());
   useEffect(() => {
-    if (periodoActual === undefined) {
-      setPeriodoExistente(false);
-    } else {
-      setPeriodoExistente(true);
-    }
-  }, [periodoActual]);*/
+      if (periodoActual === undefined) {
+        console.log("si");
+        setPeriodoExistente(false);
+      } else {
+        setPeriodoExistente(true);
+      }
+  }, [periodoActual]);
 
   return (
     <div>
@@ -41,14 +51,14 @@ function HomeAdmin() {
         {periodoExistente ? (
           //Si hay periodo academico activo, muestra la tarjeta
           <div className="m-2">
-            {/*<CardPeriodo
+            <CardPeriodo
               idPeriodo={periodoActual.id}
               nombre={periodoActual.nombre}
               inicio={periodoActual.fechaInicio.toDate()}
               fin={periodoActual.fechaFin.toDate()}
               duracion={periodoActual.duracion}
               color="verde"
-        />*/}
+           />
           </div>
         ) : (
           <div>  
@@ -73,7 +83,8 @@ function HomeAdmin() {
           <p>Cargando periodos</p>
         ) : (
         data.map((periodo) => (
-          <div className="m-2 w-3/4"> {/* Agrega un margen a cada tarjeta */}       
+          <div className="m-2 w-3/4"> {/* Agrega un margen a cada tarjeta */}
+            
             <CardPeriodo
               idPeriodo={periodo.id}
               nombre={periodo.nombre}

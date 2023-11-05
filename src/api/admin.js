@@ -25,6 +25,7 @@ export async function agregarAdmin({ id, nombre, correo }) {
 
 /**
  * @param {Object} periodo
+ * @param {string} periodo.id
  * @param {string} periodo.nombre
  * @param {date} periodo.fechaInicio
  * @param {date} periodo.fechaFin
@@ -46,10 +47,12 @@ export async function agregarPeriodo({ nombre, fechaInicio, fechaFin, duracion }
 }
 
 /**
- * @param {Object} user
- * @param {string} user.correo
- * @param {string} user.password
- * @param {string} user.tipo
+ * @param {Object} periodo
+ * @param {string} periodo.id
+ * @param {string} periodo.nombre
+ * @param {date} periodo.fechaInicio
+ * @param {date} periodo.fechaFin
+ * @param {number} duracion
  */
 export async function obtenerPeriodos() {
   try {

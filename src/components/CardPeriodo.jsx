@@ -11,7 +11,6 @@ function CardPeriodo({ idPeriodo, nombre, inicio, fin, duracion, color }) {
     BORDES[color];
   
   return (
-    console.log("SIRVE",idPeriodo),
     <div className={classNames}>
       <div>
         <p className="text-lg font-semibold">Periodo {nombre}</p>
