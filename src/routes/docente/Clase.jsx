@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { obtenerClase, obtenerReportes } from "../../api/docente";
 import CarruselAsistencia from "../../components/CarruselAsistencia";
 import Input from "../../components/Input";
+import { useState } from "react";
 
 function Clase() {
   const { idClase } = useLoaderData();
@@ -24,6 +25,9 @@ function Clase() {
     queryKey: ["reportesClase"],
     queryFn: () => obtenerReportes(idClase),
   });
+
+  // Estado de búsqueda de reportes
+  const [busqueda, setBusqueda] = useState("");
 
   // Guardar contexto de la navegación actual
   useEffect(() => {
@@ -58,6 +62,8 @@ function Clase() {
                   name="nombre"
                   textoLabel="Buscar un estudiante"
                   textoPlaceholder="Buscar"
+                  value={busqueda}
+                  onChange={(e) => setBusqueda(e.target.value)}
                 />
                 <table className="text-center">
                   <thead>
@@ -68,23 +74,30 @@ function Clase() {
                     </tr>
                   </thead>
                   <tbody>
-                    {reportesQuery.data?.map((reporte) => (
-                      <tr key={reporte.data().cedula} className="border-b">
-                        <td>{reporte.data().nombre}</td>
-                        <td>
-                          {(reporte.data().asistencias /
-                            reporte.data().totalClases) *
-                            100}
-                          %
-                        </td>
-                        <td>
-                          {(reporte.data().inasistencias /
-                            reporte.data().totalClases) *
-                            100}
-                          %
-                        </td>
-                      </tr>
-                    ))}
+                    {reportesQuery.data
+                      ?.filter((reporte) => {
+                        return reporte
+                          .data()
+                          .nombre.toLowerCase()
+                          .includes(busqueda.toLowerCase());
+                      })
+                      .map((reporte) => (
+                        <tr key={reporte.data().cedula} className="border-b">
+                          <td>{reporte.data().nombre}</td>
+                          <td>
+                            {(reporte.data().asistencias /
+                              reporte.data().totalClases) *
+                              100}
+                            %
+                          </td>
+                          <td>
+                            {(reporte.data().inasistencias /
+                              reporte.data().totalClases) *
+                              100}
+                            %
+                          </td>
+                        </tr>
+                      ))}
                   </tbody>
                 </table>
               </div>
