@@ -23,6 +23,7 @@ function VerAsistencia({ idClase, asistencia }) {
         dir: `${user.user.uid}-${idClase}-${asistencia.fecha}`,
         asistencia: editAsistencia,
         fecha: asistencia.fecha,
+        tema: asistencia.tema,
       });
     },
     onSuccess: () => {
@@ -93,8 +94,10 @@ function VerAsistencia({ idClase, asistencia }) {
             icono={<SaveOutlinedIcon />}
             onClick={() => mutation.mutate()}
           />
-          {mutation.isPending && (
+          {mutation.isPending && (<>
             <p className="text-center">Guardando cambios...</p>
+            <p className="text-center">Calcularemos también los reportes de asistencias...</p>
+            </>
           )}
         </div>
       </div>
