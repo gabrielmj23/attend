@@ -82,6 +82,20 @@ export async function obtenerClases({idDocente}) {
     throw error;
   }
 }
+export async function obtenerClasesDeDocentes(idsDocente) {
+  try {
+    const todasLasClases = [];
+    for (const idDocente of idsDocente) {
+      const clases = await obtenerClases({ idDocente });
+      todasLasClases.push(...clases);
+    }
+    return todasLasClases;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 
 export async function obtenerDocentes() {
   try {
@@ -96,6 +110,19 @@ export async function obtenerDocentes() {
     throw error;
   }
   
+}
+export async function obtenerIDsDocentes() {
+  try {
+    const snapshot = await getDocs(collection(db, "docentes"));
+    const docentesIDs = [];
+    snapshot.forEach((doc) => {
+      docentesIDs.push(doc.id);
+    });
+    return docentesIDs;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }
 
 export async function obtenerIDPeriodoActivo() {

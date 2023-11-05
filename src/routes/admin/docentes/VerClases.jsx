@@ -64,7 +64,8 @@ function VerClases() {
                   return (
                     <div>
                       <CardClase
-                        id={clase.id}
+                        idDocente={idDocente}
+                        idClase={clase.id}
                         nombreMateria={clase.nombre}
                         nombreDocente={docenteQuery.data.nombre}
                         seccion="REVISAR DB"
@@ -85,8 +86,10 @@ function VerClases() {
                 if (clase.idPeriodo != idActivoQuery.data) {
                   return (
                     <div>
+                      {console.log("ID DOCENTE: ", clase.id)}
                       <CardClase
-                        id={clase.id}
+                        idDocente={idDocente}
+                        idClase={clase.id}
                         nombreMateria={clase.nombre}
                         nombreDocente={docenteQuery.data.nombre}
                         seccion="REVISAR DB"
