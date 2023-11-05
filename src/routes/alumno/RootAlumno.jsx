@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const AlumnoContext = createContext({
   nav: {
-    Inicio: { ruta: "/alumno", activo: true },
+    Clases: { ruta: "/alumno", activo: true },
     Ajustes: { ruta: "/alumno/perfil", activo: false },
     visible: false,
   },
@@ -20,15 +20,15 @@ const AlumnoContext = createContext({
 
 function navReducer(state, action) {
   switch (action.type) {
-    case "Inicio":
+    case "Clases":
       return {
-        Inicio: { ruta: action.ruta, activo: true },
+        Clases: { ruta: action.ruta, activo: true },
         Ajustes: { ruta: state["Ajustes"].ruta, activo: false },
         visible: true,
       };
     case "Ajustes":
       return {
-        Inicio: { ruta: state["Inicio"].ruta, activo: false },
+        Clases: { ruta: state["Clases"].ruta, activo: false },
         Ajustes: { ruta: action.ruta, activo: true },
         visible: true,
       };
@@ -87,12 +87,14 @@ function RootAlumno() {
             label="Clases"
             ruta={navAlumno["Clases"].ruta || "/"}
             activo={navAlumno["Clases"].activo}
+            color="azul"
           />
           <NavElem
             icono={<SettingsOutlinedIcon />}
             label="Ajustes"
             ruta={navAlumno["Ajustes"].ruta || "/alumno/ajustes"}
             activo={navAlumno["Ajustes"].activo}
+            color="azul"
           />
         </AppNav>
       </AlumnoContext.Provider>

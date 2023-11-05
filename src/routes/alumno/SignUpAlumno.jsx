@@ -44,7 +44,6 @@ function SignUpAlumno() {
         nombre: data.nombre,
         cedula: data.cedula,
         correo: data.correo,
-
         password: data.password,
       });
     },

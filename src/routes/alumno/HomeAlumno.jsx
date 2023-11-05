@@ -3,7 +3,6 @@ import AppHeader from "../../components/AppHeader";
 import CardClase from "../../components/CardClase";
 import { AlumnoContext } from "./RootAlumno";
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
 
 const COLORES = ["amarillo", "azul", "verde"];
 

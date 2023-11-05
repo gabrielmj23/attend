@@ -92,14 +92,14 @@ export async function signUpAlumno({ nombre, cedula, correo, password }) {
     // Guardar cuenta de alumno
     const creds = await createUserWithEmailAndPassword(auth, correo, password);
     await updateProfile(creds.user, { displayName: nombre });
-    await agregarAlumno({ nombre, cedula, correo });
+    const resumen = await agregarAlumno({ nombre, cedula, correo });
     // Devolver datos de alumno
     return {
       uid: creds.user.uid,
       nombre: nombre,
       cedula: cedula,
       correo: correo,
-      resumen_clases: []
+      resumen_clases: resumen,
     };
   } catch (error) {
     console.error(error);

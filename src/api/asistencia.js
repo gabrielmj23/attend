@@ -53,13 +53,6 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
           c.getMonth() + 1 === dirSep[2] &&
           c.getYear() % 100 === dirSep[4],
       )[0].tema;
-
-      // Actualizar cantidad de clases vistas
-      await setDoc(doc(db, "docentes", dirSep[0], "clases", dirSep[1]), {
-        ...clase,
-        clasesVistas: clase.clasesVistas + 1,
-      });
-      clase.clasesVistas += 1;
     }
 
     // Actualizar reportes de alumnos
