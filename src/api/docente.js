@@ -4,9 +4,12 @@ import {
   collection,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { app } from "./firebase";
 
@@ -28,6 +31,25 @@ export async function agregarDocente({ id, nombre, correo }) {
   } catch (error) {
     console.error(error);
     throw new Error("Ocurrió un error al agregar el docente");
+  }
+}
+
+/**
+ *
+ * @param {string} idClase
+ */
+export async function obtenerReportes(idClase) {
+  try {
+    const reportes = await getDocs(
+      query(collection(db, "reportes"), where("idClase", "==", idClase)),
+    );
+    if (!reportes.empty) {
+      return reportes.docs;
+    }
+    return null;
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
@@ -75,6 +97,7 @@ export async function agregarClase({
       horario,
       alumnos,
       plan,
+      totalClases: plan.length,
     });
     // Actualizar resumen de clases del docente
     await updateDoc(doc(db, "docentes", idDocente), {
@@ -84,6 +107,17 @@ export async function agregarClase({
         uid: claseRef.id,
       }),
     });
+    // Crear reportes de estudiantes
+    for (const alumno of alumnos) {
+      await setDoc(doc(db, "reportes", `${alumno.cedula}-${claseRef.id}`), {
+        cedula: alumno.cedula,
+        nombre: alumno.nombre,
+        idClase: claseRef.id,
+        asistencias: 0,
+        inasistencias: 0,
+        totalClases: plan.length,
+      });
+    }
     return claseRef.id;
   } catch (error) {
     console.error(error);
