@@ -33,6 +33,8 @@ function VerPeriodo() {
         }
     }, [docentesQuery.isPending, docentesQuery.data]);
 
+    console.log("docentesData", docentesData);
+
     useEffect(() => {
         if (!clasesQuery.isPending) {
             const clasesFiltradas = clasesQuery.data.filter(clase => clase.idPeriodo === idPeriodo);
@@ -63,10 +65,10 @@ function VerPeriodo() {
                 {clasesPeriodoActual && clasesPeriodoActual.map((clase) => (
                     console.log("lo logreeeeee",clase.nombreDocente),
                     <CardMateriaWeb
-                        idPeriodo={clase.idPeriodo}                     
-                        nombreMateria={clase.nombre} 
-                        nombreDocente={clase.nombreDocente} 
-                        seccion={clase.seccion} 
+                        id={clase.id}
+                        idDocente={clase.idDocente}
+                        nombreMateria= {clase.nombre}
+                        nombreDocente={clase.nombreDocente}
                         color="verde"
                     />
                 ))}                

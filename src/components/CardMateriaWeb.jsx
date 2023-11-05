@@ -15,7 +15,6 @@ function CardClase({ id, nombreMateria, nombreDocente, seccion, color }) {
       </div>
       <div>
         <p className="text-sm text-zinc-600">Docente: {nombreDocente}</p>
-        <p className="text-sm text-zinc-600">Seccion: {seccion}</p>
       </div>
       <div className="flex flex-row justify-center">
         <Link to={`/docente/clases/${id}`}>
