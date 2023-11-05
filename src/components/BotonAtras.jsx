@@ -5,7 +5,7 @@ import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
 function BotonAtras({ path }) {
   const navigate = useNavigate();
   return (
-    <button onClick={() => navigate(path)}>
+    <button onClick={() => navigate(path)} className="z-50">
       <ArrowBackOutlinedIcon />
     </button>
   );
