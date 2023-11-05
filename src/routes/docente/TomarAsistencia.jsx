@@ -69,7 +69,11 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
 
   return (
     <div className="flex flex-col gap-12 overflow-y-auto pb-32">
-      <AppHeader color="amarillo" titulo={nombreClase} />
+      <AppHeader
+        color="amarillo"
+        titulo={nombreClase}
+        atras={`/docente/clases/${idClase}`}
+      />
       <div className="flex flex-col justify-center">
         <h2 className="ps-3 text-2xl font-semibold">
           Escanea el código de barras detrás de tu carnet
