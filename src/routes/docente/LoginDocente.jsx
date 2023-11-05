@@ -56,7 +56,7 @@ function LoginDocente() {
       </h2>
       <form
         onSubmit={handleSubmit(mutation.mutate)}
-        className="flex flex-col justify-center gap-4 pe-10 ps-8"
+        className="flex flex-col justify-center gap-4 pe-10 ps-5"
       >
         <fieldset>
           <Input

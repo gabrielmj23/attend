@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 function CardAsistencia({ idClase, fecha, contenido, color }) {
   let classNames =
-    "flex flex-col justify-center gap-4 rounded-xl min-w-[150px] h-44 py-3 px-2 border-4 shadow-lg " +
+    "flex flex-col justify-center gap-4 rounded-xl min-w-[150px] h-44 py-3 px-2 border-4 shadow-xl " +
     BORDES[color];
 
   let fechaActual = new Date();
@@ -16,14 +16,15 @@ function CardAsistencia({ idClase, fecha, contenido, color }) {
     <InventoryOutlinedIcon key="2" />,
   ];
   let boton = null;
+  const urlAsistencia = `/docente/clases/${idClase}/${
+    fecha.getMonth() + 1
+  }-${fecha.getDate()}-${fecha.getYear() % 100}`;
+
   if (
     fecha.getDate() === fechaActual.getDate() &&
     fecha.getMonth() === fechaActual.getMonth() &&
     fecha.getYear() === fechaActual.getYear()
   ) {
-    const urlAsistencia = `/docente/clases/${idClase}/${
-      fecha.getMonth() + 1
-    }-${fecha.getDate()}-${fecha.getYear() % 100}`;
     boton = (
       <Link to={urlAsistencia}>
         <Boton
@@ -37,13 +38,15 @@ function CardAsistencia({ idClase, fecha, contenido, color }) {
     );
   } else if (fechaActual > fecha) {
     boton = (
-      <Boton
-        texto="Ver asistencia"
-        icono={iconos[0]}
-        tipo="secundario"
-        color={color}
-        textSize="text-xs"
-      />
+      <Link to={urlAsistencia}>
+        <Boton
+          texto="Ver asistencia"
+          icono={iconos[0]}
+          tipo="secundario"
+          color={color}
+          textSize="text-xs"
+        />
+      </Link>
     );
   }
 

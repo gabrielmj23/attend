@@ -19,7 +19,7 @@ function HomeDocente() {
   }, [navSetter]);
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto pb-28">
+    <div className="flex flex-col gap-4 overflow-y-auto pb-36">
       <AppHeader titulo="Tus Clases" color="amarillo" />
       {user.user.resumen_clases?.length === 0 ? (
         <div>

@@ -41,7 +41,7 @@ function Clase() {
   }
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto pb-28">
+    <div className="flex flex-col gap-4 overflow-y-auto pb-36">
       {claseQuery.isPending ? (
         <p className="mt-8 text-center">Cargando la clase...</p>
       ) : (
