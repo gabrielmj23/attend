@@ -30,6 +30,8 @@ function HomeAlumno() {
             id={clase.uid}
             key={clase.uid}
             nombre={clase.nombre}
+            inasistencias={clase.inasistencias}
+            totalClases={clase.totalClases}
             horario={clase.horario.map(
               (horario) =>
                 `${horario.dia}: ${horario.horaInicio} - ${horario.horaFin}`,

@@ -1,10 +1,13 @@
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
   increment,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { app } from "./firebase";
 import { obtenerClase } from "./docente";
@@ -22,6 +25,31 @@ export async function getAsistencia(dir) {
     } else {
       return null;
     }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
+  try {
+    const snapshot = await getDocs(
+      collection(db, "asistencias"),
+      where("idDocente", "==", idDocente),
+      where("idClase", "==", idClase),
+    );
+    if (!snapshot.empty) {
+      return snapshot.docs
+        .map((doc) => doc.data())
+        .map((data) => {
+          return {
+            fecha: data.fecha,
+            tema: data.tema,
+            asistente: data.asistencia.find((ast) => ast.cedula === cedula).asistente,
+          };
+        });
+    }
+    return [];
   } catch (error) {
     console.error(error);
     throw error;
@@ -69,13 +97,23 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
     }
 
     // Guardar o actualizar
-    await setDoc(doc(db, "asistencias", dir), {
-      fecha: new Date(fecha),
-      asistencia,
-      asistentes: asistencia.filter((a) => a.asistente).length,
-      inasistentes: asistencia.filter((a) => !a.asistente).length,
-      tema: temaAst,
-    });
+    if (!tema) {
+      await setDoc(doc(db, "asistencias", dir), {
+        fecha: new Date(fecha),
+        asistencia,
+        asistentes: asistencia.filter((a) => a.asistente).length,
+        inasistentes: asistencia.filter((a) => !a.asistente).length,
+        tema: temaAst,
+        idDocente: dirSep[0],
+        idClase: dirSep[1],
+      });
+    } else {
+      await updateDoc(doc(db, "asistencias", dir), {
+        asistencia,
+        asistentes: asistencia.filter((a) => a.asistente).length,
+        inasistentes: asistencia.filter((a) => !a.asistente).length,
+      });
+    }
   } catch (error) {
     console.error(error);
     throw error;

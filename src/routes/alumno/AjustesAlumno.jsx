@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 function AjustesAlumno() {
   // Guardar contexto de la navegación actual
-  const { user, navSetter } = useContext(AlumnoContext);
+  const { user, navSetter, userSetter } = useContext(AlumnoContext);
   useEffect(() => {
     navSetter({ type: "Ajustes", ruta: "/alumno/ajustes" });
   }, [navSetter]);
@@ -21,7 +21,15 @@ function AjustesAlumno() {
           <p className="text-sm font-semibold text-gris">{user.user.correo}</p>
         </div>
       </div>
-      <p className="ps-5 text-sm text-red-700 underline">Cerrar sesión</p>
+      <p
+        className="ps-5 text-sm text-red-700 underline hover:cursor-pointer hover:text-red-800"
+        onClick={() => {
+          userSetter({ type: "logout" });
+          navSetter({ type: "Visible" });
+        }}
+      >
+        Cerrar sesión
+      </p>
     </div>
   );
 }

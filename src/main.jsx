@@ -21,6 +21,7 @@ import SignUpAlumno from "./routes/alumno/SignUpAlumno.jsx";
 import HomeAlumno from "./routes/alumno/HomeAlumno.jsx";
 import AjustesAlumno from "./routes/alumno/AjustesAlumno.jsx";
 import { RootAlumno } from "./routes/alumno/RootAlumno.jsx";
+import ClaseAlumno from "./routes/alumno/ClaseAlumno.jsx";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,15 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <HomeAlumno />,
+      },
+      {
+        path: "clases/:idClase",
+        element: <ClaseAlumno />,
+        loader: ({ params }) => {
+          return {
+            idClase: params.idClase,
+          };
+        }
       },
       {
         path: "ajustes",
