@@ -22,8 +22,6 @@ function HomeAdmin() {
   let periodoActual; // Periodo actual
 
   function obtenerPeridoActual() {
-    console.log("sissiufiwufbu",data);
-    console.log("elpepepepepepe",data.find((periodo) => periodo.fechaInicio.toDate()<=D && periodo.fechaFin.toDate()>=D));  
     return data.find((periodo) => periodo.fechaInicio.toDate()<=D && periodo.fechaFin.toDate()>=D); // Busca el periodo actual
   }
 
