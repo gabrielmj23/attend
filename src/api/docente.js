@@ -7,6 +7,8 @@ import {
   getFirestore,
   setDoc,
   updateDoc,
+  getDocs,
+  where
 } from "firebase/firestore";
 import { app } from "./firebase";
 
@@ -45,6 +47,61 @@ export async function obtenerClase({ idDocente, idClase }) {
       return snapshot.data();
     }
     throw new Error("Clase no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerDocente({ idDocente}){
+  try {
+    const snapshot = await getDoc(doc(db, "docentes", idDocente));
+    if (snapshot.exists) {
+      return snapshot.data();
+    }
+    throw new Error("Docente no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
+
+export async function obtenerClases({idDocente}) {
+  try {
+    const snapshot = await getDocs(collection(db, "docentes", idDocente,"clases"));
+    const clases = [];
+    snapshot.forEach((doc) => {
+      clases.push({ id: doc.id, ...doc.data() });
+    });
+    return clases;
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerDocentes() {
+  try {
+    const snapshot = await getDocs(collection(db, "docentes"));
+    const docentes = [];
+    snapshot.forEach((doc) => {
+      docentes.push({ id: doc.id, ...doc.data() });
+    });
+    return docentes;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+  
+}
+
+export async function obtenerIDPeriodoActivo() {
+  try {
+    const snapshot = await getDocs(collection(db, "periodos"), where("activo", "==", true));
+    return snapshot.docs[0].id;
   } catch (error) {
     console.error(error);
     throw error;

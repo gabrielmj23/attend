@@ -30,7 +30,7 @@ function CardClase({ id, nombreMateria, nombreDocente, seccion, color }) {
     </div>
   );
 }
-
+/*
 CardClase.propTypes = {
   id: PropTypes.string.isRequired,
   nombreMateria: PropTypes.string.isRequired,
@@ -39,5 +39,5 @@ CardClase.propTypes = {
   horario: PropTypes.arrayOf(PropTypes.string).isRequired,
   color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]),
 };
-
+*/
 export default CardClase;
