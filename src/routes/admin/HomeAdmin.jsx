@@ -21,11 +21,11 @@ function HomeAdmin() {
   const D = new Date(); // Fecha actual
   let periodoActual; // Periodo actual
 
-  function obtenerPeridoActual() {
+  function obtenerPeriodoActual() {
     return data.find((periodo) => periodo.fechaInicio.toDate()<=D && periodo.fechaFin.toDate()>=D); // Busca el periodo actual
   }
 
-  isPending ? (console.log("no")) : (periodoActual = obtenerPeridoActual());
+  isPending ? (console.log("no")) : (periodoActual = obtenerPeriodoActual());
   useEffect(() => {
       if (periodoActual === undefined) {
         console.log("si");
