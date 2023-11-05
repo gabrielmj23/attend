@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import AppHeader from "../../components/AppHeader";
 import { getAsistenciasDeAlumno } from "../../api/asistencia";
 import BotonAsistencia from "../../components/BotonAsistencia";
+import { useEffect } from "react";
 
 const transformarFecha = (fecha) => {
   const aux = fecha.split("-");
@@ -14,12 +15,17 @@ const transformarFecha = (fecha) => {
 function ClaseAlumno() {
   // Obtener datos de la clase
   const { idClase } = useLoaderData();
-  const { user } = useContext(AlumnoContext);
+  const { user, navSetter } = useContext(AlumnoContext);
   const resumen_clase = user.user.resumen_clases.find(
     (clase) => clase.idClase === idClase,
   );
   const porcentajeInasistencias =
     (resumen_clase.inasistencias / resumen_clase.totalClases) * 100;
+
+  useEffect(() => {
+    // Guardar contexto de navegacion
+    navSetter({ type: "Clases", ruta: "/alumno/clases" + idClase });
+  }, [navSetter, idClase]);
 
   const { isPending, data } = useQuery({
     queryKey: ["asistenciasAlumno"],
