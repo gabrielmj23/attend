@@ -85,8 +85,8 @@ export async function obtenerClases({idDocente}) {
 export async function obtenerClasesDeDocentes(idsDocente) {
   try {
     const todasLasClases = [];
-    for (const idDocente of idsDocente) {
-      const clases = await obtenerClases({ idDocente });
+    for (const docente of idsDocente) {
+      const clases = await obtenerClases({ idDocente: docente.id });
       todasLasClases.push(...clases);
     }
     return todasLasClases;
@@ -116,7 +116,7 @@ export async function obtenerIDsDocentes() {
     const snapshot = await getDocs(collection(db, "docentes"));
     const docentesIDs = [];
     snapshot.forEach((doc) => {
-      docentesIDs.push(doc.id);
+      docentesIDs.push( {id: doc.id, nombre: doc.data().nombre});
     });
     return docentesIDs;
   } catch (error) {

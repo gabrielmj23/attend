@@ -42,7 +42,7 @@ function VerDocentes() {
 
       <AppHeader titulo="Docentes" color="blanco" />
 
-      <div className="flex justify-between">
+      <div className="flex items-end justify-between">
         <div className="pl-40">
           <Input
             id="bucarDocente"
@@ -53,7 +53,7 @@ function VerDocentes() {
             onChange={handleSearchChange}
           ></Input>
         </div>
-        <div className="pr-40">
+        <div className="py-5 pr-40">
           <Link to="/admin/docentes/nuevo">
             <Boton
               texto="Agregar docente"
