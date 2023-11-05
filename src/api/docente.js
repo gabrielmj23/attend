@@ -91,6 +91,11 @@ export async function agregarClase({
 }) {
   try {
     const clasesDocente = collection(db, "docentes", idDocente, "clases");
+    // Obtener periodo activo
+    const snapshotPeriodo = await getDocs(
+      collection(db, "periodos"),
+      where("activo", "==", true),
+    );
     // Crear clase
     const claseRef = await addDoc(clasesDocente, {
       nombre,
@@ -98,6 +103,7 @@ export async function agregarClase({
       alumnos,
       plan,
       totalClases: plan.length,
+      idPeriodo: snapshotPeriodo.docs[0].id,
     });
     // Actualizar resumen de clases del docente
     await updateDoc(doc(db, "docentes", idDocente), {

@@ -39,6 +39,7 @@ function VerAsistencia({ idClase, asistencia }) {
       <AppHeader
         color="amarillo"
         titulo={`Asistencia del ${fechaSep[1]}/${fechaSep[0]}/${fechaSep[2]}`}
+        atras={`/docente/clases/${idClase}`}
       />
       <div className="ps-3">
         <h2 className="text-xl font-semibold">Datos de la clase</h2>
@@ -94,9 +95,12 @@ function VerAsistencia({ idClase, asistencia }) {
             icono={<SaveOutlinedIcon />}
             onClick={() => mutation.mutate()}
           />
-          {mutation.isPending && (<>
-            <p className="text-center">Guardando cambios...</p>
-            <p className="text-center">Calcularemos también los reportes de asistencias...</p>
+          {mutation.isPending && (
+            <>
+              <p className="text-center">Guardando cambios...</p>
+              <p className="text-center">
+                Calcularemos también los reportes de asistencias...
+              </p>
             </>
           )}
         </div>

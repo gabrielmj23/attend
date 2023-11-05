@@ -69,7 +69,11 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
 
   return (
     <div className="flex flex-col gap-12 overflow-y-auto pb-32">
-      <AppHeader color="amarillo" titulo={nombreClase} />
+      <AppHeader
+        color="amarillo"
+        titulo={nombreClase}
+        atras={`/docente/clases/${idClase}`}
+      />
       <div className="flex flex-col justify-center">
         <h2 className="ps-3 text-2xl font-semibold">
           Escanea el código de barras detrás de tu carnet
@@ -94,7 +98,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
         )}
         <div
           ref={scannerRef}
-          className="flex max-h-[270px] max-w-[360px] flex-col"
+          className="flex max-h-[270px] max-w-[360px] flex-col justify-center"
         >
           <canvas
             className="drawingBuffer"
@@ -130,7 +134,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
           />
         </div>
       </div>
-      <div className="flex flex-col gap-5">
+      <div className="mt-[100px] flex flex-col gap-5">
         <div className="flex flex-col">
           <h2 className="ps-3 text-2xl font-semibold">O marca manualmente</h2>
           <table className="w-11/12 text-center">

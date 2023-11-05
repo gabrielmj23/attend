@@ -41,12 +41,16 @@ function Clase() {
   }
 
   return (
-    <div className="flex flex-col gap-4 overflow-y-auto pb-28">
+    <div className="flex flex-col gap-4 overflow-y-auto pb-36">
       {claseQuery.isPending ? (
         <p className="mt-8 text-center">Cargando la clase...</p>
       ) : (
         <>
-          <AppHeader titulo={claseQuery.data.nombre} color="amarillo" />
+          <AppHeader
+            titulo={claseQuery.data.nombre}
+            color="amarillo"
+            atras="/docente/home"
+          />
           <div>
             <h2 className="py-3 ps-4 text-2xl font-semibold">Asistencias</h2>
             <CarruselAsistencia idClase={idClase} plan={claseQuery.data.plan} />
