@@ -3,13 +3,15 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { DocenteContext } from "./RootDocente";
 import { useContext } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AjustesDocente() {
   // Guardar contexto de la navegación actual
-  const { user, navSetter } = useContext(DocenteContext);
+  const { user, navSetter, userSetter } = useContext(DocenteContext);
   useEffect(() => {
     navSetter({ type: "Ajustes", ruta: "/docente/ajustes" });
   }, [navSetter]);
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-4">
@@ -21,7 +23,16 @@ function AjustesDocente() {
           <p className="text-sm font-semibold text-gris">{user.user.correo}</p>
         </div>
       </div>
-      <p className="ps-5 text-sm text-red-700 underline">Cerrar sesión</p>
+      <p
+        className="ps-5 text-sm text-red-700 underline hover:cursor-pointer hover:text-red-800"
+        onClick={() => {
+          userSetter({ type: "logout" });
+          navSetter({ type: "Visible" });
+          navigate("/docente/login");
+        }}
+      >
+        Cerrar sesión
+      </p>
     </div>
   );
 }

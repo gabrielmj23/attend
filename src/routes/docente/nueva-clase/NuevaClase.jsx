@@ -44,6 +44,7 @@ function NuevaClase() {
         horario: filasHorario,
         alumnos: filasAlumnos,
         plan: filasPlan,
+        nombreDocente: user.user.nombre,
       });
     },
     onSuccess: (data) => {
@@ -90,7 +91,7 @@ function NuevaClase() {
         </div>
       )}
       {step === 2 && (
-        <div className="flex flex-col w-4/5 justify-center gap-4 place-self-center">
+        <div className="flex w-4/5 flex-col justify-center gap-4 place-self-center">
           <h1 className="text-2xl font-semibold">
             Carga el horario de clases:
           </h1>
@@ -164,7 +165,7 @@ function NuevaClase() {
         </div>
       )}
       {step === 3 && (
-        <div className="flex flex-col w-4/5 justify-center gap-4 place-self-center">
+        <div className="flex w-4/5 flex-col justify-center gap-4 place-self-center">
           <h1 className="text-2xl font-semibold">
             Carga la lista de asistencia:
           </h1>
@@ -235,7 +236,7 @@ function NuevaClase() {
         </div>
       )}
       {step === 4 && (
-        <div className="flex flex-col w-4/5 justify-center gap-4 place-self-center">
+        <div className="flex w-4/5 flex-col justify-center gap-4 place-self-center">
           <h1 className="text-2xl font-semibold">Carga el plan de clases:</h1>
           <Input
             id="plan"

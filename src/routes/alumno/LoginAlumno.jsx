@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { loginUser } from "../../api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import BotonAtras from "../../components/BotonAtras";
 
 const alumnoSchema = yup.object().shape({
   correo: yup
@@ -46,7 +47,10 @@ function LoginAlumno() {
   });
 
   return (
-    <div className=" to-degradado2 flex h-screen flex-col justify-center gap-5 bg-gradient-to-br from-degradado">
+    <div className=" from-degradado to-degradado2 flex h-screen flex-col justify-center gap-5 bg-gradient-to-br">
+      <div className="absolute left-5 top-5 flex flex-row align-middle">
+        <BotonAtras path="/" text="Volver a inicio" />
+      </div>
       <h1 className="text-center text-3xl font-bold">Attend</h1>
       <h2 className="text-center text-lg font-semibold">
         Inicia sesión como alumno

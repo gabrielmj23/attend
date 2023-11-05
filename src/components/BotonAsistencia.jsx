@@ -1,12 +1,18 @@
 import PropTypes from "prop-types";
 
-function BotonAsistencia({ id, asistencia, cambiarAsistencia }) {
+function BotonAsistencia({
+  id,
+  asistencia,
+  cambiarAsistencia,
+  disabled = false,
+}) {
   return (
     <button
       className="pt-1 hover:scale-105"
       type="button"
+      disabled={disabled}
       onClick={() => {
-        cambiarAsistencia(id);
+        if (!disabled) cambiarAsistencia(id);
       }}
     >
       <img
@@ -20,9 +26,10 @@ function BotonAsistencia({ id, asistencia, cambiarAsistencia }) {
 }
 
 BotonAsistencia.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.number,
   asistencia: PropTypes.arrayOf(PropTypes.object).isRequired,
-  cambiarAsistencia: PropTypes.func.isRequired,
+  cambiarAsistencia: PropTypes.func,
+  disabled: PropTypes.bool,
 };
 
 export default BotonAsistencia;

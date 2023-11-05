@@ -6,22 +6,30 @@ import { useEffect } from "react";
 
 function AjustesAlumno() {
   // Guardar contexto de la navegación actual
-  const { user, navSetter } = useContext(AlumnoContext);
+  const { user, navSetter, userSetter } = useContext(AlumnoContext);
   useEffect(() => {
     navSetter({ type: "Ajustes", ruta: "/alumno/ajustes" });
   }, [navSetter]);
 
   return (
     <div className="flex flex-col gap-4">
-      <AppHeader titulo="Ajustes" color="amarillo" />
+      <AppHeader titulo="Ajustes" color="azul" />
       <div className="flex flex-row gap-5 ps-5 pt-2 align-middle">
         <PersonOutlineIcon fontSize="large" className="my-auto scale-125" />
         <div className="flex flex-col">
-          <p className="text-xl font-semibold">Nombre Alumno</p>
-          <p className="text-sm font-semibold text-gris">Correo@gmail.com</p>
+          <p className="text-xl font-semibold">{user.user.nombre}</p>
+          <p className="text-sm font-semibold text-gris">{user.user.correo}</p>
         </div>
       </div>
-      <p className="ps-5 text-sm text-red-700 underline">Cerrar sesión</p>
+      <p
+        className="ps-5 text-sm text-red-700 underline hover:cursor-pointer hover:text-red-800"
+        onClick={() => {
+          userSetter({ type: "logout" });
+          navSetter({ type: "Visible" });
+        }}
+      >
+        Cerrar sesión
+      </p>
     </div>
   );
 }

@@ -119,9 +119,12 @@ export async function agregarClase({
         cedula: alumno.cedula,
         nombre: alumno.nombre,
         idClase: claseRef.id,
+        nombreClase: nombre,
+        horario: horario,
         asistencias: 0,
         inasistencias: 0,
         totalClases: plan.length,
+        idDocente: idDocente,
       });
     }
     return claseRef.id;

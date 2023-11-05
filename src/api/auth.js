@@ -14,6 +14,7 @@ import {
 import { app } from "./firebase";
 import { agregarAdmin } from "./admin";
 import { agregarDocente } from "./docente";
+import { agregarAlumno } from "./alumno";
 
 const auth = initializeAuth(app);
 
@@ -83,5 +84,25 @@ export async function loginUser({ correo, password, tipo }) {
     return { ...snapshot.docs[0].data(), uid: auth.currentUser.uid };
   } catch (error) {
     throw new Error("Usuario o contraseña incorrectos");
+  }
+}
+
+export async function signUpAlumno({ nombre, cedula, correo, password }) {
+  try {
+    // Guardar cuenta de alumno
+    const creds = await createUserWithEmailAndPassword(auth, correo, password);
+    await updateProfile(creds.user, { displayName: nombre });
+    const resumen = await agregarAlumno({ nombre, cedula, correo });
+    // Devolver datos de alumno
+    return {
+      uid: creds.user.uid,
+      nombre: nombre,
+      cedula: cedula,
+      correo: correo,
+      resumen_clases: resumen,
+    };
+  } catch (error) {
+    console.error(error);
+    throw new Error("Ocurrió un error al crear el usuario");
   }
 }

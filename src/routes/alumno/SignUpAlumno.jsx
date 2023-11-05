@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AlumnoContext } from "./RootAlumno";
 import { useMutation } from "@tanstack/react-query";
+import BotonAtras from "../../components/BotonAtras";
 
 // Esquema de validación de registro
 const alumnoSchema = yup.object().shape({
+  nombre: yup.string().required("Ingresa tu nombre"),
   cedula: yup.string().required("Ingresa tu cedula"),
   correo: yup
     .string()
@@ -40,9 +42,9 @@ function SignUpAlumno() {
   const mutation = useMutation({
     mutationFn: (data) => {
       return signUpAlumno({
+        nombre: data.nombre,
         cedula: data.cedula,
         correo: data.correo,
-
         password: data.password,
       });
     },
@@ -56,7 +58,10 @@ function SignUpAlumno() {
   });
 
   return (
-    <div className="to-degradado2 flex h-screen flex-row items-center justify-center bg-gradient-to-br from-degradado">
+    <div className="from-degradado to-degradado2 flex h-screen flex-row items-center justify-center bg-gradient-to-br">
+      <div className="absolute left-5 top-5 flex flex-row align-middle">
+        <BotonAtras path="/" text="Volver a inicio" />
+      </div>
       <div className="max-w-lg flex-1 flex-col gap-5    text-center">
         <h1 className="mb-3 text-3xl font-bold">Attend</h1>
         <h2 className="mb-3 text-xl font-semibold">Crea tu cuenta</h2>
@@ -64,6 +69,19 @@ function SignUpAlumno() {
           className="flex flex-col gap-4 text-start"
           onSubmit={handleSubmit(mutation.mutate)}
         >
+          <fieldset>
+            <Input
+              id="nombre"
+              textoLabel="Nombre completo"
+              textoPlaceholder="Nombre completo"
+              {...register("nombre", { required: true })}
+            />
+            {errors.nombre?.message && (
+              <p role="alert" className="text-xs text-red-800">
+                {errors.nombre?.message}
+              </p>
+            )}
+          </fieldset>
           <fieldset>
             <Input
               id="cedula"

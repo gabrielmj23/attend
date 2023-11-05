@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AdminAuthContext } from "./RootAdmin";
 import { useMutation } from "@tanstack/react-query";
+import BotonAtras from "../../components/BotonAtras";
 
 // Esquema de validación de registro
 const adminSchema = yup.object().shape({
@@ -56,6 +57,9 @@ function SignUpAdmin() {
 
   return (
     <div className="flex h-screen flex-row items-center justify-center">
+      <div className="absolute left-5 top-5 flex flex-row align-middle">
+        <BotonAtras path="/" text="Volver a inicio" />
+      </div>
       <div className="max-w-lg flex-1 flex-col gap-5 rounded-lg border-4 border-verde p-8 text-center shadow-lg">
         <h1 className="mb-3 text-3xl font-bold">Attend</h1>
         <h2 className="mb-3 text-xl font-semibold">
