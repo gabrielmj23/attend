@@ -51,6 +51,13 @@ function LoginAlumno() {
       <div className="absolute left-5 top-5 flex flex-row align-middle">
         <BotonAtras path="/" text="Volver a inicio" />
       </div>
+      <img
+        src="/logo.png"
+        alt="Logo de Attend"
+        width="88"
+        height="88"
+        className="mx-auto"
+      ></img>
       <h1 className="text-center text-3xl font-bold">Attend</h1>
       <h2 className="text-center text-lg font-semibold">
         Inicia sesión como alumno
