@@ -116,7 +116,14 @@ export async function obtenerClasesDeDocentes(idsDocente) {
     const todasLasClases = [];
     for (const docente of idsDocente) {
       const clases = await obtenerClases({ idDocente: docente.id });
-      todasLasClases.push(...clases);
+      const clasesConDocentes = clases.map((clase) => {
+        return {
+          ...clase,
+          nombreDocente: docente.nombre,
+          idDocente: docente.id,
+        };
+      });
+      todasLasClases.push(...clasesConDocentes);
     }
     return todasLasClases;
   } catch (error) {
@@ -185,8 +192,7 @@ export async function agregarClase({
     const clasesDocente = collection(db, "docentes", idDocente, "clases");
     // Obtener periodo activo
     const snapshotPeriodo = await getDocs(
-      collection(db, "periodos"),
-      where("activo", "==", true),
+      query(collection(db, "periodos"), where("activo", "==", true)),
     );
     // Crear clase
     const claseRef = await addDoc(clasesDocente, {

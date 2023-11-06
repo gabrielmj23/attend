@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import WebNav from "../../../components/WebNav";
 import AppHeader from "../../../components/AppHeader";
 import Input from "../../../components/Input";
@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { obtenerDocentes, eliminarDocente } from "../../../api/docente";
 import { useNavigate } from "react-router-dom";
 function VerDocentes() {
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const { isPending, data } = useQuery({
     queryKey: ["verDocente"],
@@ -24,7 +24,7 @@ function VerDocentes() {
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
-  let array2;
+
   return (
     <div>
       <WebNav>
@@ -93,8 +93,8 @@ function VerDocentes() {
                     .toLowerCase()
                     .includes(searchTerm.toLowerCase()),
                 )
-                .map((docente) => (
-                  <tr>
+                .map((docente, i) => (
+                  <tr key={i}>
                     <td className="text-center">{docente.nombre}</td>
                     <td className="border-x border-black text-center">
                       {docente.correo}

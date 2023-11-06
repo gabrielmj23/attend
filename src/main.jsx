@@ -24,6 +24,8 @@ import { RootAlumno } from "./routes/alumno/RootAlumno.jsx";
 import ClaseAlumno from "./routes/alumno/ClaseAlumno.jsx";
 import VerClases from "./routes/admin/docentes/VerClases.jsx";
 import VerClase from "./routes/admin/docentes/VerClase.jsx";
+import NuevoPeriodo from "./routes/admin/periodos/NuevoPeriodo.jsx";
+import VerPeriodo from "./routes/admin/periodos/VerPeriodo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -86,6 +88,28 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <HomeAdmin />,
+      },
+      {
+        path: "periodos/nuevo",
+        element: <NuevoPeriodo />,
+      },
+      {
+        path: "periodos/:idPeriodo",
+        element: <VerPeriodo />,
+        loader: ({ params }) => {
+          return {
+            idPeriodo: params.idPeriodo,
+          };
+        },
+      },
+      {
+        path: "clases/:id",
+        element: <Clase />,
+        loader: ({ params }) => {
+          return {
+            id: params.id,
+          };
+        },
       },
       {
         path: "docentes",

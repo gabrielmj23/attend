@@ -9,7 +9,6 @@ function CardClase({
   idClase,
   nombreMateria,
   nombreDocente,
-  seccion,
   color,
 }) {
   const classNames =
@@ -22,7 +21,6 @@ function CardClase({
       </div>
       <div>
         <p className="text-sm text-zinc-600">Docente: {nombreDocente}</p>
-        <p className="text-sm text-zinc-600">Seccion: {seccion}</p>
       </div>
       <div className="flex flex-row justify-center">
         <Link to={`/admin/clases/${idDocente}/${idClase}`}>
@@ -37,14 +35,13 @@ function CardClase({
     </div>
   );
 }
-/*
+
 CardClase.propTypes = {
-  id: PropTypes.string.isRequired,
+  idDocente: PropTypes.string.isRequired,
+  idClase: PropTypes.string.isRequired,
   nombreMateria: PropTypes.string.isRequired,
   nombreDocente: PropTypes.string.isRequired,
-  seccion: PropTypes.string.isRequired,
-  horario: PropTypes.arrayOf(PropTypes.string).isRequired,
   color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]),
 };
-*/
+
 export default CardClase;

@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import { BORDES } from "../constants/colores";
 import Boton from "./Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link } from "react-router-dom";
 
 function CardPeriodo({ idPeriodo, inicio, fin, duracion, color }) {
   const classNames =
