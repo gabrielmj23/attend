@@ -10,7 +10,6 @@ import {
   createUserWithEmailAndPassword,
   initializeAuth,
   updateProfile,
-  AuthError,
 } from "firebase/auth";
 import { app } from "./firebase";
 import { agregarAdmin } from "./admin";
@@ -84,11 +83,7 @@ export async function loginUser({ correo, password, tipo }) {
     await signInWithEmailAndPassword(auth, correo, password);
     return { ...snapshot.docs[0].data(), uid: auth.currentUser.uid };
   } catch (error) {
-    if (error instanceof AuthError) {
-      throw new Error("Correo o contraseña incorrectos");
-    } else {
-      throw new Error("Error iniciando sesión, revise su conexión a internet");
-    }
+    throw Error("Error: Revisa tus credenciales y tu conexión a internet");
   }
 }
 
