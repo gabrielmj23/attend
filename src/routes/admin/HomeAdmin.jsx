@@ -28,7 +28,6 @@ function HomeAdmin() {
   isPending ? (console.log("no")) : (periodoActual = obtenerPeriodoActual());
   useEffect(() => {
       if (periodoActual === undefined) {
-        console.log("si");
         setPeriodoExistente(false);
       } else {
         setPeriodoExistente(true);
