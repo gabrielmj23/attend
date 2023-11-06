@@ -40,6 +40,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
       });
     },
     onSuccess: () => {
+      alert("Guardada con éxito");
       navigate("/docente/clases/" + idClase);
     },
     onError: (error) => {

@@ -49,9 +49,9 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
       // Tomar tema del plan de clases
       temaAst = clase.plan.filter(
         (c) =>
-          c.getDate() === dirSep[3] &&
-          c.getMonth() + 1 === dirSep[2] &&
-          c.getYear() % 100 === dirSep[4],
+          c.fecha.toDate().getDate() == dirSep[3] &&
+          c.fecha.toDate().getMonth() + 1 == dirSep[2] &&
+          c.fecha.toDate().getYear() % 100 == dirSep[4],
       )[0].tema;
 
       // Actualizar cantidad de clases vistas
@@ -76,8 +76,9 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
     }
 
     // Guardar o actualizar
+    const fecha2 = fecha.split("-").join("/");
     await setDoc(doc(db, "asistencias", dir), {
-      fecha: new Date(fecha),
+      fecha: new Date(fecha2),
       asistencia,
       asistentes: asistencia.filter((a) => a.asistente).length,
       inasistentes: asistencia.filter((a) => !a.asistente).length,
