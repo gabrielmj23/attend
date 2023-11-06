@@ -4,14 +4,40 @@ import Boton from "./Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
 
-function CardClase({ id, nombre, horario, color }) {
+function CardClase({
+  id,
+  nombre,
+  inasistencias = -1,
+  totalClases,
+  horario,
+  color,
+}) {
   const classNames =
     "flex flex-col gap-4 rounded-xl mx-6 py-3 px-2 border-4 shadow-lg " +
     BORDES[color];
+  let porcentajeInasistencias = null;
+  if (inasistencias > -1) {
+    porcentajeInasistencias = (inasistencias / totalClases) * 100;
+  }
   return (
     <div className={classNames}>
       <div>
         <p className="text-lg font-semibold">{nombre}</p>
+        {porcentajeInasistencias !== null ? (
+          porcentajeInasistencias >= 30 ? (
+            <p className="pb-1 text-sm font-semibold text-red-700 underline">
+              Tienes un {porcentajeInasistencias}% de inasistencias
+            </p>
+          ) : porcentajeInasistencias > 20 ? (
+            <p className="pb-1 text-sm font-semibold text-amarillo-activo underline">
+              Tienes un {porcentajeInasistencias}% de inasistencias
+            </p>
+          ) : (
+            <p className="pb-1 text-sm font-semibold text-zinc-600 underline">
+              Tienes un {porcentajeInasistencias}% de inasistencias
+            </p>
+          )
+        ) : null}
         {horario.map((hora, index) => (
           <p key={index} className="text-sm text-zinc-600">
             {hora}
@@ -19,7 +45,13 @@ function CardClase({ id, nombre, horario, color }) {
         ))}
       </div>
       <div className="flex flex-row justify-center">
-        <Link to={`/docente/clases/${id}`}>
+        <Link
+          to={
+            inasistencias > -1
+              ? `/alumno/clases/${id}`
+              : `/docente/clases/${id}`
+          }
+        >
           <Boton
             texto="Ver clase"
             icono={<ArrowForwardIcon />}
@@ -35,6 +67,8 @@ function CardClase({ id, nombre, horario, color }) {
 CardClase.propTypes = {
   id: PropTypes.string.isRequired,
   nombre: PropTypes.string.isRequired,
+  inasistencias: PropTypes.number,
+  totalClases: PropTypes.number,
   horario: PropTypes.arrayOf(PropTypes.string).isRequired,
   color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]),
 };

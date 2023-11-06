@@ -1,21 +1,19 @@
 import AppHeader from "../../components/AppHeader";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { DocenteContext } from "./RootDocente";
+import { AlumnoContext } from "./RootAlumno";
 import { useContext } from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-function AjustesDocente() {
+function AjustesAlumno() {
   // Guardar contexto de la navegación actual
-  const { user, navSetter, userSetter } = useContext(DocenteContext);
+  const { user, navSetter, userSetter } = useContext(AlumnoContext);
   useEffect(() => {
-    navSetter({ type: "Ajustes", ruta: "/docente/ajustes" });
+    navSetter({ type: "Ajustes", ruta: "/alumno/ajustes" });
   }, [navSetter]);
-  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-4">
-      <AppHeader titulo="Ajustes" color="amarillo" />
+      <AppHeader titulo="Ajustes" color="azul" />
       <div className="flex flex-row gap-5 ps-5 pt-2 align-middle">
         <PersonOutlineIcon fontSize="large" className="my-auto scale-125" />
         <div className="flex flex-col">
@@ -28,7 +26,6 @@ function AjustesDocente() {
         onClick={() => {
           userSetter({ type: "logout" });
           navSetter({ type: "Visible" });
-          navigate("/docente/login");
         }}
       >
         Cerrar sesión
@@ -37,4 +34,4 @@ function AjustesDocente() {
   );
 }
 
-export default AjustesDocente;
+export default AjustesAlumno;

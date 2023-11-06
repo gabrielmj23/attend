@@ -2,16 +2,17 @@ import { useContext } from "react";
 import Boton from "../../components/Boton";
 import Input from "../../components/Input";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { DocenteContext } from "./RootDocente";
+import { AlumnoContext } from "./RootAlumno";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { loginUser } from "../../api/auth";
 import { useMutation } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 import BotonAtras from "../../components/BotonAtras";
 
-const docenteSchema = yup.object().shape({
+const alumnoSchema = yup.object().shape({
   correo: yup
     .string()
     .required("El correo electrónico es requerido")
@@ -19,26 +20,26 @@ const docenteSchema = yup.object().shape({
   password: yup.string().required("La contraseña es requerida"),
 });
 
-function LoginDocente() {
+function LoginAlumno() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(docenteSchema) });
+  } = useForm({ resolver: yupResolver(alumnoSchema) });
   const navigate = useNavigate();
-  const { userSetter } = useContext(DocenteContext);
+  const { userSetter } = useContext(AlumnoContext);
 
   const mutation = useMutation({
     mutationFn: (data) => {
       return loginUser({
         correo: data.correo,
         password: data.password,
-        tipo: "docentes",
+        tipo: "alumnos",
       });
     },
     onSuccess: (data) => {
       userSetter({ type: "login", user: data });
-      navigate("/docente/home");
+      navigate("/alumno/home");
     },
     onError: (error) => {
       alert(error.message);
@@ -46,17 +47,17 @@ function LoginDocente() {
   });
 
   return (
-    <div className="flex h-screen flex-col justify-center gap-5 bg-amarillo">
+    <div className=" from-degradado to-degradado2 flex h-screen flex-col justify-center gap-5 bg-gradient-to-br">
       <div className="absolute left-5 top-5 flex flex-row align-middle">
         <BotonAtras path="/" text="Volver a inicio" />
       </div>
       <h1 className="text-center text-3xl font-bold">Attend</h1>
       <h2 className="text-center text-lg font-semibold">
-        Inicia sesión como docente
+        Inicia sesión como alumno
       </h2>
       <form
         onSubmit={handleSubmit(mutation.mutate)}
-        className="flex flex-col justify-center gap-4 pe-10 ps-5"
+        className="flex flex-col justify-center gap-4 pe-10 ps-8"
       >
         <fieldset>
           <Input
@@ -88,10 +89,13 @@ function LoginDocente() {
             type="submit"
           />
         </div>
+        <Link to="/alumno/signup" className="text-center underline">
+          No tengo cuenta
+        </Link>
       </form>
       {mutation.isPending && <p className="text-center">Iniciando sesión...</p>}
     </div>
   );
 }
 
-export default LoginDocente;
+export default LoginAlumno;

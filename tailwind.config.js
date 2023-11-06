@@ -24,8 +24,17 @@ export default {
           DEFAULT: "#ffffff",
           activo: "#e5e5e5",
         },
+        degradado: {
+          DEFAULT: "#2dd4bf",
+          activo: "#0d9488",
+        },
+        degradado2: {
+          DEFAULT: "#89A9FF",
+          activo: "#89A9FF",
+        }
       },
     },
   },
   plugins: [],
 };
+

@@ -49,7 +49,7 @@ Input.propTypes = {
   onChange: PropTypes.func,
   textoLabel: PropTypes.string.isRequired,
   textoPlaceholder: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "password", "number", "file"]),
+  type: PropTypes.oneOf(["text", "password", "number", "file", "date"]),
   icono: PropTypes.element,
   value: PropTypes.any,
 };

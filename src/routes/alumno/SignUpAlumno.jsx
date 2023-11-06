@@ -5,20 +5,21 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
-import { signUpAdmin } from "../../api/auth";
+import { signUpAlumno } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AdminAuthContext } from "./RootAdmin";
+import { AlumnoContext } from "./RootAlumno";
 import { useMutation } from "@tanstack/react-query";
 import BotonAtras from "../../components/BotonAtras";
 
 // Esquema de validación de registro
-const adminSchema = yup.object().shape({
+const alumnoSchema = yup.object().shape({
   nombre: yup.string().required("Ingresa tu nombre"),
+  cedula: yup.string().required("Ingresa tu cedula"),
   correo: yup
     .string()
     .email("Ingresa un correo válido")
-    .required("Ingresa tu correo"),
+    .required("Ingresa tu correo institucional"),
   password: yup
     .string()
     .min(8, "La contraseña debe tener al menos 8 caracteres")
@@ -29,26 +30,27 @@ const adminSchema = yup.object().shape({
     .required("Confirma tu contraseña"),
 });
 
-function SignUpAdmin() {
+function SignUpAlumno() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(adminSchema) });
+  } = useForm({ resolver: yupResolver(alumnoSchema) });
   const navigate = useNavigate();
-  const { userSetter } = useContext(AdminAuthContext);
+  const { userSetter } = useContext(AlumnoContext);
 
   const mutation = useMutation({
     mutationFn: (data) => {
-      return signUpAdmin({
-        correo: data.correo,
+      return signUpAlumno({
         nombre: data.nombre,
+        cedula: data.cedula,
+        correo: data.correo,
         password: data.password,
       });
     },
     onSuccess: (data) => {
       userSetter({ type: "login", user: data });
-      navigate("/admin/home");
+      navigate("/alumno/home");
     },
     onError: (error) => {
       alert(error.message);
@@ -56,15 +58,13 @@ function SignUpAdmin() {
   });
 
   return (
-    <div className="flex h-screen flex-row items-center justify-center">
+    <div className="from-degradado to-degradado2 flex h-screen flex-row items-center justify-center bg-gradient-to-br">
       <div className="absolute left-5 top-5 flex flex-row align-middle">
         <BotonAtras path="/" text="Volver a inicio" />
       </div>
-      <div className="max-w-lg flex-1 flex-col gap-5 rounded-lg border-4 border-verde p-8 text-center shadow-lg">
+      <div className="max-w-lg flex-1 flex-col gap-5    text-center">
         <h1 className="mb-3 text-3xl font-bold">Attend</h1>
-        <h2 className="mb-3 text-xl font-semibold">
-          Crea tu cuenta de administrador
-        </h2>
+        <h2 className="mb-3 text-xl font-semibold">Crea tu cuenta</h2>
         <form
           className="flex flex-col gap-4 text-start"
           onSubmit={handleSubmit(mutation.mutate)}
@@ -84,9 +84,22 @@ function SignUpAdmin() {
           </fieldset>
           <fieldset>
             <Input
+              id="cedula"
+              textoLabel="Cédula"
+              textoPlaceholder="Cédula"
+              {...register("cedula", { required: true })}
+            />
+            {errors.cedula?.message && (
+              <p role="alert" className="text-xs text-red-800">
+                {errors.cedula?.message}
+              </p>
+            )}
+          </fieldset>
+          <fieldset>
+            <Input
               id="correo"
-              textoLabel="Correo electrónico"
-              textoPlaceholder="Correo electrónico"
+              textoLabel="Correo institucional"
+              textoPlaceholder="Correo institucional"
               {...register("correo", { required: true })}
             />
             {errors.correo?.message && (
@@ -128,7 +141,7 @@ function SignUpAdmin() {
               texto="Registrarte"
               icono={<ArrowForwardIcon />}
               tipo="primario"
-              color="verde"
+              color="blanco"
               sombra={true}
               type="submit"
             />
@@ -137,7 +150,7 @@ function SignUpAdmin() {
             <p className="text-center">Creando tu cuenta...</p>
           )}
           <div className="flex flex-row justify-center">
-            <Link to="/admin/login" className="underline">
+            <Link to="/alumno/login" className="underline">
               Ya tengo cuenta
             </Link>
           </div>
@@ -147,4 +160,4 @@ function SignUpAdmin() {
   );
 }
 
-export default SignUpAdmin;
+export default SignUpAlumno;
