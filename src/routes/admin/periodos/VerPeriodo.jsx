@@ -42,8 +42,6 @@ function VerPeriodo() {
         }
     }, [clasesQuery.isPending, clasesQuery.data, idPeriodo]);
     
-        
-    /*clasesQuery.isPending ? (console.log("no")) : (console.log(clasesQuery.data));*/
     return (
         <div>
             <WebNav>
@@ -63,7 +61,6 @@ function VerPeriodo() {
             </div>
             <div className="mx-10 py-8 grid grid-cols-3 gap-6 items-center justify-center place-self-center">
                 {clasesPeriodoActual && clasesPeriodoActual.map((clase) => (
-                    console.log("lo logreeeeee",clase.nombreDocente),
                     <CardMateriaWeb
                         id={clase.id}
                         idDocente={clase.idDocente}
