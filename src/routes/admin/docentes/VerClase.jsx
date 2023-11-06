@@ -13,20 +13,22 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import { set } from "react-hook-form";
 
 function VerClase() {
-  const { idDocente, idClase } = useLoaderData();
-
+  const { idClase } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
+  const [reportes, setReportes] = useState(null);
+
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
 
+  // Estado de búsqueda de reportes
+  const [busqueda, setBusqueda] = useState("");
+
   const asistenciaQuery = useQuery({
     queryKey: ["obtenerReportes"],
-    queryFn: () => obtenerReportes(),
+    queryFn: () => obtenerReportes(idClase),
   });
-
-
 
   return (
     <div>
@@ -47,21 +49,20 @@ function VerClase() {
 
       {asistenciaQuery.isPending ? (
         <div>Cargando</div>
-      ) : (        
+      ) : (                
         <div>
-          <AppHeader
-            titulo={"Clase: "}
-            color="blanco"
-          />
+          
+          <h2 className="py-8 ps-16 text-2xl pl- font-semibold">Clase</h2>
           <div className="flex items-end justify-between">
             <div className="pl-40">
               <Input
                 id="bucarAlumno"
+                name="bucarAlumno"
                 icono={<SearchIcon />}
                 textoLabel="Buscar Alumno"
                 textoPlaceholder="Alumno"
-                value={searchTerm}
-                onChange={handleSearchChange}
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
               ></Input>
             </div>
           </div>
@@ -87,17 +88,16 @@ function VerClase() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="">
-                {asistenciaQuery.data.map(
-                  (alumno) => (
-                    console.log(alumno),
+              <tbody className="">               
+                {asistenciaQuery.data.filter(clase => clase.data().idClase === idClase).filter(clase => clase.data().nombre.toLowerCase().includes(busqueda.toLowerCase())).map(
+                  (alumno,i) => (
                     (
-                      <tr>
-                        <td>{alumno.cedula}</td>
-                        <td>{alumno.nombre}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                      <tr key={i} className="text-center">
+                        <td>{alumno.data().cedula}</td>
+                        <td>{alumno.data().nombre}</td>
+                        <td>{alumno.data().asistencias}</td>
+                        <td>{alumno.data().inasistencias}</td>
+                        <td>{(alumno.data().inasistencias*100/alumno.data().totalClases).toFixed(2)}</td>
                       </tr>
                     )
                   ),
@@ -111,4 +111,4 @@ function VerClase() {
   );
 }
 
-export default VerClase;
+export default VerClase;;
