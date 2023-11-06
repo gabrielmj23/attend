@@ -3,7 +3,7 @@ import {
   arrayUnion,
   collection,
   doc,
-  getDoc,
+  getDoc,  
   getFirestore,
   setDoc,
   updateDoc,
@@ -192,6 +192,34 @@ export async function obtenerReporte ({idReporte}){
       return snapshot.data();
     }
     throw new Error("Reporte no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerReportes ({}){
+  try {
+    const reportes = await getDocs(collection(db, "reportes"), where("idClase", "==", idClase));
+    console.log(reportes.docs);
+    console.log("acujehqwoudhqcnoijhncoiwqbnvowehnjonehvwoiuh");
+    return reportes.docs;
+
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerReportesDeAlumnos(idsAlumno) {
+  try {
+    const todasLosReportes = [];
+    for (const alumno of idsAlumno) {
+      const reportes = await obtenerReportes({ idAlumno: alumno.cedula });      
+      todasLosReportes.push(...reportes);  
+    }
+    return todasLosReportes;
   } catch (error) {
     console.error(error);
     throw error;
