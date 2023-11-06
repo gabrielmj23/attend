@@ -12,7 +12,11 @@ import { agregarAsistencia } from "../../api/asistencia";
 
 function VerAsistencia({ idClase, asistencia }) {
   const [editAsistencia, setEditAsistencia] = useState(asistencia.asistencia);
-  const fechaSep = asistencia.fecha.split("-");
+  const fechaAsDate = asistencia.fecha.toDate();
+  const fechaString = `${fechaAsDate.getMonth() + 1}-${fechaAsDate.getDate()}-${
+    fechaAsDate.getYear() % 100
+  }`;
+  const fechaSep = fechaString.split("-");
 
   // Guardar asistencia en la base de datos si se edita
   const { user } = useContext(DocenteContext);

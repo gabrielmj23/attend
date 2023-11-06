@@ -8,6 +8,12 @@ function WebNav({ children }) {
         Attend
       </Link>
       {children}
+      <Link
+        to="/admin/login"
+        className="absolute right-16 text-red-950 hover:underline"
+      >
+        Cerrar Sesión
+      </Link>
     </div>
   );
 }

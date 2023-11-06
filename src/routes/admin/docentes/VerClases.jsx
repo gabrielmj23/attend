@@ -1,5 +1,5 @@
 import WebNav from "../../../components/WebNav";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import AppHeader from "../../../components/AppHeader";
 import CardClase from "../../../components/CardMateriaWeb";
 import {
@@ -8,21 +8,23 @@ import {
   obtenerIDPeriodoActivo,
 } from "../../../api/docente";
 import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+
 function VerClases() {
-  const { idDocente } = useLoaderData();
+  const { idDocente } = useParams();
 
   const docenteQuery = useQuery({
-    queryKey: ["docente"],
+    queryKey: ["obtenerDocente1"],
     queryFn: () => obtenerDocente({ idDocente }),
   });
 
   const clasesQuery = useQuery({
-    queryKey: ["clases"],
+    queryKey: ["obtenerClases1"],
     queryFn: () => obtenerClases({ idDocente }),
   });
 
   const idActivoQuery = useQuery({
-    queryKey: ["periodo"],
+    queryKey: ["obtenerPeriodo1"],
     queryFn: () => obtenerIDPeriodoActivo(),
   });
   return (
