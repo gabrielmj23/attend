@@ -24,7 +24,7 @@ function HomeDocente() {
       {user.user.resumen_clases?.length === 0 ? (
         <div>
           <p className="text-center">No tiene clases registradas</p>
-          <Link to="/docente/nueva-clase" className="text-center underline">
+          <Link to="/docente/clases/nueva" className="text-center underline">
             Agrega una nueva
           </Link>
         </div>

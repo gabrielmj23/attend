@@ -20,3 +20,5 @@ export async function agregarAdmin({ id, nombre, correo }) {
     throw new Error("Ocurrió un error al agregar el admin");
   }
 }
+
+

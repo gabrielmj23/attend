@@ -9,11 +9,13 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { obtenerDocentes } from "../../../api/docente";
-
+import { obtenerDocentes, eliminarDocente } from "../../../api/docente";
+import { useNavigate } from "react-router-dom";
 function VerDocentes() {
+  const history = useNavigate();
+
   const { isPending, data } = useQuery({
-    queryKey: ["docente"],
+    queryKey: ["verDocente"],
     queryFn: () => obtenerDocentes(),
   });
 
@@ -107,12 +109,22 @@ function VerDocentes() {
                         />
                       </Link>
 
-                      <Link to="">
+                      <Link to="/admin/docentes">
                         <Boton
                           texto="Eliminar"
                           icono={<DeleteIcon />}
                           tipo="primario"
                           color="rojo"
+                          onClick={async () => {
+                            if (
+                              window.confirm(
+                                "¿Estás seguro de que quieres eliminar este docente?",
+                              )
+                            ) {
+                              await eliminarDocente(docente.id);
+                              navigate(window.location.pathname);
+                            }
+                          }}
                         />
                       </Link>
                     </td>

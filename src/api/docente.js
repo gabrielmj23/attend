@@ -8,7 +8,8 @@ import {
   setDoc,
   updateDoc,
   getDocs,
-  where
+  where,
+  deleteDoc
 } from "firebase/firestore";
 import { app } from "./firebase";
 
@@ -30,6 +31,15 @@ export async function agregarDocente({ id, nombre, correo }) {
   } catch (error) {
     console.error(error);
     throw new Error("Ocurrió un error al agregar el docente");
+  }
+}
+
+export async function eliminarDocente(idDocente) {
+  try {
+    await deleteDoc(doc(db, "docentes", idDocente));
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
@@ -169,6 +179,19 @@ export async function agregarClase({
       }),
     });
     return claseRef.id;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerReporte ({idReporte}){
+  try {
+    const snapshot = await getDoc(doc(db, "reportes", idReporte));
+    if (snapshot.exists) {
+      return snapshot.data();
+    }
+    throw new Error("Reporte no existe");
   } catch (error) {
     console.error(error);
     throw error;
