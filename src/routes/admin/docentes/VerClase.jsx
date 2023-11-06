@@ -8,11 +8,12 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { obtenerClase, obtenerReporte } from "../../../api/docente";
+import { obtenerReportes } from "../../../api/docente";
 import BarChartIcon from "@mui/icons-material/BarChart";
+import { set } from "react-hook-form";
+
 function VerClase() {
   const { idDocente, idClase } = useLoaderData();
-  console.log(idDocente, " + ", idClase);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -20,34 +21,12 @@ function VerClase() {
     setSearchTerm(event.target.value);
   };
 
-  const [clasesData, setClasesData] = useState(null);
-
-  const [asistenciaData, setAsistenciaData] = useState(null);
-
-  const claseQuery = useQuery({
-    queryKey: ["clase"],
-    queryFn: () => obtenerClase({ idDocente, idClase }),
-  });
-
   const asistenciaQuery = useQuery({
-    queryKey: ["obtenerReporte"],
-    queryFn: () => obtenerReporte(clasesData),
-    enabled: !!clasesData,
+    queryKey: ["obtenerReportes"],
+    queryFn: () => obtenerReportes(),
   });
 
-  useEffect(() => {
-    if (!claseQuery.isPending) {
-      setClasesData(claseQuery.data);
-    }
-  }, [claseQuery.isPending, claseQuery.data]);
 
-  useEffect(() => {
-    if (!asistenciaQuery.isPending) {
-      const asistenciaReporte = asistenciaQuery.data.filter(
-        (asistencia) => asistencia.id,
-      );
-    }
-  });
 
   return (
     <div>
@@ -66,12 +45,12 @@ function VerClase() {
         </Link>
       </WebNav>
 
-      {claseQuery.isPending ? (
+      {asistenciaQuery.isPending ? (
         <div>Cargando</div>
-      ) : (
+      ) : (        
         <div>
           <AppHeader
-            titulo={"Clase: " + claseQuery.data.nombre}
+            titulo={"Clase: "}
             color="blanco"
           />
           <div className="flex items-end justify-between">
@@ -109,9 +88,9 @@ function VerClase() {
                 </tr>
               </thead>
               <tbody className="">
-                {claseQuery.data.alumnos.map(
+                {asistenciaQuery.data.map(
                   (alumno) => (
-                    console.log(claseQuery.data.alumnos),
+                    console.log(alumno),
                     (
                       <tr>
                         <td>{alumno.cedula}</td>
