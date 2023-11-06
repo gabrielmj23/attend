@@ -3,6 +3,7 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { AlumnoContext } from "./RootAlumno";
 import { useContext } from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom/dist";
 
 function AjustesAlumno() {
   // Guardar contexto de la navegación actual
@@ -10,6 +11,7 @@ function AjustesAlumno() {
   useEffect(() => {
     navSetter({ type: "Ajustes", ruta: "/alumno/ajustes" });
   }, [navSetter]);
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-4">
@@ -26,6 +28,7 @@ function AjustesAlumno() {
         onClick={() => {
           userSetter({ type: "logout" });
           navSetter({ type: "Visible" });
+          navigate("/alumno/login");
         }}
       >
         Cerrar sesión
