@@ -5,6 +5,7 @@ import {
   getDocs,
   getFirestore,
   increment,
+  query,
   setDoc,
   updateDoc,
   where,
@@ -34,9 +35,11 @@ export async function getAsistencia(dir) {
 export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
   try {
     const snapshot = await getDocs(
-      collection(db, "asistencias"),
-      where("idDocente", "==", idDocente),
-      where("idClase", "==", idClase),
+      query(
+        collection(db, "asistencias"),
+        where("idDocente", "==", idDocente),
+        where("idClase", "==", idClase),
+      ),
     );
     if (!snapshot.empty) {
       return snapshot.docs
@@ -45,7 +48,8 @@ export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
           return {
             fecha: data.fecha,
             tema: data.tema,
-            asistente: data.asistencia.find((ast) => ast.cedula === cedula).asistente,
+            asistente: data.asistencia.find((ast) => ast.cedula === cedula)
+              .asistente,
           };
         });
     }

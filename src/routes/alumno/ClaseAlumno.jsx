@@ -17,7 +17,7 @@ function ClaseAlumno() {
   const { idClase } = useLoaderData();
   const { user, navSetter } = useContext(AlumnoContext);
   const resumen_clase = user.user.resumen_clases.find(
-    (clase) => clase.idClase === idClase,
+    (clase) => clase.uid === idClase,
   );
   const porcentajeInasistencias = (
     (resumen_clase.inasistencias / resumen_clase.totalClases) *
@@ -38,6 +38,7 @@ function ClaseAlumno() {
         cedula: user.user.cedula,
       }),
   });
+  console.log(data);
 
   return (
     <div className="flex flex-col gap-4 overflow-y-auto pb-28">
@@ -53,31 +54,45 @@ function ClaseAlumno() {
           <h2 className="py-3 ps-4 text-2xl font-semibold">
             Datos de asistencia
           </h2>
-          <p>
-            Has faltado a {resumen_clase.inasistencias} clases{" "}
-            <strong>({porcentajeInasistencias}% del total)</strong>
-          </p>
-          <p>Recuerda que un 30% o más de inasistencias te hará reprobar</p>
-          <table className="text-center">
-            <thead>
-              <tr className="border-b">
-                <td>Fecha</td>
-                <td>Tema</td>
-                <td>Asistencia</td>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((asistencia) => (
-                <tr key={asistencia.fecha} className="border-b">
-                  <td>{transformarFecha(asistencia.fecha)}</td>
-                  <td>{asistencia.tema}</td>
-                  <td>
-                    <BotonAsistencia disabled={asistencia.asistente} />
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          {data.length === 0 ? (
+            <p>No hay asistencias registradas</p>
+          ) : (
+            <div>
+              <p>
+                Has faltado a {resumen_clase.inasistencias} clases{" "}
+                <strong>({porcentajeInasistencias}% del total)</strong>
+              </p>
+              <p>Recuerda que un 30% o más de inasistencias te hará reprobar</p>
+              <table className="text-center">
+                <thead>
+                  <tr className="border-b">
+                    <td>Fecha</td>
+                    <td>Tema</td>
+                    <td>Asistencia</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.map((asistencia) => (
+                    <tr key={asistencia.fecha} className="border-b">
+                      <td>
+                        {transformarFecha(
+                          `${
+                            asistencia.fecha.toDate().getMonth() + 1
+                          }-${asistencia.fecha.toDate().getDate()}-${
+                            asistencia.fecha.toDate().getYear() % 100
+                          }`,
+                        )}
+                      </td>
+                      <td>{asistencia.tema}</td>
+                      <td>
+                        <BotonAsistencia disabled={asistencia.asistente} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </>
       )}
     </div>
