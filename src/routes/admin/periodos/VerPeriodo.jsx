@@ -27,13 +27,10 @@ function VerPeriodo() {
     });
 
     useEffect(() => {
-        console.log(docentesQuery.isPending)
         if (!docentesQuery.isPending) {
             setDocentesData(docentesQuery.data);
         }
     }, [docentesQuery.isPending, docentesQuery.data]);
-
-    console.log("docentesData", docentesData);
 
     useEffect(() => {
         if (!clasesQuery.isPending) {
