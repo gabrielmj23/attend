@@ -9,7 +9,8 @@ import {
   updateDoc,
   getDocs,
   where,
-  deleteDoc
+  deleteDoc,
+  query
 } from "firebase/firestore";
 import { app } from "./firebase";
 
@@ -198,11 +199,9 @@ export async function obtenerReporte ({idReporte}){
   }
 }
 
-export async function obtenerReportes ({}){
+export async function obtenerReportes ({idClase}){
   try {
     const reportes = await getDocs(collection(db, "reportes"), where("idClase", "==", idClase));
-    console.log(reportes.docs);
-    console.log("acujehqwoudhqcnoijhncoiwqbnvowehnjonehvwoiuh");
     return reportes.docs;
 
 
