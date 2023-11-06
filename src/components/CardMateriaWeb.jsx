@@ -17,7 +17,7 @@ function CardClase({ id, nombreMateria, nombreDocente, seccion, color }) {
         <p className="text-sm text-zinc-600">Docente: {nombreDocente}</p>
       </div>
       <div className="flex flex-row justify-center">
-        <Link to={`/docente/clases/${id}`}>
+        <Link to={`/admin/clases/${idDocente}/${idClase}`}>
           <Boton
             texto="Ver clase"
             icono={<ArrowForwardIcon />}
