@@ -104,7 +104,7 @@ const router = createBrowserRouter([
       },
       {
         path: "clases/:id",
-        element: <Clase />,
+        element: <VerClases />,
         loader: ({ params }) => {
           return {
             id: params.id,

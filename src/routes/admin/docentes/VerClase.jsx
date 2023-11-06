@@ -17,7 +17,6 @@ function VerClase() {
   const [searchTerm, setSearchTerm] = useState("");
   const [reportes, setReportes] = useState(null);
 
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
   };
@@ -49,10 +48,9 @@ function VerClase() {
 
       {asistenciaQuery.isPending ? (
         <div>Cargando</div>
-      ) : (                
+      ) : (
         <div>
-          
-          <h2 className="py-8 ps-16 text-2xl pl- font-semibold">Clase</h2>
+          <h2 className="pl- py-8 ps-16 text-2xl font-semibold">Clase</h2>
           <div className="flex items-end justify-between">
             <div className="pl-40">
               <Input
@@ -88,20 +86,29 @@ function VerClase() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="">               
-                {asistenciaQuery.data.filter(clase => clase.data().idClase === idClase).filter(clase => clase.data().nombre.toLowerCase().includes(busqueda.toLowerCase())).map(
-                  (alumno,i) => (
-                    (
-                      <tr key={i} className="text-center">
-                        <td>{alumno.data().cedula}</td>
-                        <td>{alumno.data().nombre}</td>
-                        <td>{alumno.data().asistencias}</td>
-                        <td>{alumno.data().inasistencias}</td>
-                        <td>{(alumno.data().inasistencias*100/alumno.data().totalClases).toFixed(2)}</td>
-                      </tr>
-                    )
-                  ),
-                )}
+              <tbody className="">
+                {asistenciaQuery.data
+                  .filter((clase) => clase.data().idClase === idClase)
+                  .filter((clase) =>
+                    clase
+                      .data()
+                      .nombre.toLowerCase()
+                      .includes(busqueda.toLowerCase()),
+                  )
+                  .map((alumno, i) => (
+                    <tr key={i} className="text-center">
+                      <td>{alumno.data().cedula}</td>
+                      <td>{alumno.data().nombre}</td>
+                      <td>{alumno.data().asistencias}</td>
+                      <td>{alumno.data().inasistencias}</td>
+                      <td>
+                        {(
+                          (alumno.data().inasistencias * 100) /
+                          alumno.data().totalClases
+                        ).toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>
@@ -111,4 +118,4 @@ function VerClase() {
   );
 }
 
-export default VerClase;;
+export default VerClase;

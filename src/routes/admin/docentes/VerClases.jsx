@@ -1,6 +1,5 @@
-import React from "react";
 import WebNav from "../../../components/WebNav";
-import { Link, useLoaderData, useParams } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import AppHeader from "../../../components/AppHeader";
 import CardClase from "../../../components/CardMateriaWeb";
 import {
@@ -46,7 +45,7 @@ function VerClases() {
       {docenteQuery.isPending ||
       clasesQuery.isPending ||
       idActivoQuery.isPending ? (
-        <p>cargandoo</p>
+        <p>Cargando...</p>
       ) : (
         <div>
           <AppHeader
@@ -62,7 +61,7 @@ function VerClases() {
                 console.log(clase.nombre);
                 if (clase.idPeriodo == idActivoQuery.data) {
                   return (
-                    <div>
+                    <div key={clase.id}>
                       <CardClase
                         idDocente={idDocente}
                         idClase={clase.id}
@@ -85,7 +84,7 @@ function VerClases() {
                 console.log(clase.nombre);
                 if (clase.idPeriodo != idActivoQuery.data) {
                   return (
-                    <div>
+                    <div key={clase.id}>
                       {console.log("ID DOCENTE: ", clase.id)}
                       <CardClase
                         idDocente={idDocente}

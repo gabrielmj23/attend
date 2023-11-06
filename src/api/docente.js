@@ -111,6 +111,7 @@ export async function obtenerClases({ idDocente }) {
     throw error;
   }
 }
+
 export async function obtenerClasesDeDocentes(idsDocente) {
   try {
     const todasLasClases = [];
