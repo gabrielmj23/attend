@@ -77,9 +77,9 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
       // Tomar tema del plan de clases
       temaAst = clase.plan.filter(
         (c) =>
-          c.getDate() === dirSep[3] &&
-          c.getMonth() + 1 === dirSep[2] &&
-          c.getYear() % 100 === dirSep[4],
+          c.fecha.toDate().getDate() == dirSep[3] &&
+          c.fecha.toDate().getMonth() + 1 == dirSep[2] &&
+          c.fecha.toDate().getYear() % 100 == dirSep[4],
       )[0].tema;
     }
 
@@ -97,23 +97,14 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
     }
 
     // Guardar o actualizar
-    if (!tema) {
-      await setDoc(doc(db, "asistencias", dir), {
-        fecha: new Date(fecha),
-        asistencia,
-        asistentes: asistencia.filter((a) => a.asistente).length,
-        inasistentes: asistencia.filter((a) => !a.asistente).length,
-        tema: temaAst,
-        idDocente: dirSep[0],
-        idClase: dirSep[1],
-      });
-    } else {
-      await updateDoc(doc(db, "asistencias", dir), {
-        asistencia,
-        asistentes: asistencia.filter((a) => a.asistente).length,
-        inasistentes: asistencia.filter((a) => !a.asistente).length,
-      });
-    }
+    const fecha2 = fecha.split("-").join("/");
+    await setDoc(doc(db, "asistencias", dir), {
+      fecha: new Date(fecha2),
+      asistencia,
+      asistentes: asistencia.filter((a) => a.asistente).length,
+      inasistentes: asistencia.filter((a) => !a.asistente).length,
+      tema: temaAst,
+    });
   } catch (error) {
     console.error(error);
     throw error;

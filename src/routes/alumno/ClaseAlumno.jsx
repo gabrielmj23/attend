@@ -19,8 +19,10 @@ function ClaseAlumno() {
   const resumen_clase = user.user.resumen_clases.find(
     (clase) => clase.idClase === idClase,
   );
-  const porcentajeInasistencias =
-    (resumen_clase.inasistencias / resumen_clase.totalClases) * 100;
+  const porcentajeInasistencias = (
+    (resumen_clase.inasistencias / resumen_clase.totalClases) *
+    100
+  ).toFixed(2);
 
   useEffect(() => {
     // Guardar contexto de navegacion

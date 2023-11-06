@@ -89,15 +89,19 @@ function Clase() {
                         <tr key={reporte.data().cedula} className="border-b">
                           <td>{reporte.data().nombre}</td>
                           <td>
-                            {(reporte.data().asistencias /
-                              reporte.data().totalClases) *
-                              100}
+                            {(
+                              (reporte.data().asistencias /
+                                reporte.data().totalClases) *
+                              100
+                            ).toFixed(2)}
                             %
                           </td>
                           <td>
-                            {(reporte.data().inasistencias /
-                              reporte.data().totalClases) *
-                              100}
+                            {(
+                              (reporte.data().inasistencias /
+                                reporte.data().totalClases) *
+                              100
+                            ).toFixed(2)}
                             %
                           </td>
                         </tr>

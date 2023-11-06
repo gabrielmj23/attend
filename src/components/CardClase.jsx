@@ -17,7 +17,7 @@ function CardClase({
     BORDES[color];
   let porcentajeInasistencias = null;
   if (inasistencias > -1) {
-    porcentajeInasistencias = (inasistencias / totalClases) * 100;
+    porcentajeInasistencias = ((inasistencias / totalClases) * 100).toFixed(2);
   }
   return (
     <div className={classNames}>
