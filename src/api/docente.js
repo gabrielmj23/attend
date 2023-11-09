@@ -43,10 +43,10 @@ export async function obtenerReportes(idClase) {
     const reportes = await getDocs(
       query(collection(db, "reportes"), where("idClase", "==", idClase)),
     );
-    if (!reportes.empty) {
-      return reportes.docs;
+    if (reportes.empty) {
+      return null;
     }
-    return null;
+    return reportes.docs;
   } catch (error) {
     console.error(error);
     throw error;
@@ -60,11 +60,11 @@ export async function obtenerReportes(idClase) {
  */
 export async function obtenerClase({ idDocente, idClase }) {
   try {
-    const snapshot = await getDoc(
+    const clase = await getDoc(
       doc(db, "docentes", idDocente, "clases", idClase),
     );
-    if (snapshot.exists()) {
-      return snapshot.data();
+    if (clase.exists()) {
+      return clase.data();
     }
     throw new Error("Clase no existe");
   } catch (error) {
@@ -92,10 +92,12 @@ export async function agregarClase({
   try {
     const clasesDocente = collection(db, "docentes", idDocente, "clases");
     // Obtener periodo activo
-    const snapshotPeriodo = await getDocs(
-      collection(db, "periodos"),
-      where("activo", "==", true),
+    const periodos = await getDocs(
+      query(collection(db, "periodos"), where("activo", "==", true)),
     );
+    if (periodos.empty) {
+      throw new Error("No hay un periodo activo");
+    }
     // Crear clase
     const claseRef = await addDoc(clasesDocente, {
       nombre,
@@ -103,7 +105,7 @@ export async function agregarClase({
       alumnos,
       plan,
       totalClases: plan.length,
-      idPeriodo: snapshotPeriodo.docs[0].id,
+      idPeriodo: periodos.docs[0].id,
     });
     // Actualizar resumen de clases del docente
     await updateDoc(doc(db, "docentes", idDocente), {
@@ -119,12 +121,12 @@ export async function agregarClase({
         cedula: alumno.cedula,
         nombre: alumno.nombre,
         idClase: claseRef.id,
+        idDocente: idDocente,
         nombreClase: nombre,
         horario: horario,
         asistencias: 0,
         inasistencias: 0,
         totalClases: plan.length,
-        idDocente: idDocente,
       });
     }
     return claseRef.id;

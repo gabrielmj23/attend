@@ -28,7 +28,6 @@ export async function signUpAdmin({ correo, nombre, password }) {
   try {
     // Guardar cuenta de admin
     const creds = await createUserWithEmailAndPassword(auth, correo, password);
-    await updateProfile(creds.user, { displayName: nombre });
     await agregarAdmin({ id: creds.user.uid, nombre, correo });
     // Devolver datos de usuario
     return auth.currentUser;
@@ -48,7 +47,6 @@ export async function signupDocente({ correo, nombre, password }) {
   try {
     // Guardar cuenta de docente
     const creds = await createUserWithEmailAndPassword(auth, correo, password);
-    await updateProfile(creds.user, { displayName: nombre });
     await agregarDocente({ id: creds.user.uid, nombre, correo });
     // Devolver datos de docente
     return {
@@ -73,15 +71,15 @@ export async function loginUser({ correo, password, tipo }) {
   try {
     // Confirmar que la cuenta es del tipo adecuado
     const db = getFirestore(app);
-    const snapshot = await getDocs(
+    const usuario = await getDocs(
       query(collection(db, tipo), where("correo", "==", correo)),
     );
-    if (snapshot.empty) {
-      throw new Error(`Usuario no es de tipo ${tipo}`);
+    if (usuario.empty) {
+      throw new Error();
     }
     // Iniciar sesión
     await signInWithEmailAndPassword(auth, correo, password);
-    return { ...snapshot.docs[0].data(), uid: auth.currentUser.uid };
+    return { ...usuario.docs[0].data(), uid: auth.currentUser.uid };
   } catch (error) {
     throw new Error("Usuario o contraseña incorrectos");
   }

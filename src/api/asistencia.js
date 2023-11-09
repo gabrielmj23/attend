@@ -5,6 +5,7 @@ import {
   getDocs,
   getFirestore,
   increment,
+  query,
   setDoc,
   updateDoc,
   where,
@@ -15,41 +16,50 @@ import { obtenerClase } from "./docente";
 const db = getFirestore(app);
 
 /**
- * @param {string} dir
+ * @param {string} dir - URI del objeto de asistencia buscado
  */
 export async function getAsistencia(dir) {
   try {
-    const snapshot = await getDoc(doc(db, "asistencias", dir));
-    if (snapshot.exists()) {
-      return snapshot.data();
-    } else {
+    const asistencia = await getDoc(doc(db, "asistencias", dir));
+    if (!asistencia.exists()) {
       return null;
     }
+    return asistencia.data();
   } catch (error) {
     console.error(error);
-    throw error;
+    throw new Error("No se encontró la asistencia");
   }
 }
 
+/**
+ *
+ * @param {Object} datos
+ * @param {string} datos.idDocente
+ * @param {string} datos.idClase
+ * @param {string} datos.cedula
+ */
 export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
   try {
-    const snapshot = await getDocs(
-      collection(db, "asistencias"),
-      where("idDocente", "==", idDocente),
-      where("idClase", "==", idClase),
+    const asistenciasClase = await getDocs(
+      query(
+        collection(db, "asistencias"),
+        where("idDocente", "==", idDocente),
+        where("idClase", "==", idClase),
+      ),
     );
-    if (!snapshot.empty) {
-      return snapshot.docs
-        .map((doc) => doc.data())
-        .map((data) => {
-          return {
-            fecha: data.fecha,
-            tema: data.tema,
-            asistente: data.asistencia.find((ast) => ast.cedula === cedula).asistente,
-          };
-        });
+    if (asistenciasClase.empty) {
+      throw new Error("No se encontraron asistencias de la clase");
     }
-    return [];
+    return asistenciasClase.docs
+      .map((doc) => doc.data())
+      .map((data) => {
+        return {
+          fecha: data.fecha,
+          tema: data.tema,
+          asistente: data.asistencia.find((ast) => ast.cedula === cedula)
+            .asistente,
+        };
+      });
   } catch (error) {
     console.error(error);
     throw error;
@@ -58,8 +68,8 @@ export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
 
 /**
  *
- * @param {object} asist
- * @param {string} asist.dir
+ * @param {Object} asist
+ * @param {string} asist.dir - URI del objeto de asistencia
  * @param {string} asist.fecha
  * @param {Array} asist.asistencia
  * @param {string?} asist.tema

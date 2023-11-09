@@ -18,15 +18,10 @@ function NuevaClase() {
   // Estados del formulario
   const [step, setStep] = useState(1);
   const [puedeAvanzar, setPuedeAvanzar] = useState(false);
-  const [formdata, setFormdata] = useState({
-    nombre: "",
-    horario: null,
-    alumnos: null,
-    plan: null,
-  });
-  const [filasHorario, setFilasHorario] = useState(null);
-  const [filasAlumnos, setFilasAlumnos] = useState(null);
-  const [filasPlan, setFilasPlan] = useState(null);
+  const [nombre, setNombre] = useState("");
+  const [horario, setHorario] = useState(null);
+  const [alumnos, setAlumnos] = useState(null);
+  const [plan, setPlan] = useState(null);
 
   // Guardar contexto de la navegación actual
   const { user, navSetter } = useContext(DocenteContext);
@@ -40,10 +35,10 @@ function NuevaClase() {
     mutationFn: () => {
       return agregarClase({
         idDocente: user.user.uid,
-        nombre: formdata.nombre,
-        horario: filasHorario,
-        alumnos: filasAlumnos,
-        plan: filasPlan,
+        nombre,
+        horario,
+        alumnos,
+        plan,
         nombreDocente: user.user.nombre,
       });
     },
@@ -66,12 +61,12 @@ function NuevaClase() {
           <Input
             id="nombre"
             name="nombre"
-            value={formdata.nombre}
+            value={nombre}
             textoLabel=""
             textoPlaceholder="Nombre de la clase"
             onChange={(e) => {
               setPuedeAvanzar(e.target.value !== "");
-              setFormdata({ ...formdata, nombre: e.target.value });
+              setNombre(e.target.value);
             }}
           />
           <div className="flex flex-row-reverse">
@@ -84,7 +79,7 @@ function NuevaClase() {
               type="button"
               onClick={() => {
                 setStep((prev) => prev + 1);
-                setPuedeAvanzar(filasHorario !== null);
+                setPuedeAvanzar(horario !== null);
               }}
             />
           </div>
@@ -103,15 +98,14 @@ function NuevaClase() {
             type="file"
             icono={<UploadFileOutlinedIcon />}
             onChange={async (e) => {
-              setFormdata({ ...formdata, horario: e.target.files[0] ?? null });
               if (e.target.files[0]) {
                 const filas = await parseArchivo(e.target.files[0], "horario");
                 console.log(filas);
-                setFilasHorario(filas);
+                setHorario(filas);
                 setPuedeAvanzar(true);
               } else {
                 setPuedeAvanzar(false);
-                setFilasHorario(null);
+                setHorario(null);
               }
             }}
           />
@@ -124,8 +118,8 @@ function NuevaClase() {
               </tr>
             </thead>
             <tbody>
-              {filasHorario &&
-                filasHorario
+              {horario &&
+                horario
                   .map((fila) => Object.values(fila))
                   .map((fila, index) => (
                     <tr key={index}>
@@ -158,7 +152,7 @@ function NuevaClase() {
               type="button"
               onClick={() => {
                 setStep((prev) => prev + 1);
-                setPuedeAvanzar(filasAlumnos !== null);
+                setPuedeAvanzar(alumnos !== null);
               }}
             />
           </div>
@@ -177,15 +171,13 @@ function NuevaClase() {
             type="file"
             icono={<UploadFileOutlinedIcon />}
             onChange={async (e) => {
-              setFormdata({ ...formdata, alumnos: e.target.files[0] ?? null });
               if (e.target.files[0]) {
                 const filas = await parseArchivo(e.target.files[0], "alumnos");
-                console.log(filas);
-                setFilasAlumnos(filas);
+                setAlumnos(filas);
                 setPuedeAvanzar(true);
               } else {
                 setPuedeAvanzar(false);
-                setFilasAlumnos(null);
+                setAlumnos(null);
               }
             }}
           />
@@ -197,8 +189,8 @@ function NuevaClase() {
               </tr>
             </thead>
             <tbody>
-              {filasAlumnos &&
-                filasAlumnos
+              {alumnos &&
+                alumnos
                   .map((fila) => Object.values(fila))
                   .map((fila, index) => (
                     <tr key={index}>
@@ -246,15 +238,13 @@ function NuevaClase() {
             type="file"
             icono={<UploadFileOutlinedIcon />}
             onChange={async (e) => {
-              setFormdata({ ...formdata, plan: e.target.files[0] ?? null });
               if (e.target.files[0]) {
                 const filas = await parseArchivo(e.target.files[0], "plan");
-                console.log(filas);
-                setFilasPlan(filas);
+                setPlan(filas);
                 setPuedeAvanzar(true);
               } else {
-                setPuedeAvanzar(filasPlan !== null);
-                setFilasPlan(null);
+                setPuedeAvanzar(plan !== null);
+                setPlan(null);
               }
             }}
           />
@@ -266,8 +256,8 @@ function NuevaClase() {
               </tr>
             </thead>
             <tbody>
-              {filasPlan &&
-                filasPlan
+              {plan &&
+                plan
                   .map((fila) => Object.values(fila))
                   .map((fila, index) => (
                     <tr key={index}>
