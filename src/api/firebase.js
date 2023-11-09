@@ -1,4 +1,9 @@
 import { initializeApp } from "firebase/app";
+import {
+  CACHE_SIZE_UNLIMITED,
+  initializeFirestore,
+  persistentLocalCache,
+} from "firebase/firestore";
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -10,4 +15,8 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-export const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+initializeFirestore(app, {
+  localCache: persistentLocalCache({ cacheSizeBytes: CACHE_SIZE_UNLIMITED }),
+});
+export { app };

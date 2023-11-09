@@ -58,10 +58,17 @@ function SignUpAlumno() {
   });
 
   return (
-    <div className="from-degradado to-degradado2 flex h-screen flex-row items-center justify-center bg-gradient-to-br">
+    <div className="from-degradado to-degradado2 flex h-screen flex-col items-center justify-center bg-gradient-to-br">
       <div className="absolute left-5 top-5 flex flex-row align-middle">
         <BotonAtras path="/" text="Volver a inicio" />
       </div>
+      <img
+        src="/logo.png"
+        alt="Logo de Attend"
+        width="88"
+        height="88"
+        className="mx-auto mt-16"
+      ></img>
       <div className="max-w-lg flex-1 flex-col gap-5    text-center">
         <h1 className="mb-3 text-3xl font-bold">Attend</h1>
         <h2 className="mb-3 text-xl font-semibold">Crea tu cuenta</h2>

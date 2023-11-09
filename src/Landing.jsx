@@ -5,16 +5,23 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 function Landing() {
   return (
     <div className="flex h-screen w-screen flex-col md:flex-row">
-      <div className="to-degradado2 flex h-full w-full flex-col justify-center bg-gradient-to-br from-degradado px-16 py-16 align-middle md:p-0">
+      <div className="to-degradado2 from-degradado flex h-full w-full flex-col justify-center bg-gradient-to-br px-16 py-16 align-middle md:p-0">
+        <img
+          className="mx-auto pb-2 md:h-40 md:w-40"
+          src="/logo.png"
+          alt="Logo de Attend"
+          width="88"
+          height="88"
+        ></img>
         <h1 className="text-center text-4xl font-bold">Attend</h1>
         <p className="text-center text-xl">
           La asistencia, <strong>reinventada</strong>
         </p>
-        <p className="pb-3 pt-6 px-4">
+        <p className="pb-3 pt-6 md:px-4">
           Con Attend, buscamos crear un nuevo modelo para el control de
           asistencias en la universidad, logrando:
         </p>
-        <ul className="px-8">
+        <ul className="px-2 md:px-8">
           <li>- Disminuir el uso de papel</li>
           <li>- Agilizar la toma de asistencia</li>
           <li>- Facilitar los procesos administrativos</li>

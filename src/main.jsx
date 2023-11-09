@@ -22,6 +22,10 @@ import HomeAlumno from "./routes/alumno/HomeAlumno.jsx";
 import AjustesAlumno from "./routes/alumno/AjustesAlumno.jsx";
 import { RootAlumno } from "./routes/alumno/RootAlumno.jsx";
 import ClaseAlumno from "./routes/alumno/ClaseAlumno.jsx";
+import VerClases from "./routes/admin/docentes/VerClases.jsx";
+import VerClase from "./routes/admin/docentes/VerClase.jsx";
+import NuevoPeriodo from "./routes/admin/periodos/NuevoPeriodo.jsx";
+import VerPeriodo from "./routes/admin/periodos/VerPeriodo.jsx";
 
 const router = createBrowserRouter([
   {
@@ -86,12 +90,53 @@ const router = createBrowserRouter([
         element: <HomeAdmin />,
       },
       {
+        path: "periodos/nuevo",
+        element: <NuevoPeriodo />,
+      },
+      {
+        path: "periodos/:idPeriodo",
+        element: <VerPeriodo />,
+        loader: ({ params }) => {
+          return {
+            idPeriodo: params.idPeriodo,
+          };
+        },
+      },
+      {
+        path: "clases/:idDocente",
+        element: <VerClases />,
+        loader: ({ params }) => {
+          return {
+            idDocente: params.idDocente,
+          };
+        },
+      },
+      {
         path: "docentes",
         element: <VerDocentes />,
       },
       {
         path: "docentes/nuevo",
         element: <NuevoDocente />,
+      },
+      {
+        path: "clases/:idDocente",
+        element: <VerClases />,
+        loader: ({ params }) => {
+          return {
+            idDocente: params.idDocente,
+          };
+        },
+      },
+      {
+        path: "clases/:idDocente/:idClase",
+        element: <VerClase />,
+        loader: ({ params }) => {
+          return {
+            idDocente: params.idDocente,
+            idClase: params.idClase,
+          };
+        },
       },
     ],
   },
@@ -118,7 +163,7 @@ const router = createBrowserRouter([
           return {
             idClase: params.idClase,
           };
-        }
+        },
       },
       {
         path: "ajustes",

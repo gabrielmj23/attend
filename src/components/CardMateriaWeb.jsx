@@ -4,7 +4,13 @@ import Boton from "./Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
 
-function CardClase({ id, nombreMateria, nombreDocente, seccion, color }) {
+function CardClase({
+  idDocente,
+  idClase,
+  nombreMateria,
+  nombreDocente,
+  color,
+}) {
   const classNames =
     "text-center flex flex-col gap-4 rounded-xl mx-6 py-3 px-2 border-4 shadow-lg " +
     BORDES[color];
@@ -15,10 +21,9 @@ function CardClase({ id, nombreMateria, nombreDocente, seccion, color }) {
       </div>
       <div>
         <p className="text-sm text-zinc-600">Docente: {nombreDocente}</p>
-        <p className="text-sm text-zinc-600">Seccion: {seccion}</p>
       </div>
       <div className="flex flex-row justify-center">
-        <Link to={`/docente/clases/${id}`}>
+        <Link to={`/admin/clases/${idDocente}/${idClase}`}>
           <Boton
             texto="Ver clase"
             icono={<ArrowForwardIcon />}
@@ -32,11 +37,10 @@ function CardClase({ id, nombreMateria, nombreDocente, seccion, color }) {
 }
 
 CardClase.propTypes = {
-  id: PropTypes.string.isRequired,
+  idDocente: PropTypes.string.isRequired,
+  idClase: PropTypes.string.isRequired,
   nombreMateria: PropTypes.string.isRequired,
   nombreDocente: PropTypes.string.isRequired,
-  seccion: PropTypes.string.isRequired,
-  horario: PropTypes.arrayOf(PropTypes.string).isRequired,
   color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]),
 };
 

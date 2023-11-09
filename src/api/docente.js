@@ -10,6 +10,7 @@ import {
   setDoc,
   updateDoc,
   where,
+  deleteDoc,
 } from "firebase/firestore";
 import { app } from "./firebase";
 
@@ -31,6 +32,15 @@ export async function agregarDocente({ id, nombre, correo }) {
   } catch (error) {
     console.error(error);
     throw new Error("Ocurrió un error al agregar el docente");
+  }
+}
+
+export async function eliminarDocente(idDocente) {
+  try {
+    await deleteDoc(doc(db, "docentes", idDocente));
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
 }
 
@@ -67,6 +77,96 @@ export async function obtenerClase({ idDocente, idClase }) {
       return clase.data();
     }
     throw new Error("Clase no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerDocente({ idDocente }) {
+  try {
+    const snapshot = await getDoc(doc(db, "docentes", idDocente));
+    if (snapshot.exists) {
+      return snapshot.data();
+    }
+    throw new Error("Docente no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerClases({ idDocente }) {
+  try {
+    const snapshot = await getDocs(
+      collection(db, "docentes", idDocente, "clases"),
+    );
+    const clases = [];
+    snapshot.forEach((doc) => {
+      clases.push({ id: doc.id, ...doc.data() });
+    });
+    return clases;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerClasesDeDocentes(idsDocente) {
+  try {
+    const todasLasClases = [];
+    for (const docente of idsDocente) {
+      const clases = await obtenerClases({ idDocente: docente.id });
+      const clasesConDocentes = clases.map((clase) => {
+        return {
+          ...clase,
+          nombreDocente: docente.nombre,
+          idDocente: docente.id,
+        };
+      });
+      todasLasClases.push(...clasesConDocentes);
+    }
+    return todasLasClases;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerDocentes() {
+  try {
+    const snapshot = await getDocs(collection(db, "docentes"));
+    const docentes = [];
+    snapshot.forEach((doc) => {
+      docentes.push({ id: doc.id, ...doc.data() });
+    });
+    return docentes;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+export async function obtenerIDsDocentes() {
+  try {
+    const snapshot = await getDocs(collection(db, "docentes"));
+    const docentesIDs = [];
+    snapshot.forEach((doc) => {
+      docentesIDs.push({ id: doc.id, nombre: doc.data().nombre });
+    });
+    return docentesIDs;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerIDPeriodoActivo() {
+  try {
+    const snapshot = await getDocs(
+      collection(db, "periodos"),
+      where("activo", "==", true),
+    );
+    return snapshot.docs[0].id;
   } catch (error) {
     console.error(error);
     throw error;
@@ -130,6 +230,33 @@ export async function agregarClase({
       });
     }
     return claseRef.id;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerReporte({ idReporte }) {
+  try {
+    const snapshot = await getDoc(doc(db, "reportes", idReporte));
+    if (snapshot.exists) {
+      return snapshot.data();
+    }
+    throw new Error("Reporte no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerReportesDeAlumnos(idsAlumno) {
+  try {
+    const todasLosReportes = [];
+    for (const alumno of idsAlumno) {
+      const reportes = await obtenerReportes({ idAlumno: alumno.cedula });
+      todasLosReportes.push(...reportes);
+    }
+    return todasLosReportes;
   } catch (error) {
     console.error(error);
     throw error;

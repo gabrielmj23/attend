@@ -17,6 +17,7 @@ const BOTONES_PRIMARIO = {
   verde: "bg-verde hover:bg-verde-activo active:bg-verde-activo",
   gris: "bg-gris hover:bg-gris-activo active:bg-gris-activo",
   blanco: "bg-blanco hover:bg-blanco-activo active:bg-blanco-activo",
+  rojo: "bg-red-500 hover:bg-red-700 active:bg-red-red-700"
 };
 
 /**

@@ -43,7 +43,7 @@ function NuevoDocente() {
       });
     },
     onSuccess: (data) => {
-      navigate("/admin/docentes/" + data.uid);
+      navigate("/admin/docentes/");
     },
     onError: (error) => {
       alert(error.message);
