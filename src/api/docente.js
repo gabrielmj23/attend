@@ -35,6 +35,10 @@ export async function agregarDocente({ id, nombre, correo }) {
   }
 }
 
+/**
+ *
+ * @param {string} idDocente
+ */
 export async function eliminarDocente(idDocente) {
   try {
     await deleteDoc(doc(db, "docentes", idDocente));
@@ -48,7 +52,7 @@ export async function eliminarDocente(idDocente) {
  *
  * @param {string} idClase
  */
-export async function obtenerReportes(idClase) {
+export async function obtenerReportesDeClase(idClase) {
   try {
     const reportes = await getDocs(
       query(collection(db, "reportes"), where("idClase", "==", idClase)),
@@ -83,11 +87,16 @@ export async function obtenerClase({ idDocente, idClase }) {
   }
 }
 
+/**
+ *
+ * @param {Object} obj
+ * @param {string} obj.idDocente
+ */
 export async function obtenerDocente({ idDocente }) {
   try {
-    const snapshot = await getDoc(doc(db, "docentes", idDocente));
-    if (snapshot.exists) {
-      return snapshot.data();
+    const docente = await getDoc(doc(db, "docentes", idDocente));
+    if (docente.exists()) {
+      return docente.data();
     }
     throw new Error("Docente no existe");
   } catch (error) {
@@ -96,27 +105,32 @@ export async function obtenerDocente({ idDocente }) {
   }
 }
 
-export async function obtenerClases({ idDocente }) {
+/**
+ *
+ * @param {Object} obj
+ * @param {string} obj.idDocente
+ */
+export async function obtenerClasesDeDocente({ idDocente }) {
   try {
-    const snapshot = await getDocs(
+    const clasesDocente = await getDocs(
       collection(db, "docentes", idDocente, "clases"),
     );
-    const clases = [];
-    snapshot.forEach((doc) => {
-      clases.push({ id: doc.id, ...doc.data() });
-    });
-    return clases;
+    return clasesDocente.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error(error);
     throw error;
   }
 }
 
+/**
+ *
+ * @param {Object<string,string>[]} idsDocente
+ */
 export async function obtenerClasesDeDocentes(idsDocente) {
   try {
     const todasLasClases = [];
     for (const docente of idsDocente) {
-      const clases = await obtenerClases({ idDocente: docente.id });
+      const clases = await obtenerClasesDeDocente({ idDocente: docente.id });
       const clasesConDocentes = clases.map((clase) => {
         return {
           ...clase,
@@ -135,25 +149,8 @@ export async function obtenerClasesDeDocentes(idsDocente) {
 
 export async function obtenerDocentes() {
   try {
-    const snapshot = await getDocs(collection(db, "docentes"));
-    const docentes = [];
-    snapshot.forEach((doc) => {
-      docentes.push({ id: doc.id, ...doc.data() });
-    });
-    return docentes;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-}
-export async function obtenerIDsDocentes() {
-  try {
-    const snapshot = await getDocs(collection(db, "docentes"));
-    const docentesIDs = [];
-    snapshot.forEach((doc) => {
-      docentesIDs.push({ id: doc.id, nombre: doc.data().nombre });
-    });
-    return docentesIDs;
+    const docentesSnap = await getDocs(collection(db, "docentes"));
+    return docentesSnap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   } catch (error) {
     console.error(error);
     throw error;
@@ -162,11 +159,10 @@ export async function obtenerIDsDocentes() {
 
 export async function obtenerIDPeriodoActivo() {
   try {
-    const snapshot = await getDocs(
-      collection(db, "periodos"),
-      where("activo", "==", true),
+    const periodos = await getDocs(
+      query(collection(db, "periodos"), where("activo", "==", true)),
     );
-    return snapshot.docs[0].id;
+    return periodos.docs[0].id;
   } catch (error) {
     console.error(error);
     throw error;
@@ -236,11 +232,16 @@ export async function agregarClase({
   }
 }
 
+/**
+ *
+ * @param {Object} obj
+ * @param {string} obj.idReporte
+ */
 export async function obtenerReporte({ idReporte }) {
   try {
-    const snapshot = await getDoc(doc(db, "reportes", idReporte));
-    if (snapshot.exists) {
-      return snapshot.data();
+    const reporte = await getDoc(doc(db, "reportes", idReporte));
+    if (reporte.exists()) {
+      return reporte.data();
     }
     throw new Error("Reporte no existe");
   } catch (error) {
@@ -249,14 +250,20 @@ export async function obtenerReporte({ idReporte }) {
   }
 }
 
+/**
+ *
+ * @param {Object<string,string>[]} idsAlumno
+ */
 export async function obtenerReportesDeAlumnos(idsAlumno) {
   try {
-    const todasLosReportes = [];
+    const todosLosReportes = [];
     for (const alumno of idsAlumno) {
-      const reportes = await obtenerReportes({ idAlumno: alumno.cedula });
-      todasLosReportes.push(...reportes);
+      const reportes = await obtenerReportesDeClase({
+        idAlumno: alumno.cedula,
+      });
+      todosLosReportes.push(...reportes);
     }
-    return todasLosReportes;
+    return todosLosReportes;
   } catch (error) {
     console.error(error);
     throw error;
