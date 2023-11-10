@@ -111,7 +111,17 @@ function RootDocente() {
   // Clase
   const [lista, setLista] = useState(null);
   const [nombreClase, setNombreClase] = useState(null);
-  const queryClient = new QueryClient();
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        networkMode: "offlineFirst",
+      },
+      mutations: {
+        networkMode: "offlineFirst",
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>

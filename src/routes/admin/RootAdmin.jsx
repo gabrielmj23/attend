@@ -31,7 +31,16 @@ function authReducer(state, action) {
  */
 function RootAdmin() {
   const [auth, dispatchAuth] = useReducer(authReducer, { user: null });
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        networkMode: "offlineFirst",
+      },
+      mutations: {
+        networkMode: "offlineFirst",
+      },
+    },
+  });
   return (
     <QueryClientProvider client={queryClient}>
       <AdminAuthContext.Provider
