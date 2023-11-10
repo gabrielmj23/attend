@@ -68,20 +68,27 @@ export async function signupDocente({ correo, nombre, password }) {
  * @param {string} user.tipo
  */
 export async function loginUser({ correo, password, tipo }) {
+  const tipo_msg = {
+    admins: "administradores",
+    docentes: "docentes",
+    alumnos: "alumnos",
+  };
   try {
+    // Iniciar sesión
+    await signInWithEmailAndPassword(auth, correo, password);
     // Confirmar que la cuenta es del tipo adecuado
     const db = getFirestore(app);
     const usuario = await getDocs(
       query(collection(db, tipo), where("correo", "==", correo)),
     );
     if (usuario.empty) {
-      throw new Error();
+      throw new Error("Error: Su cuenta no pertenece a " + tipo_msg[tipo]);
     }
-    // Iniciar sesión
-    await signInWithEmailAndPassword(auth, correo, password);
     return { ...usuario.docs[0].data(), uid: auth.currentUser.uid };
   } catch (error) {
-    throw Error("Error: Revisa tus credenciales y tu conexión a internet");
+    if (error.code === "auth/invalid-login-credentials")
+      throw Error("Error: Correo o contraseña incorrecta");
+    throw error;
   }
 }
 

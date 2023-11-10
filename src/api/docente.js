@@ -162,6 +162,9 @@ export async function obtenerIDPeriodoActivo() {
     const periodos = await getDocs(
       query(collection(db, "periodos"), where("activo", "==", true)),
     );
+    if (periodos.empty) {
+      return null;
+    }
     return periodos.docs[0].id;
   } catch (error) {
     console.error(error);

@@ -17,19 +17,16 @@ function VerClases() {
   const docenteQuery = useQuery({
     queryKey: ["obtenerDocente1"],
     queryFn: () => obtenerDocente({ idDocente }),
-    networkMode: "offlineFirst",
   });
 
   const clasesQuery = useQuery({
     queryKey: ["obtenerClases1"],
     queryFn: () => obtenerClasesDeDocente({ idDocente }),
-    networkMode: "offlineFirst",
   });
 
   const idActivoQuery = useQuery({
     queryKey: ["obtenerPeriodo1"],
     queryFn: () => obtenerIDPeriodoActivo(),
-    networkMode: "offlineFirst",
   });
 
   return (
@@ -60,7 +57,7 @@ function VerClases() {
           <AppHeader
             titulo={"Docente: " + docenteQuery.data.nombre}
             color="blanco"
-          />{" "}
+          />
           {clasesQuery.data.length === 0 ? (
             <p className="text-center font-semibold">
               Este profesor no tiene clases registradas
@@ -81,7 +78,6 @@ function VerClases() {
                           idClase={clase.id}
                           nombreMateria={clase.nombre}
                           nombreDocente={docenteQuery.data.nombre}
-                          seccion="REVISAR DB"
                           color="verde"
                         />
                       </div>
