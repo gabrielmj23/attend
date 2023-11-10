@@ -11,6 +11,7 @@ import { useContext } from "react";
 import { AdminAuthContext } from "./RootAdmin";
 import { useMutation } from "@tanstack/react-query";
 import BotonAtras from "../../components/BotonAtras";
+import { Spinner } from "flowbite-react";
 
 // Esquema de validación de registro
 const adminSchema = yup.object().shape({
@@ -134,7 +135,9 @@ function SignUpAdmin() {
             />
           </div>
           {mutation.isPending && (
-            <p className="text-center">Creando tu cuenta...</p>
+            <span className="text-center">
+              <Spinner color="success" /> Iniciando sesión
+            </span>
           )}
           <div className="flex flex-row justify-center">
             <Link to="/admin/login" className="underline">

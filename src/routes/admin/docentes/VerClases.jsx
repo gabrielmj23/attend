@@ -3,12 +3,13 @@ import { Link } from "react-router-dom";
 import AppHeader from "../../../components/AppHeader";
 import CardClase from "../../../components/CardMateriaWeb";
 import {
-  obtenerClases,
+  obtenerClasesDeDocente,
   obtenerDocente,
   obtenerIDPeriodoActivo,
 } from "../../../api/docente";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
+import { Spinner } from "flowbite-react";
 
 function VerClases() {
   const { idDocente } = useParams();
@@ -16,17 +17,21 @@ function VerClases() {
   const docenteQuery = useQuery({
     queryKey: ["obtenerDocente1"],
     queryFn: () => obtenerDocente({ idDocente }),
+    networkMode: "offlineFirst",
   });
 
   const clasesQuery = useQuery({
     queryKey: ["obtenerClases1"],
-    queryFn: () => obtenerClases({ idDocente }),
+    queryFn: () => obtenerClasesDeDocente({ idDocente }),
+    networkMode: "offlineFirst",
   });
 
   const idActivoQuery = useQuery({
     queryKey: ["obtenerPeriodo1"],
     queryFn: () => obtenerIDPeriodoActivo(),
+    networkMode: "offlineFirst",
   });
+
   return (
     <div>
       <WebNav>
@@ -47,61 +52,68 @@ function VerClases() {
       {docenteQuery.isPending ||
       clasesQuery.isPending ||
       idActivoQuery.isPending ? (
-        <p>Cargando...</p>
+        <p className="pt-10 text-center">
+          <Spinner color="success" /> Cargando...
+        </p>
       ) : (
         <div>
           <AppHeader
             titulo={"Docente: " + docenteQuery.data.nombre}
             color="blanco"
-          />
-          <div>
-            <div className="p-10 text-center text-xl font-bold">
-              Materias Activas
-            </div>
-            <div className="flex flex-row justify-center">
-              {clasesQuery.data.map((clase) => {
-                console.log(clase.nombre);
-                if (clase.idPeriodo == idActivoQuery.data) {
-                  return (
-                    <div key={clase.id}>
-                      <CardClase
-                        idDocente={idDocente}
-                        idClase={clase.id}
-                        nombreMateria={clase.nombre}
-                        nombreDocente={docenteQuery.data.nombre}
-                        seccion="REVISAR DB"
-                        color="verde"
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
+          />{" "}
+          {clasesQuery.data.length === 0 ? (
+            <p className="text-center font-semibold">
+              Este profesor no tiene clases registradas
+            </p>
+          ) : (
+            <div>
+              <div className="p-10 text-center text-xl font-bold">
+                Materias Activas
+              </div>
+              <div className="flex flex-row justify-center">
+                {clasesQuery.data.map((clase) => {
+                  console.log(clase.nombre);
+                  if (clase.idPeriodo == idActivoQuery.data) {
+                    return (
+                      <div key={clase.id}>
+                        <CardClase
+                          idDocente={idDocente}
+                          idClase={clase.id}
+                          nombreMateria={clase.nombre}
+                          nombreDocente={docenteQuery.data.nombre}
+                          seccion="REVISAR DB"
+                          color="verde"
+                        />
+                      </div>
+                    );
+                  }
+                })}
+              </div>
 
-            <div className="p-10 text-center text-xl font-bold">
-              Materias Inactivas
+              <div className="p-10 text-center text-xl font-bold">
+                Materias Inactivas
+              </div>
+              <div className="flex flex-row justify-center">
+                {clasesQuery.data.map((clase) => {
+                  console.log(clase.nombre);
+                  if (clase.idPeriodo != idActivoQuery.data) {
+                    return (
+                      <div key={clase.id}>
+                        {console.log("ID DOCENTE: ", clase.id)}
+                        <CardClase
+                          idDocente={idDocente}
+                          idClase={clase.id}
+                          nombreMateria={clase.nombre}
+                          nombreDocente={docenteQuery.data.nombre}
+                          color="gris"
+                        />
+                      </div>
+                    );
+                  }
+                })}
+              </div>
             </div>
-            <div className="flex flex-row justify-center">
-              {clasesQuery.data.map((clase) => {
-                console.log(clase.nombre);
-                if (clase.idPeriodo != idActivoQuery.data) {
-                  return (
-                    <div key={clase.id}>
-                      {console.log("ID DOCENTE: ", clase.id)}
-                      <CardClase
-                        idDocente={idDocente}
-                        idClase={clase.id}
-                        nombreMateria={clase.nombre}
-                        nombreDocente={docenteQuery.data.nombre}
-                        seccion="REVISAR DB"
-                        color="gris"
-                      />
-                    </div>
-                  );
-                }
-              })}
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

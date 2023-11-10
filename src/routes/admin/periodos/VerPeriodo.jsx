@@ -6,7 +6,7 @@ import CardMateriaWeb from "../../../components/CardMateriaWeb";
 import { useParams } from "react-router-dom";
 import {
   obtenerClasesDeDocentes,
-  obtenerIDsDocentes,
+  obtenerDocentes,
 } from "../../../api/docente";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ function VerPeriodo() {
   // Obtener informacion de los docentes
   const docentesQuery = useQuery({
     queryKey: ["obtenerIDsDocentes"],
-    queryFn: () => obtenerIDsDocentes(),
+    queryFn: () => obtenerDocentes(),
   });
 
   const clasesQuery = useQuery({

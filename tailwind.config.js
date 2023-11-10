@@ -1,6 +1,11 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
-  content: ["./index.html", "./src/**/*.{html,js,jsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{html,js,jsx}",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
+  ],
   theme: {
     extend: {
       colors: {
@@ -31,7 +36,7 @@ export default {
         degradado2: {
           DEFAULT: "#89A9FF",
           activo: "#89A9FF",
-        }
+        },
       },
     },
   },
