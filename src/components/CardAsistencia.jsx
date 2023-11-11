@@ -5,7 +5,7 @@ import InventoryOutlinedIcon from "@mui/icons-material/InventoryOutlined";
 import Boton from "./Boton";
 import { Link } from "react-router-dom";
 
-function CardAsistencia({ idClase, fecha, contenido, color }) {
+function CardAsistencia({ idClase, fecha, contenido, color, refProps }) {
   let classNames =
     "flex flex-col justify-center gap-4 rounded-xl min-w-[150px] h-44 py-3 px-2 border-4 shadow-xl " +
     BORDES[color];
@@ -51,7 +51,7 @@ function CardAsistencia({ idClase, fecha, contenido, color }) {
   }
 
   return (
-    <div className={classNames}>
+    <div className={classNames} ref={refProps}>
       <div className="text-center">
         <p className="text-lg font-semibold">
           {fecha.getDate() +
@@ -72,6 +72,7 @@ CardAsistencia.propTypes = {
   fecha: PropTypes.instanceOf(Date).isRequired,
   contenido: PropTypes.string.isRequired,
   color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]).isRequired,
+  refProps: PropTypes.any,
 };
 
 export default CardAsistencia;
