@@ -20,7 +20,9 @@ function AjustesDocente() {
         <PersonOutlineIcon fontSize="large" className="my-auto scale-125" />
         <div className="flex flex-col">
           <p className="text-xl font-semibold">{user.user.nombre}</p>
-          <p className="text-sm font-semibold text-gris">{user.user.correo}</p>
+          <p className="text-sm font-semibold text-gray-700">
+            {user.user.correo}
+          </p>
         </div>
       </div>
       <p

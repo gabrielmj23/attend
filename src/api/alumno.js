@@ -28,12 +28,12 @@ export async function agregarAlumno({ nombre, cedula, correo }) {
       resumen_clases: [],
     });
     // Generar resumen de clases
-    const snapshot = await getDocs(
+    const reportesAlumno = await getDocs(
       query(collection(db, "reportes"), where("cedula", "==", cedula)),
     );
     let resumen = [];
-    if (!snapshot.empty) {
-      resumen = snapshot.docs
+    if (!reportesAlumno.empty) {
+      resumen = reportesAlumno.docs
         .map((doc) => doc.data())
         .map((data) => {
           return {
@@ -46,7 +46,6 @@ export async function agregarAlumno({ nombre, cedula, correo }) {
             idDocente: data.idDocente,
           };
         });
-      console.log(resumen);
       await updateDoc(doc(db, "alumnos", cedula), {
         resumen_clases: arrayUnion(...resumen),
       });

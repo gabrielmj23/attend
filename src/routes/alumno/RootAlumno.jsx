@@ -68,7 +68,17 @@ function RootAlumno() {
   });
 
   const [userAlumno, dispatchUser] = useReducer(authReducer, { user: null });
-  const queryClient = new QueryClient();
+
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        networkMode: "offlineFirst",
+      },
+      mutations: {
+        networkMode: "offlineFirst",
+      },
+    },
+  });
 
   return (
     <QueryClientProvider client={queryClient}>

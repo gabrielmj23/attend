@@ -31,8 +31,12 @@ export async function agregarAdmin({ id, nombre, correo }) {
  * @param {date} periodo.fechaFin
  * @param {number} duracion
  */
-export async function agregarPeriodo({ nombre, fechaInicio, fechaFin, duracion }) {
-
+export async function agregarPeriodo({
+  nombre,
+  fechaInicio,
+  fechaFin,
+  duracion,
+}) {
   try {
     // eslint-disable-next-line no-unused-vars
     const periodoRef = await addDoc(collection(db, "periodos"), {

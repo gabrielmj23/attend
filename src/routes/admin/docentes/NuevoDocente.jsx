@@ -9,6 +9,7 @@ import Boton from "../../../components/Boton";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import { signupDocente } from "../../../api/auth";
 import { useMutation } from "@tanstack/react-query";
+import { Spinner } from "flowbite-react";
 
 const docenteSchema = yup.object().shape({
   nombre: yup.string().required("Ingresa el nombre"),
@@ -42,7 +43,7 @@ function NuevoDocente() {
         password: data.password,
       });
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate("/admin/docentes/");
     },
     onError: (error) => {
@@ -133,8 +134,15 @@ function NuevoDocente() {
                 type="submit"
               />
             </div>
+            {mutation.isError && (
+              <p className="text-center font-semibold text-red-800">
+                Ocurrió un error, intenta de nuevo
+              </p>
+            )}
             {mutation.isPending && (
-              <p className="text-center">Agregando docente...</p>
+              <span className="text-center">
+                <Spinner color="success" /> Agregando docente...
+              </span>
             )}
           </div>
         </form>

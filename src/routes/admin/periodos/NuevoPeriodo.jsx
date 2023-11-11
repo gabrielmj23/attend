@@ -4,36 +4,49 @@ import Boton from "../../../components/Boton";
 import Input from "../../../components/Input";
 import { useForm } from "react-hook-form";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
+import { useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
 import { agregarPeriodo } from "../../../api/admin";
+import { Spinner } from "flowbite-react";
 
 // Define el esquema de validación para un periodo
 const periodoSchema = yup.object().shape({
-  nombre: yup
-    .string()  
-    .required("Ingresa el nombre del periodo"),
+  nombre: yup.string().required("Ingresa el nombre del periodo"),
   fechaInicio: yup
     .date()
-    .transform((value, originalValue) => originalValue.trim() === "" ? undefined : value)
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? undefined : value,
+    )
     .required("Ingresa la fecha de inicio"),
   fechaFin: yup
     .date()
-    .transform((value, originalValue) => originalValue.trim() === "" ? undefined : value)
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? undefined : value,
+    )
     .required("Ingresa la fecha de finalizacion")
-    .test('fechaFin', 'La fecha de fin no puede ser igual a la fecha de inicio', function(value) { // La fecha de fin no puede ser igual a la fecha de inicio
+    .test(
+      "fechaFin",
+      "La fecha de fin no puede ser igual a la fecha de inicio",
+      function (value) {
+        // La fecha de fin no puede ser igual a la fecha de inicio
         const { fechaInicio } = this.parent;
         if (!fechaInicio || !value) {
-          return true; 
+          return true;
         }
         return fechaInicio < value;
-    })
-    .min(yup.ref('fechaInicio'), "La fecha de fin debe ser posterior a la fecha de inicio"), // La fecha de fin debe ser posterior a la fecha de inicio
+      },
+    )
+    .min(
+      yup.ref("fechaInicio"),
+      "La fecha de fin debe ser posterior a la fecha de inicio",
+    ), // La fecha de fin debe ser posterior a la fecha de inicio
   duracion: yup
     .number()
-    .transform((value, originalValue) => originalValue.trim() === "" ? undefined : value)
+    .transform((value, originalValue) =>
+      originalValue.trim() === "" ? undefined : value,
+    )
     .required("Ingresa la duracion del periodo"),
 });
 
@@ -44,8 +57,8 @@ function NuevoPeriodo() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(periodoSchema) });
 
+  // Mutación para crear un periodo
   const navigate = useNavigate();
-
   const mutation = useMutation({
     mutationFn: (data) => {
       return agregarPeriodo({
@@ -55,7 +68,7 @@ function NuevoPeriodo() {
         duracion: data.duracion,
       });
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       navigate("/admin/home");
     },
     onError: (error) => {
@@ -66,7 +79,7 @@ function NuevoPeriodo() {
   return (
     <div>
       <WebNav>
-        <Link to="/admin/home" className="hover:underline font-semibold">
+        <Link to="/admin/home" className="font-semibold hover:underline">
           Periodos
         </Link>
         <Link
@@ -78,9 +91,9 @@ function NuevoPeriodo() {
       </WebNav>
       <h1 className="py-8 ps-16 text-2xl font-semibold">Agregar un periodo</h1>
       <div className="flex w-screen flex-row justify-center">
-        <form 
-        onSubmit={handleSubmit(mutation.mutate)}
-        className="flex w-1/2 max-w-lg flex-col gap-6"
+        <form
+          onSubmit={handleSubmit(mutation.mutate)}
+          className="flex w-1/2 max-w-lg flex-col gap-6"
         >
           <fieldset>
             <Input
@@ -149,11 +162,13 @@ function NuevoPeriodo() {
               />
             </div>
             {mutation.isPending && (
-              <p className="text-center">Guardando periodo...</p>
+              <span className="text-center">
+                <Spinner color="success" /> Guardando periodo...
+              </span>
             )}
           </div>
         </form>
-        </div>
+      </div>
     </div>
   );
 }

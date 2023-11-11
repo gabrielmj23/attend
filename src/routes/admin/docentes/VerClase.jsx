@@ -8,7 +8,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { obtenerReportes } from "../../../api/docente";
+import { obtenerReportesDeClase } from "../../../api/docente";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import { set } from "react-hook-form";
 
@@ -26,7 +26,7 @@ function VerClase() {
 
   const asistenciaQuery = useQuery({
     queryKey: ["obtenerReportes"],
-    queryFn: () => obtenerReportes(idClase),
+    queryFn: () => obtenerReportesDeClase(idClase),
   });
 
   return (
