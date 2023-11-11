@@ -102,9 +102,9 @@ export default {
           DEFAULT: "#996CF0",
           activo: "#996CF0",
         },
-        naranja: {
-          DEFAULT: "#F5A010",
-          activo: "##F5A010",
+        azuloscuro: {
+          DEFAULT: "#526FEB",
+          activo: "#526FEB",
         }
       },
       boxShadow: {
