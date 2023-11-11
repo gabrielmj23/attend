@@ -12,14 +12,20 @@ function NavElem({ icono, label, ruta, activo, color = "amarillo" }) {
   const alumnoContext = useContext(AlumnoContext);
 
   useEffect(() => {
-    if (location.pathname === "/docente/home" || location.pathname === "/docente/clases/nueva" || location.pathname === "/docente/ajustes") {
+    if (location.pathname === "/docente/home") {
       docenteContext.setColorClase("amarillo");
-    } else if (location.pathname === "/alumno/home" || location.pathname === "/alumno/ajustes") {
+    } else if (location.pathname === "/alumno/home") {
       alumnoContext.setColorClase("azul");
     }
   }, [location]);
 
   color = docenteContext.colorClase ? docenteContext.colorClase : alumnoContext.colorClase ? alumnoContext.colorClase : color;
+  if (location.pathname === "/docente/ajustes" || location.pathname === "/docente/clases/nueva") {
+    color = "amarillo";    
+  } else if (location.pathname === "/alumno/ajustes") {
+    color = "azul";
+  }
+
   return (
     <Link
       to={ruta}
