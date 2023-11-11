@@ -24,9 +24,11 @@ function HomeDocente() {
       {user.user.resumen_clases?.length === 0 ? (
         <div>
           <p className="text-center">No tiene clases registradas</p>
-          <Link to="/docente/clases/nueva" className="text-center underline">
-            Agrega una nueva
-          </Link>
+          <p className="pt-3 text-center font-semibold">
+            <Link to="/docente/clases/nueva" className="underline">
+              Agrega una nueva
+            </Link>
+          </p>
         </div>
       ) : (
         user.user.resumen_clases.map((clase, index) => (

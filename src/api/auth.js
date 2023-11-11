@@ -88,6 +88,9 @@ export async function loginUser({ correo, password, tipo }) {
   } catch (error) {
     if (error.code === "auth/invalid-login-credentials")
       throw Error("Error: Correo o contraseña incorrecta");
+    if (error.code === "auth/network-request-failed") {
+      throw Error("Error: Revisa tu conexión a internet");
+    }
     throw error;
   }
 }

@@ -10,6 +10,7 @@ import * as yup from "yup";
 import { loginUser } from "../../api/auth";
 import { useMutation } from "@tanstack/react-query";
 import BotonAtras from "../../components/BotonAtras";
+import { Spinner } from "flowbite-react";
 
 const docenteSchema = yup.object().shape({
   correo: yup
@@ -96,7 +97,11 @@ function LoginDocente() {
           />
         </div>
       </form>
-      {mutation.isPending && <p className="text-center">Iniciando sesión...</p>}
+      {mutation.isPending && (
+        <span className="text-center">
+          <Spinner /> Iniciando sesión...
+        </span>
+      )}
     </div>
   );
 }

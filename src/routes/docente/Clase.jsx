@@ -4,7 +4,7 @@ import { DocenteContext } from "./RootDocente";
 import { useEffect } from "react";
 import { useLoaderData } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { obtenerClase, obtenerReportes } from "../../api/docente";
+import { obtenerClase, obtenerReportesDeClase } from "../../api/docente";
 import CarruselAsistencia from "../../components/CarruselAsistencia";
 import Input from "../../components/Input";
 import { useState } from "react";
@@ -23,7 +23,7 @@ function Clase() {
   // Obtener información de los reportes
   const reportesQuery = useQuery({
     queryKey: ["reportesClase"],
-    queryFn: () => obtenerReportes(idClase),
+    queryFn: () => obtenerReportesDeClase(idClase),
   });
 
   // Estado de búsqueda de reportes

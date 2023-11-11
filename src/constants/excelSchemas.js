@@ -27,6 +27,10 @@ const alumnosSchema = {
 };
 
 const planSchema = {
+  Semana: {
+    prop: "semana",
+    type: Number,
+  },
   Fecha: {
     prop: "fecha",
     type: Date,
@@ -46,7 +50,7 @@ const schemas = {
 /**
  *
  * @param {File} archivo
- * @param {string} tipo
+ * @param {string} tipo - "horario", "alumnos" o "plan"
  */
 export async function parseArchivo(archivo, tipo) {
   const { rows, errors } = await readXlsxFile(archivo, {
@@ -56,6 +60,5 @@ export async function parseArchivo(archivo, tipo) {
     console.error(errors);
     throw new Error("Error al leer el archivo");
   }
-  console.log(rows);
-  return rows
+  return rows;
 }
