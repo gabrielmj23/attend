@@ -13,7 +13,7 @@ function Boton({
   disabled,
 }) {
   let classNames =
-    "flex flex-row gap-2 rounded-md p-2 font-semibold hover:scale-105 active:scale-105 ";
+    "flex flex-row gap-2 rounded-md p-2 font-semibold hover:scale-105 active:scale-105 w-fit ";
   if (sombra) {
     classNames += " shadow-md ";
   }

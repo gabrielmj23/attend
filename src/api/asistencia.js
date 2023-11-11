@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { app } from "./firebase";
 import { obtenerClase } from "./docente";
+import { hayConexion } from "./conexion";
 
 const db = getFirestore(app);
 
@@ -76,6 +77,9 @@ export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
  */
 export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
   try {
+    if (!hayConexion()) {
+      throw new Error("No hay conexión a internet");
+    }
     // Conseguir tema de la clase correspondiente a esta asistencia
     let temaAst = tema;
     const dirSep = dir.split("-");

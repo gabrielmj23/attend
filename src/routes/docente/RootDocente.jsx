@@ -8,6 +8,7 @@ import { createContext } from "react";
 import { useReducer } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { logoutUser } from "../../api/auth";
 
 /**
  * Contexto de la navegación del docente
@@ -80,6 +81,7 @@ function navReducer(state, action) {
 function authReducer(state, action) {
   switch (action.type) {
     case "login":
+      sessionStorage.setItem("user", JSON.stringify(action.user));
       return {
         user: action.user,
       };
@@ -89,9 +91,13 @@ function authReducer(state, action) {
         data: action.data,
       };
     case "logout":
-      return {
-        user: null,
-      };
+      logoutUser()
+        .then(() => {
+          sessionStorage.removeItem("user");
+        })
+        .finally(() => {
+          return { user: null };
+        });
   }
 }
 

@@ -6,15 +6,23 @@ import { useQuery } from "@tanstack/react-query";
 import { getAsistencia } from "../../api/asistencia";
 import TomarAsistencia from "./TomarAsistencia";
 import VerAsistencia from "./VerAsistencia";
+import { useNavigate } from "react-router-dom";
 
 function PaginaAsistencia() {
+  const navigate = useNavigate();
   const { idClase, fecha } = useLoaderData();
-  const { user, navSetter, nombreClase, lista } = useContext(DocenteContext);
+  const { navSetter, nombreClase, lista } = useContext(DocenteContext);
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
+  // Verificar sesión
+  if (!user) {
+    navigate("/docente/login");
+  }
 
   // Verificar si se ha hecho o no la asistencia
   const { isPending, data } = useQuery({
     queryKey: ["asistenciaDocente"],
-    queryFn: () => getAsistencia(`${user.user.uid}-${idClase}-${fecha}`),
+    queryFn: () => getAsistencia(`${user.uid}-${idClase}-${fecha}`),
   });
 
   // Guardar contexto de la navegación actual

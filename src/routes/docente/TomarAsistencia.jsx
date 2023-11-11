@@ -10,8 +10,6 @@ import { useRef } from "react";
 import BotonAsistencia from "../../components/BotonAsistencia";
 import { useMutation } from "@tanstack/react-query";
 import { agregarAsistencia } from "../../api/asistencia";
-import { useContext } from "react";
-import { DocenteContext } from "./RootDocente";
 import { useNavigate } from "react-router-dom";
 
 function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
@@ -29,12 +27,15 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
   );
 
   // Guardar asistencia en la base de datos
-  const { user } = useContext(DocenteContext);
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const navigate = useNavigate();
+  if (!user) {
+    navigate("/docente/login");
+  }
   const mutation = useMutation({
     mutationFn: () => {
       return agregarAsistencia({
-        dir: `${user.user.uid}-${idClase}-${fecha}`,
+        dir: `${user.uid}-${idClase}-${fecha}`,
         asistencia,
         fecha,
       });
@@ -44,7 +45,21 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
       navigate("/docente/clases/" + idClase);
     },
     onError: (error) => {
-      alert(error.message);
+      console.error(error);
+      alert(
+        "Parece que no tienes conexión. Se guardará la asistencia localmente y podrás sincronizarla desde Ajustes",
+      );
+      const asistenciasLocales = JSON.parse(
+        localStorage.getItem("asistencias"),
+      );
+      localStorage.setItem(
+        "asistencias",
+        JSON.stringify([
+          ...asistenciasLocales,
+          { dir: `${user.uid}-${idClase}-${fecha}`, asistencia, fecha },
+        ]),
+      );
+      navigate("/docente/clases/" + idClase);
     },
   });
 

@@ -4,8 +4,6 @@ import BotonAsistencia from "../../components/BotonAsistencia";
 import { useState } from "react";
 import Boton from "../../components/Boton";
 import SaveOutlinedIcon from "@mui/icons-material/SaveOutlined";
-import { useContext } from "react";
-import { DocenteContext } from "./RootDocente";
 import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { agregarAsistencia } from "../../api/asistencia";
@@ -19,22 +17,42 @@ function VerAsistencia({ idClase, asistencia }) {
   const fechaSep = fechaString.split("-");
 
   // Guardar asistencia en la base de datos si se edita
-  const { user } = useContext(DocenteContext);
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const navigate = useNavigate();
+  if (!user) {
+    navigate("/docente/login");
+  }
   const mutation = useMutation({
     mutationFn: () => {
       return agregarAsistencia({
-        dir: `${user.user.uid}-${idClase}-${asistencia.fecha}`,
+        dir: `${user.uid}-${idClase}-${fechaString}`,
         asistencia: editAsistencia,
-        fecha: asistencia.fecha,
+        fecha: fechaString,
         tema: asistencia.tema,
       });
     },
     onSuccess: () => {
       navigate("/docente/clases/" + idClase);
     },
-    onError: (error) => {
-      alert(error.message);
+    onError: () => {
+      const asistenciasLocales =
+        JSON.parse(localStorage.getItem("asistencias")) || [];
+      localStorage.setItem(
+        "asistencias",
+        JSON.stringify([
+          ...asistenciasLocales,
+          {
+            dir: `${user.uid}-${idClase}-${fechaString}`,
+            asistencia: editAsistencia,
+            fecha: fechaString,
+            tema: asistencia.tema,
+          },
+        ]),
+      );
+      alert(
+        "Parece que no tienes conexión. Se guardará la asistencia localmente y podrás sincronizarla desde Ajustes",
+      );
+      navigate("/docente/clases/" + idClase);
     },
   });
 
@@ -91,7 +109,7 @@ function VerAsistencia({ idClase, asistencia }) {
             ))}
           </tbody>
         </table>
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-col items-center justify-center text-center">
           <Boton
             texto="Guardar"
             tipo="primario"
@@ -100,12 +118,12 @@ function VerAsistencia({ idClase, asistencia }) {
             onClick={() => mutation.mutate()}
           />
           {mutation.isPending && (
-            <>
+            <div>
               <p className="text-center">Guardando cambios...</p>
               <p className="text-center">
                 Calcularemos también los reportes de asistencias...
               </p>
-            </>
+            </div>
           )}
         </div>
       </div>

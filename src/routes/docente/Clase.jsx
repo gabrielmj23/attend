@@ -8,16 +8,23 @@ import { obtenerClase, obtenerReportesDeClase } from "../../api/docente";
 import CarruselAsistencia from "../../components/CarruselAsistencia";
 import Input from "../../components/Input";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Clase() {
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const navigate = useNavigate();
   const { idClase } = useLoaderData();
-  const { user, navSetter, setLista, setNombreClase } =
-    useContext(DocenteContext);
+  const { navSetter, setLista, setNombreClase } = useContext(DocenteContext);
+
+  // Verificar sesión
+  if (!user) {
+    navigate("/docente/login");
+  }
 
   // Obtener informacion de la clase
   const claseQuery = useQuery({
     queryKey: ["claseDocente"],
-    queryFn: () => obtenerClase({ idDocente: user.user.uid, idClase }),
+    queryFn: () => obtenerClase({ idDocente: user.uid, idClase }),
   });
 
   // Obtener información de los reportes
