@@ -27,6 +27,31 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
       return { ...alumno, asistente: false };
     }),
   );
+  //Inicializar AsistenciaManual
+  const [asistenciaManual, setAsistenciaManual] = useState(
+    new Array(asistencia.length).fill(false),
+  );
+
+  //Actualizar Asistencias al hacer click
+  const cambiarAsistencia = (id) => {
+    setAsistencia(
+      asistencia.map((alumno, index) => {
+        if (index === id) {
+          return { ...alumno, asistente: !alumno.asistente };
+        }
+        return alumno;
+      }),
+    );
+
+    setAsistenciaManual(
+      asistenciaManual.map((asistenciaTomada, index) => {
+        if (index === id) {
+          return true;
+        }
+        return asistenciaTomada;
+      }),
+    );
+  };
 
   // Guardar asistencia en la base de datos
   const { user } = useContext(DocenteContext);
@@ -148,20 +173,9 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
                     <BotonAsistencia
                       key={alumno.cedula}
                       id={index}
-                      cambiarAsistencia={(id) =>
-                        setAsistencia(
-                          asistencia.map((alumno, index) => {
-                            if (index === id) {
-                              return {
-                                ...alumno,
-                                asistente: !alumno.asistente,
-                              };
-                            }
-                            return alumno;
-                          }),
-                        )
-                      }
+                      cambiarAsistencia={cambiarAsistencia}
                       asistencia={asistencia}
+                      asistenciaManual={asistenciaManual}
                     />
                   </td>
                 </tr>
