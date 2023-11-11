@@ -197,6 +197,14 @@ export async function agregarClase({
     if (periodos.empty) {
       throw new Error("No hay un periodo activo");
     }
+    // Asegurarse de que todos los elementos del plan sean fechas
+    plan = plan.map((p) => {
+      if (p instanceof Date) return p;
+      else {
+        const [dd, mm, yyyy] = p.split("/");
+        return new Date(`${mm}/${dd}/${yyyy}`);
+      }
+    });
     // Crear clase
     const claseRef = await addDoc(clasesDocente, {
       nombre,

@@ -74,8 +74,15 @@ export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
  * @param {string} asist.fecha
  * @param {Array} asist.asistencia
  * @param {string?} asist.tema
+ * @param {number} asist.semana
  */
-export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
+export async function agregarAsistencia({
+  dir,
+  fecha,
+  asistencia,
+  tema,
+  semana,
+}) {
   try {
     if (!hayConexion()) {
       throw new Error("No hay conexión a internet");
@@ -118,6 +125,7 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
       asistentes: asistencia.filter((a) => a.asistente).length,
       inasistentes: asistencia.filter((a) => !a.asistente).length,
       tema: temaAst,
+      semana,
     });
   } catch (error) {
     console.error(error);

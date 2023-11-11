@@ -31,7 +31,8 @@ function NuevaClase() {
   });
 
   // Guardar contexto de la navegación actual
-  const { user, navSetter } = useContext(DocenteContext);
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const { navSetter } = useContext(DocenteContext);
   const navigate = useNavigate();
   useEffect(() => {
     navSetter({ type: "Nueva Clase", ruta: "/docente/clases/nueva" });
@@ -47,8 +48,8 @@ function NuevaClase() {
   const mutation = useMutation({
     mutationFn: () => {
       return agregarClase({
-        idDocente: user.user.uid,
-        nombreDocente: user.user.nombre,
+        idDocente: user.uid,
+        nombreDocente: user.nombre,
         ...formState,
       });
     },
@@ -216,6 +217,9 @@ function NuevaClase() {
                                       fState.horario.splice(indexRow, 1);
                                       return fState;
                                     });
+                                    setPuedeAvanzar(
+                                      formState.horario.length > 1,
+                                    );
                                   }
                                 }}
                               >
@@ -241,6 +245,7 @@ function NuevaClase() {
                       });
                       return fState;
                     });
+                    setPuedeAvanzar(true);
                   }}
                 >
                   <AddOutlinedIcon />
@@ -351,6 +356,9 @@ function NuevaClase() {
                                       fState.alumnos.splice(indexRow, 1);
                                       return fState;
                                     });
+                                    setPuedeAvanzar(
+                                      formState.alumnos.length > 1,
+                                    );
                                   }
                                 }}
                               >
@@ -375,6 +383,7 @@ function NuevaClase() {
                       });
                       return fState;
                     });
+                    setPuedeAvanzar(true);
                   }}
                 >
                   <AddOutlinedIcon />
@@ -487,6 +496,7 @@ function NuevaClase() {
                                       fState.plan.splice(indexRow, 1);
                                       return fState;
                                     });
+                                    setPuedeAvanzar(formState.plan.length > 1);
                                   }
                                 }}
                               >
@@ -512,6 +522,7 @@ function NuevaClase() {
                       });
                       return fState;
                     });
+                    setPuedeAvanzar(true);
                   }}
                 >
                   <AddOutlinedIcon />

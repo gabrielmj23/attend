@@ -12,7 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { agregarAsistencia } from "../../api/asistencia";
 import { useNavigate } from "react-router-dom";
 
-function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
+function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   // Estado del escáner
   const [camaras, setCamaras] = useState([]);
   const [errorCamara, setErrorCamara] = useState(null);
@@ -38,6 +38,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
         dir: `${user.uid}-${idClase}-${fecha}`,
         asistencia,
         fecha,
+        semana,
       });
     },
     onSuccess: () => {
@@ -56,7 +57,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
         "asistencias",
         JSON.stringify([
           ...asistenciasLocales,
-          { dir: `${user.uid}-${idClase}-${fecha}`, asistencia, fecha },
+          { dir: `${user.uid}-${idClase}-${fecha}`, asistencia, fecha, semana },
         ]),
       );
       navigate("/docente/clases/" + idClase);
@@ -206,6 +207,7 @@ TomarAsistencia.propTypes = {
   fecha: PropTypes.string.isRequired,
   nombreClase: PropTypes.string.isRequired,
   lista: PropTypes.array.isRequired,
+  semana: PropTypes.number.isRequired,
 };
 
 export default TomarAsistencia;

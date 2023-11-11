@@ -29,6 +29,7 @@ function VerAsistencia({ idClase, asistencia }) {
         asistencia: editAsistencia,
         fecha: fechaString,
         tema: asistencia.tema,
+        semana: asistencia.semana,
       });
     },
     onSuccess: () => {
