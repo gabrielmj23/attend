@@ -29,7 +29,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
   );
 
   // Guardar asistencia en la base de datos
-  const { user } = useContext(DocenteContext);
+  const { user, colorClase } = useContext(DocenteContext);
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: () => {
@@ -71,7 +71,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
   return (
     <div className="flex flex-col gap-12 overflow-y-auto pb-32">
       <AppHeader
-        color="amarillo"
+        color={colorClase}
         titulo={nombreClase}
         atras={`/docente/clases/${idClase}`}
       />
@@ -173,7 +173,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
           <Boton
             texto="Guardar"
             tipo="primario"
-            color="amarillo"
+            color={colorClase}
             onClick={() => mutation.mutate()}
             icono={<SaveOutlinedIcon />}
           />

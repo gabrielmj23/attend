@@ -15,10 +15,11 @@ const transformarFecha = (fecha) => {
 function ClaseAlumno() {
   // Obtener datos de la clase
   const { idClase } = useLoaderData();
-  const { user, navSetter } = useContext(AlumnoContext);
+  const { user, navSetter, colorClase } = useContext(AlumnoContext);
   const resumen_clase = user.user.resumen_clases.find(
     (clase) => clase.uid === idClase,
   );
+  
   const porcentajeInasistencias = (
     (resumen_clase.inasistencias / resumen_clase.totalClases) *
     100
@@ -38,7 +39,6 @@ function ClaseAlumno() {
         cedula: user.user.cedula,
       }),
   });
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-4 overflow-y-auto pb-28">
@@ -47,7 +47,7 @@ function ClaseAlumno() {
       ) : (
         <>
           <AppHeader
-            color="azul"
+            color={colorClase}
             titulo={resumen_clase.nombre}
             atras="/alumno/home"
           />

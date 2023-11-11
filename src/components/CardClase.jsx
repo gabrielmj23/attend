@@ -2,9 +2,11 @@ import PropTypes from "prop-types";
 import { BORDES } from "../constants/colores";
 import Boton from "./Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { DocenteContext } from "../routes/docente/RootDocente";
+import { AlumnoContext } from "../routes/alumno/RootAlumno";
+import { useEffect } from "react";
 
 function CardClase({
   id,
@@ -14,10 +16,16 @@ function CardClase({
   horario,
   color,
 }) {
-  const { setColorClase } = useContext(DocenteContext);
+  const { setColorClase: setDocenteColorClase } = useContext(DocenteContext);
+  const { setColorClase: setAlumnoColorClase } = useContext(AlumnoContext);
+  const location = useLocation();
 
   const handleButtonClick = () => {
-    setColorClase(color);
+    if (location.pathname.startsWith("/docente")) {
+      setDocenteColorClase(color);
+    } else if (location.pathname.startsWith('/alumno')) {
+      setAlumnoColorClase(color);
+    }
   };
 
   const classNames =
@@ -79,7 +87,7 @@ CardClase.propTypes = {
   inasistencias: PropTypes.number,
   totalClases: PropTypes.number,
   horario: PropTypes.arrayOf(PropTypes.string).isRequired,
-  color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]),
+  color: PropTypes.oneOf(["amarillo", "azul", "verde", "morado", "azuloscuro", "gris"]),
 };
 
 export default CardClase;

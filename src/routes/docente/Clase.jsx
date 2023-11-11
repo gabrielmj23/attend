@@ -49,7 +49,7 @@ function Clase() {
           <AppHeader
             titulo={claseQuery.data.nombre}
             color={colorClase}
-            atras="/docente/home"
+            atras="/docente/home"            
           />
           <div>
             <h2 className="py-3 ps-4 text-2xl font-semibold">Asistencias</h2>

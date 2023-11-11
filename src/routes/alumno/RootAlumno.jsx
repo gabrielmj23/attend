@@ -6,6 +6,7 @@ import { Outlet } from "react-router-dom";
 import { createContext } from "react";
 import { useReducer } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useState } from "react";
 
 const AlumnoContext = createContext({
   nav: {
@@ -15,7 +16,9 @@ const AlumnoContext = createContext({
   },
   navSetter: () => {},
   user: null,
-  userSetter: () => {},
+  userSetter: () => {},  
+  colorClase: null,
+  setColorClase: () => {},
 });
 
 function navReducer(state, action) {
@@ -68,6 +71,7 @@ function RootAlumno() {
   });
 
   const [userAlumno, dispatchUser] = useReducer(authReducer, { user: null });
+  const [colorClase, setColorClase] = useState(null);
   const queryClient = new QueryClient();
 
   return (
@@ -77,7 +81,9 @@ function RootAlumno() {
           nav: navAlumno,
           navSetter: dispatchNav,
           user: userAlumno,
-          userSetter: dispatchUser,
+          userSetter: dispatchUser,          
+          colorClase,
+          setColorClase,
         }}
       >
         <Outlet />

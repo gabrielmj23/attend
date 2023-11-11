@@ -4,7 +4,7 @@ import CardClase from "../../components/CardClase";
 import { AlumnoContext } from "./RootAlumno";
 import { useEffect } from "react";
 
-const COLORES = ["amarillo", "azul", "verde"];
+const COLORES = ["amarillo", "azul", "verde", "morado", "azuloscuro"];
 
 /**
  * Página mostrada por la ruta /alumno/
@@ -18,7 +18,7 @@ function HomeAlumno() {
   }, [navSetter]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 overflow-y-auto pb-36">
       <AppHeader titulo="Tus Clases" color="azul" />
       {user.user.resumen_clases?.length === 0 ? (
         <div>

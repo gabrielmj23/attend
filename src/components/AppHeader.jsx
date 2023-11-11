@@ -14,7 +14,7 @@ function AppHeader({ titulo, color, atras }) {
 
 AppHeader.propTypes = {
   titulo: PropTypes.string.isRequired,
-  color: PropTypes.oneOf(["amarillo", "azul"]).isRequired,
+  color: PropTypes.oneOf(["amarillo", "azul", "verde", "morado", "azuloscuro"]).isRequired,
   atras: PropTypes.string,
 };
 
