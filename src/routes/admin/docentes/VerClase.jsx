@@ -89,15 +89,16 @@ function VerClase() {
                 textoPlaceholder="Alumno"
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
-              ></Input>              
+              ></Input>               
             </div>
-            <Boton 
-                nombre="Generar reporte"
-                color="verde"
-                onClick={handleDownload } 
-              />
+            <div className="pr-40">
+              <Boton 
+                  texto="Generar reporte"
+                  color="verde"
+                  onClick={handleDownload }
+            />
+            </div>        
           </div>
-
           <div className="flex justify-center px-3 py-4">
             <table className="text-md mb-4 w-5/6 rounded shadow-md">
               <thead className="border-b border-black ">
