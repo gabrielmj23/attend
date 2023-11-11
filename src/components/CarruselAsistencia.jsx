@@ -1,7 +1,36 @@
 import PropTypes from "prop-types";
 import CardAsistencia from "./CardAsistencia";
+import { useRef } from "react";
+import { useEffect } from "react";
+
+/**
+ *
+ * @param {Date} fecha
+ * @param {Date} fechaCercana
+ */
+function esCardActual(fecha, fechaCercana) {
+  return (
+    fecha.getDate() === fechaCercana.getDate() &&
+    fecha.getMonth() === fechaCercana.getMonth() &&
+    fecha.getYear() === fechaCercana.getYear()
+  );
+}
 
 function CarruselAsistencia({ idClase, plan }) {
+  const actualRef = useRef();
+  const hoy = new Date();
+  const fechaCercana = plan.reduce((prev, curr) => {
+    return prev.fecha.toDate() - hoy > curr.fecha.toDate() - hoy ? prev : curr;
+  });
+  useEffect(() => {
+    if (actualRef.current) {
+      actualRef.current.scrollIntoView({
+        block: "end",
+        inline: "center",
+        behavior: "smooth",
+      });
+    }
+  }, [actualRef]);
   return (
     <div className="flex flex-nowrap gap-6 overflow-x-auto px-4">
       {plan.map((asistencia, index) => (
@@ -11,6 +40,11 @@ function CarruselAsistencia({ idClase, plan }) {
           fecha={asistencia.fecha.toDate()}
           contenido={asistencia.tema}
           color="amarillo"
+          refProps={
+            esCardActual(asistencia.fecha.toDate(), fechaCercana.fecha.toDate())
+              ? actualRef
+              : null
+          }
         />
       ))}
     </div>
