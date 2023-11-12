@@ -46,6 +46,8 @@ const APP_HEADER = {
   verde: "bg-verde",
   morado: "bg-morado",
   azuloscuro: "bg-azuloscuro",
+  degradado2: "bg-degradado2",
+  degradado: "bg-degradado",
 };
 
 export { BORDES, BOTONES_PRIMARIO, BOTONES_SECUNDARIO , APP_HEADER };

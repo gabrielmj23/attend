@@ -19,7 +19,7 @@ function HomeAlumno() {
 
   return (
     <div className="flex flex-col gap-4 overflow-y-auto pb-36">
-      <AppHeader titulo="Tus Clases" color="azul" />
+      <AppHeader titulo="Tus Clases" color="degradado"/>
       {user.user.resumen_clases?.length === 0 ? (
         <div>
           <p className="text-center">No tiene clases registradas</p>
