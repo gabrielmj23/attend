@@ -79,7 +79,6 @@ export async function obtenerClase({ idDocente, idClase }) {
       doc(db, "docentes", idDocente, "clases", idClase),
     );
     if (clase.exists()) {
-      console.log("Clase existe", clase.data());
       return clase.data();
     }
     throw new Error("Clase no existe");

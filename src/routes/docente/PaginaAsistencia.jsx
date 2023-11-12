@@ -41,7 +41,6 @@ function PaginaAsistencia() {
     queryFn: () => obtenerClase({ idDocente: user.uid, idClase }),
     enabled: asistenciaQuery.isSuccess && !asistenciaQuery.data,
   });
-  console.log(claseQuery.data);
 
   // Guardar contexto de la navegación actual
   useEffect(() => {

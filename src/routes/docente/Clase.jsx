@@ -14,7 +14,7 @@ function Clase() {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const navigate = useNavigate();
   const { idClase } = useLoaderData();
-  const { navSetter, setLista, setNombreClase, colorClase } =
+  const { navSetter, setLista, setNombreClase, colorClase, setPeriodoClase } =
     useContext(DocenteContext);
 
   // Verificar sesión
@@ -46,6 +46,7 @@ function Clase() {
   if (!claseQuery.isPending && !claseQuery.isError) {
     setNombreClase(claseQuery.data.nombre);
     setLista(claseQuery.data.alumnos);
+    setPeriodoClase(claseQuery.data.idPeriodo);
   }
 
   return (
