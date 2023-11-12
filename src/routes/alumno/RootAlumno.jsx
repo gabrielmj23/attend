@@ -7,6 +7,7 @@ import { createContext } from "react";
 import { useReducer } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
+import { logoutUser } from "../../api/auth";
 
 const AlumnoContext = createContext({
   nav: {
@@ -57,9 +58,13 @@ function authReducer(state, action) {
         data: action.data,
       };
     case "logout":
-      return {
-        user: null,
-      };
+      logoutUser()
+        .then(() => {
+          sessionStorage.removeItem("user");
+        })
+        .finally(() => {
+          return { user: null };
+        });
   }
 }
 

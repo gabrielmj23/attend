@@ -39,28 +39,25 @@ export async function getAsistencia(dir) {
  * @param {string} datos.idClase
  * @param {string} datos.cedula
  */
-export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
+export async function getAsistenciasDeAlumno({ idClase, cedula }) {
   try {
-    const asistenciasClase = await getDocs(
-      query(
-        collection(db, "asistencias"),
-        where("idDocente", "==", idDocente),
-        where("idClase", "==", idClase),
-      ),
+    const snapshot = await getDocs(
+      query(collection(db, "asistencias"), where("idClase", "==", idClase)),
     );
-    if (asistenciasClase.empty) {
-      throw new Error("No se encontraron asistencias de la clase");
+    if (!snapshot.empty) {
+      const pepe = snapshot.docs
+        .map((doc) => doc.data())
+        .map((data) => {
+          return {
+            fecha: data.fecha,
+            tema: data.tema,
+            asistente: data.asistencia.find((ast) => ast.cedula === cedula)
+              .asistente,
+          };
+        });
+      return pepe;
     }
-    return asistenciasClase.docs
-      .map((doc) => doc.data())
-      .map((data) => {
-        return {
-          fecha: data.fecha,
-          tema: data.tema,
-          asistente: data.asistencia.find((ast) => ast.cedula === cedula)
-            .asistente,
-        };
-      });
+    return [];
   } catch (error) {
     console.error(error);
     throw error;

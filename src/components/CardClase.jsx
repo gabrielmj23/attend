@@ -23,7 +23,6 @@ function CardClase({
 
   const handleButtonClick = () => {
     if (location.pathname.startsWith("/docente")) {
-      console.log("TUMADRE");
       setDocenteColorClase(color);
     } else if (location.pathname.startsWith("/alumno")) {
       setAlumnoColorClase(color);
