@@ -15,7 +15,7 @@ const transformarFecha = (fecha) => {
 function ClaseAlumno() {
   // Obtener datos de la clase
   const { idClase } = useLoaderData();
-  const { user, navSetter } = useContext(AlumnoContext);
+  const { user, navSetter, colorClase } = useContext(AlumnoContext);
   const resumen_clase = user.user.resumen_clases.find(
     (clase) => clase.uid === idClase,
   );
@@ -45,15 +45,15 @@ function ClaseAlumno() {
       ) : (
         <>
           <AppHeader
-            color="azul"
+            color={colorClase}
             titulo={resumen_clase.nombre}
             atras="/alumno/home"
           />
           <h2 className="py-3 ps-4 text-2xl font-semibold">
             Datos de asistencia
           </h2>
-          {data.length === 0 ? (
-            <p>No hay asistencias registradas</p>
+          {data.length === 0 ? (                 
+            <p className="text-center">No hay asistencias registradas</p>    
           ) : (
             <div className="flex flex-col justify-center px-4 gap-4">
               <p>
