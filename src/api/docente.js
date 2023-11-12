@@ -74,10 +74,12 @@ export async function obtenerReportesDeClase(idClase) {
  */
 export async function obtenerClase({ idDocente, idClase }) {
   try {
+    console.log("idDocente: ",idDocente,"idClase: ",idClase)
     const clase = await getDoc(
       doc(db, "docentes", idDocente, "clases", idClase),
     );
     if (clase.exists()) {
+      console.log("Clase existe",clase.data());
       return clase.data();
     }
     throw new Error("Clase no existe");
