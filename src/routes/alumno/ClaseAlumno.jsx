@@ -15,11 +15,10 @@ const transformarFecha = (fecha) => {
 function ClaseAlumno() {
   // Obtener datos de la clase
   const { idClase } = useLoaderData();
-  const { user, navSetter, colorClase } = useContext(AlumnoContext);
+  const { user, navSetter } = useContext(AlumnoContext);
   const resumen_clase = user.user.resumen_clases.find(
     (clase) => clase.uid === idClase,
   );
-  
   const porcentajeInasistencias = (
     (resumen_clase.inasistencias / resumen_clase.totalClases) *
     100
@@ -34,7 +33,6 @@ function ClaseAlumno() {
     queryKey: ["asistenciasAlumno"],
     queryFn: () =>
       getAsistenciasDeAlumno({
-        idDocente: resumen_clase.idDocente,
         idClase,
         cedula: user.user.cedula,
       }),
@@ -47,7 +45,7 @@ function ClaseAlumno() {
       ) : (
         <>
           <AppHeader
-            color={colorClase}
+            color="azul"
             titulo={resumen_clase.nombre}
             atras="/alumno/home"
           />
@@ -57,7 +55,7 @@ function ClaseAlumno() {
           {data.length === 0 ? (
             <p>No hay asistencias registradas</p>
           ) : (
-            <div>
+            <div className="flex flex-col justify-center px-4 gap-4">
               <p>
                 Has faltado a {resumen_clase.inasistencias} clases{" "}
                 <strong>({porcentajeInasistencias}% del total)</strong>
@@ -72,7 +70,7 @@ function ClaseAlumno() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data.map((asistencia) => (
+                  {data.map((asistencia, i) => (
                     <tr key={asistencia.fecha} className="border-b">
                       <td>
                         {transformarFecha(
@@ -85,7 +83,7 @@ function ClaseAlumno() {
                       </td>
                       <td>{asistencia.tema}</td>
                       <td>
-                        <BotonAsistencia disabled={asistencia.asistente} />
+                        <BotonAsistencia disabled={true} id={i} asistencia={data}/>
                       </td>
                     </tr>
                   ))}

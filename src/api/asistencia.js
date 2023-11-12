@@ -32,17 +32,16 @@ export async function getAsistencia(dir) {
   }
 }
 
-export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
+export async function getAsistenciasDeAlumno({ idClase, cedula }) {
   try {
     const snapshot = await getDocs(
       query(
         collection(db, "asistencias"),
-        where("idDocente", "==", idDocente),
         where("idClase", "==", idClase),
       ),
     );
     if (!snapshot.empty) {
-      return snapshot.docs
+      const pepe = snapshot.docs
         .map((doc) => doc.data())
         .map((data) => {
           return {
@@ -52,6 +51,7 @@ export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
               .asistente,
           };
         });
+      return pepe;
     }
     return [];
   } catch (error) {
