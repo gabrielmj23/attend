@@ -209,10 +209,10 @@ function VerClase() {
                             className="border-b border-gray-200 text-center hover:bg-gray-200"
                           >
                             <td className="border-x border-black px-2">
-                              {item.fecha.toDate().toLocaleDateString()}{" "}
+                              {item.semana}
                             </td>
                             <td className="border-x border-black px-2">
-                              {item.semana}
+                              {item.fecha.toDate().toLocaleDateString()}
                             </td>
                             <td className="border-x border-black px-4">
                               {item.tema}

@@ -74,12 +74,12 @@ export async function obtenerReportesDeClase(idClase) {
  */
 export async function obtenerClase({ idDocente, idClase }) {
   try {
-    console.log("idDocente: ",idDocente,"idClase: ",idClase)
+    console.log("idDocente: ", idDocente, "idClase: ", idClase);
     const clase = await getDoc(
       doc(db, "docentes", idDocente, "clases", idClase),
     );
     if (clase.exists()) {
-      console.log("Clase existe",clase.data());
+      console.log("Clase existe", clase.data());
       return clase.data();
     }
     throw new Error("Clase no existe");
@@ -195,18 +195,23 @@ export async function agregarClase({
   try {
     const clasesDocente = collection(db, "docentes", idDocente, "clases");
     // Obtener periodo activo
-    const periodos = await getDocs(
-      query(collection(db, "periodos"), where("activo", "==", true)),
+    const periodos = await getDocs(collection(db, "periodos"));
+    const fechaActual = new Date(); // Fecha actual
+    const periodoActivo = periodos.docs.find(
+      (periodo) =>
+        periodo.data().fechaInicio.toDate() <= fechaActual &&
+        periodo.data().fechaFin.toDate() >= fechaActual,
     );
-    if (periodos.empty) {
-      throw new Error("No hay un periodo activo");
+    if (!periodoActivo) {
+      throw new Error("No hay periodo activo");
     }
     // Asegurarse de que todos los elementos del plan sean fechas
     plan = plan.map((p) => {
-      if (p instanceof Date) return p;
+      if (p.fecha instanceof Date) return p;
       else {
-        const [dd, mm, yyyy] = p.split("/");
-        return new Date(`${mm}/${dd}/${yyyy}`);
+        console.log(p);
+        const [dd, mm, yyyy] = p.fecha.split("/");
+        return { ...p, fecha: new Date(`${mm}/${dd}/${yyyy}`) };
       }
     });
     // Crear clase
@@ -217,7 +222,7 @@ export async function agregarClase({
       plan,
       escuela,
       totalClases: plan.length,
-      idPeriodo: periodos.docs[0].id,
+      idPeriodo: periodoActivo.id,
     });
     // Actualizar resumen de clases del docente
     await updateDoc(doc(db, "docentes", idDocente), {

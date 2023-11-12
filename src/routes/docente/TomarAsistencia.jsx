@@ -126,7 +126,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
           Escanea el código de barras detrás de tu carnet
         </h2>
         {errorCamara ? (
-        <p className="text-md text-center font-semibold text-red-800">
+          <p className="text-md text-center font-semibold text-red-800">
             Error activando camara - {errorCamara.toString()}
           </p>
         ) : null}
@@ -166,6 +166,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
                   (alumno) => alumno.cedula === cedula,
                 );
                 if (index !== -1) {
+                  alert("Cédula " + cedula + ": asistente");
                   return asistencia.map((alumno, idx) => {
                     if (index === idx) {
                       return { ...alumno, asistente: true };
