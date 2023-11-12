@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { createContext } from "react";
 import { useReducer } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { logoutUser } from "../../api/auth";
 
 const AdminAuthContext = createContext({
   user: null,
@@ -20,9 +21,13 @@ function authReducer(state, action) {
         data: action.data,
       };
     case "logout":
-      return {
-        user: null,
-      };
+      logoutUser()
+        .then(() => {
+          sessionStorage.removeItem("user");
+        })
+        .finally(() => {
+          return { user: null };
+        });
   }
 }
 
