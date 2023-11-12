@@ -72,6 +72,7 @@ export async function getAsistenciasDeAlumno({ idClase, cedula }) {
  * @param {Array} asist.asistencia
  * @param {string?} asist.tema
  * @param {number} asist.semana
+ * @param {string} asist.idPeriodo
  */
 export async function agregarAsistencia({
   dir,
@@ -79,6 +80,7 @@ export async function agregarAsistencia({
   asistencia,
   tema,
   semana,
+  idPeriodo,
 }) {
   try {
     if (!hayConexion()) {
@@ -123,6 +125,7 @@ export async function agregarAsistencia({
       inasistentes: asistencia.filter((a) => !a.asistente).length,
       tema: temaAst,
       semana,
+      idPeriodo,
     });
   } catch (error) {
     console.error(error);

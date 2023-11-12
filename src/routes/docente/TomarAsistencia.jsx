@@ -54,7 +54,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   };
 
   // Estilo
-  const { colorClase } = useContext(DocenteContext);
+  const { colorClase, periodoClase } = useContext(DocenteContext);
 
   // Guardar asistencia en la base de datos
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -69,6 +69,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
         asistencia,
         fecha,
         semana,
+        idPeriodo: periodoClase,
       });
     },
     onSuccess: () => {
