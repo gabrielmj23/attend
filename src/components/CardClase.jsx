@@ -3,6 +3,10 @@ import { BORDES } from "../constants/colores";
 import Boton from "./Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { useLocation } from "react-router-dom";
+import { DocenteContext } from "../routes/docente/RootDocente";
+import { AlumnoContext } from "../routes/alumno/RootAlumno";
 
 function CardClase({
   id,
@@ -12,6 +16,20 @@ function CardClase({
   horario,
   color,
 }) {
+  // Controlar color del sistema
+  const { setColorClase: setDocenteColorClase } = useContext(DocenteContext);
+  const { setColorClase: setAlumnoColorClase } = useContext(AlumnoContext);
+  const location = useLocation();
+
+  const handleButtonClick = () => {
+    if (location.pathname.startsWith("/docente")) {
+      console.log("TUMADRE");
+      setDocenteColorClase(color);
+    } else if (location.pathname.startsWith("/alumno")) {
+      setAlumnoColorClase(color);
+    }
+  };
+
   const classNames =
     "flex flex-col gap-4 rounded-xl mx-6 py-3 px-2 border-4 shadow-lg " +
     BORDES[color];
@@ -19,6 +37,7 @@ function CardClase({
   if (inasistencias > -1) {
     porcentajeInasistencias = ((inasistencias / totalClases) * 100).toFixed(2);
   }
+
   return (
     <div className={classNames}>
       <div>
@@ -57,6 +76,7 @@ function CardClase({
             icono={<ArrowForwardIcon />}
             tipo="primario"
             color={color}
+            onClick={handleButtonClick}
           />
         </Link>
       </div>
@@ -70,7 +90,7 @@ CardClase.propTypes = {
   inasistencias: PropTypes.number,
   totalClases: PropTypes.number,
   horario: PropTypes.arrayOf(PropTypes.string).isRequired,
-  color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]),
+  color: PropTypes.oneOf(["amarillo", "azul", "verde", "morado", "azuloscuro"]),
 };
 
 export default CardClase;

@@ -179,6 +179,7 @@ export async function obtenerIDPeriodoActivo() {
  * @param {string} clase.nombre
  * @param {Array} clase.horario
  * @param {Array} clase.alumnos
+ * @param {string} clase.escuela
  * @param {Array} clase.plan
  */
 export async function agregarClase({
@@ -186,6 +187,7 @@ export async function agregarClase({
   nombre,
   horario,
   alumnos,
+  escuela,
   plan,
 }) {
   try {
@@ -211,6 +213,7 @@ export async function agregarClase({
       horario,
       alumnos,
       plan,
+      escuela,
       totalClases: plan.length,
       idPeriodo: periodos.docs[0].id,
     });

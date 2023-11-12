@@ -14,7 +14,8 @@ function Clase() {
   const user = JSON.parse(sessionStorage.getItem("user"));
   const navigate = useNavigate();
   const { idClase } = useLoaderData();
-  const { navSetter, setLista, setNombreClase } = useContext(DocenteContext);
+  const { navSetter, setLista, setNombreClase, colorClase } =
+    useContext(DocenteContext);
 
   // Verificar sesión
   if (!user) {
@@ -55,12 +56,16 @@ function Clase() {
         <>
           <AppHeader
             titulo={claseQuery.data.nombre}
-            color="amarillo"
+            color={colorClase}
             atras="/docente/home"
           />
           <div>
             <h2 className="py-3 ps-4 text-2xl font-semibold">Asistencias</h2>
-            <CarruselAsistencia idClase={idClase} plan={claseQuery.data.plan} />
+            <CarruselAsistencia
+              idClase={idClase}
+              plan={claseQuery.data.plan}
+              color={colorClase}
+            />
           </div>
           <div className="flex w-4/5 flex-col">
             <h2 className="py-3 ps-4 text-2xl font-semibold">Reportes</h2>

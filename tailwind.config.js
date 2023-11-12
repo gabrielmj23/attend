@@ -98,6 +98,14 @@ export default {
           DEFAULT: "#89A9FF",
           activo: "#89A9FF",
         },
+        morado: {
+          DEFAULT: "#996CF0",
+          activo: "#996CF0",
+        },
+        azuloscuro: {
+          DEFAULT: "#526FEB",
+          activo: "#526FEB",
+        },
       },
       boxShadow: {
         // light

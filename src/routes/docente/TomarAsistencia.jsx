@@ -11,6 +11,8 @@ import BotonAsistencia from "../../components/BotonAsistencia";
 import { useMutation } from "@tanstack/react-query";
 import { agregarAsistencia } from "../../api/asistencia";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { DocenteContext } from "./RootDocente";
 
 function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   // Estado del escáner
@@ -25,6 +27,9 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
       return { ...alumno, asistente: false };
     }),
   );
+
+  // Estilo
+  const { colorClase } = useContext(DocenteContext);
 
   // Guardar asistencia en la base de datos
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -87,7 +92,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   return (
     <div className="flex flex-col gap-12 overflow-y-auto pb-32">
       <AppHeader
-        color="amarillo"
+        color={colorClase}
         titulo={nombreClase}
         atras={`/docente/clases/${idClase}`}
       />
@@ -96,7 +101,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
           Escanea el código de barras detrás de tu carnet
         </h2>
         {errorCamara ? (
-          <p className="text-center text-lg font-semibold text-red-800">
+        <p className="text-md text-center font-semibold text-red-800">
             Error activando camara - {errorCamara.toString()}
           </p>
         ) : null}

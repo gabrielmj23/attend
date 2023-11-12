@@ -6,6 +6,7 @@ import AppHeader from "../../components/AppHeader";
 import { getAsistenciasDeAlumno } from "../../api/asistencia";
 import BotonAsistencia from "../../components/BotonAsistencia";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const transformarFecha = (fecha) => {
   const aux = fecha.split("-");
@@ -15,8 +16,13 @@ const transformarFecha = (fecha) => {
 function ClaseAlumno() {
   // Obtener datos de la clase
   const { idClase } = useLoaderData();
-  const { user, navSetter } = useContext(AlumnoContext);
-  const resumen_clase = user.user.resumen_clases.find(
+  const navigate = useNavigate();
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  if (!user) {
+    navigate("/alumno/login");
+  }
+  const { navSetter, colorClase } = useContext(AlumnoContext);
+  const resumen_clase = user.resumen_clases.find(
     (clase) => clase.uid === idClase,
   );
   const porcentajeInasistencias = (
@@ -35,19 +41,18 @@ function ClaseAlumno() {
       getAsistenciasDeAlumno({
         idDocente: resumen_clase.idDocente,
         idClase,
-        cedula: user.user.cedula,
+        cedula: user.cedula,
       }),
   });
-  console.log(data);
 
   return (
     <div className="flex flex-col gap-4 overflow-y-auto pb-28">
-      {isPending ? (
+      {isPending || !data ? (
         <p className="text-center">Cargando clase...</p>
       ) : (
         <>
           <AppHeader
-            color="azul"
+            color={colorClase}
             titulo={resumen_clase.nombre}
             atras="/alumno/home"
           />

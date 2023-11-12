@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-const COLORES = ["amarillo", "azul", "verde"];
+const COLORES = ["amarillo", "azul", "verde", "morado", "azuloscuro"];
 
 /**
  * Página mostrada por la ruta /docente/
