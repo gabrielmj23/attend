@@ -91,11 +91,9 @@ function VerClases() {
               </div>
               <div className="flex flex-row justify-center">
                 {clasesQuery.data.map((clase) => {
-                  console.log(clase.nombre);
                   if (clase.idPeriodo != idActivoQuery.data) {
                     return (
                       <div key={clase.id}>
-                        {console.log("ID DOCENTE: ", clase.id)}
                         <CardClase
                           idDocente={idDocente}
                           idClase={clase.id}

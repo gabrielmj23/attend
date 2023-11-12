@@ -46,9 +46,11 @@ function HomeAdmin() {
         </Link>
       </WebNav>
       {isPending ? (
-        <span className="pt-8 text-center">
-          <Spinner color="success" /> Cargando...
-        </span>
+        <div className="w-full pt-8">
+          <span className="pt-8 text-center">
+            <Spinner color="success" /> Cargando...
+          </span>
+        </div>
       ) : (
         <div>
           <h2 className="pl- py-8 ps-16 text-2xl font-semibold">

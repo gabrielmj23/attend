@@ -7,21 +7,14 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { obtenerReportesDeClase, obtenerClase } from "../../../api/docente";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import { set } from "react-hook-form";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { useParams } from "react-router-dom";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import { Modal, Spinner } from "flowbite-react";
 
 function VerClase() {
   const { idDocente, idClase } = useLoaderData();
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
+  const [openModal, setOpenModal] = useState(false);
 
   // Estado de búsqueda de reportes
   const [busqueda, setBusqueda] = useState("");
@@ -38,8 +31,6 @@ function VerClase() {
       idDocente && idClase ? obtenerClase({ idDocente, idClase }) : null,
     enabled: !!idDocente && !!idClase, // No ejecutar la consulta hasta que idDocente e idClase estén disponibles
   });
-
-  const [mostrarPlan, setMostrarPlan] = useState(false);
 
   const handleDownload = () => {
     const wb = XLSX.utils.book_new();
@@ -62,31 +53,35 @@ function VerClase() {
     const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
     saveAs(
       new Blob([wbout], { type: "application/octet-stream" }),
-      "reportes.xlsx",
+      `Reporte ${idClase}.xlsx`,
     );
   };
 
   return (
-    (
-      <div>
-        <WebNav>
-          <Link
-            to="/admin/home"
-            className="text-neutral-800 hover:text-neutral-900 hover:underline"
-          >
-            Periodos
-          </Link>
-          <Link
-            to="/admin/docentes"
-            className="hover:text-neutral-900 hover:underline"
-          >
-            Docentes
-          </Link>
-        </WebNav>
+    <div>
+      <WebNav>
+        <Link
+          to="/admin/home"
+          className="text-neutral-800 hover:text-neutral-900 hover:underline"
+        >
+          Periodos
+        </Link>
+        <Link
+          to="/admin/docentes"
+          className="hover:text-neutral-900 hover:underline"
+        >
+          Docentes
+        </Link>
+      </WebNav>
 
-        {asistenciaQuery.isPending ? (
-          <div>Cargando</div>
-        ) : (
+      {asistenciaQuery.isPending ? (
+        <div className="flex w-screen flex-row justify-center pt-8">
+          <span className="text-center">
+            <Spinner color="success" /> Cargando...
+          </span>
+        </div>
+      ) : (
+        <>
           <div>
             <h2 className="pl- py-8 ps-16 text-2xl font-semibold">Clase</h2>
             <div className="flex items-end justify-between">
@@ -101,11 +96,26 @@ function VerClase() {
                   onChange={(e) => setBusqueda(e.target.value)}
                 ></Input>
               </div>
+              <Boton
+                texto="Ver Plan de Clases"
+                tipo="primario"
+                icono={<VisibilityIcon />}
+                color="verde"
+                onClick={() => setOpenModal(true)}
+              />
+              <div className="pr-40">
+                <Boton
+                  texto="Generar reporte"
+                  color="verde"
+                  icono={<BarChartIcon />}
+                  onClick={handleDownload}
+                />
+              </div>
             </div>
             <div className="flex justify-center px-3 py-4">
               <table className="text-md mb-4 w-5/6 rounded shadow-md">
                 <thead className="border-b border-black ">
-                  <tr>
+                  <tr className="hover:bg-gray-200">
                     <th scope="col" className="px-20">
                       Cédula
                     </th>
@@ -139,7 +149,7 @@ function VerClase() {
                         .includes(busqueda.toLowerCase()),
                     )
                     .map((alumno, i) => (
-                      <tr key={i} className="text-center">
+                      <tr key={i} className="text-center hover:bg-gray-200">
                         <td>{alumno.data().cedula}</td>
                         <td>{alumno.data().nombre}</td>
                         <td>{alumno.data().asistencias}</td>
@@ -155,114 +165,69 @@ function VerClase() {
                 </tbody>
               </table>
             </div>
-            <div className="flex justify-center">
-              <Boton
-                texto="Ver Plan de Clases"
-                tipo="primario"
-                icono={mostrarPlan ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                color="verde"
-                onClick={() => setMostrarPlan(!mostrarPlan)}
-              />
-            </div>
-            {mostrarPlan &&
+            <div className="flex justify-center"></div>
+            {openModal &&
               (claseQuery.isPending ? (
                 <p>Cargando plan de clases</p>
               ) : (
-                <div className="flex justify-center px-3 py-4">
-                  <table className="text-md mb-4 w-1/2 rounded shadow-md">
-                    <thead className="border-y border-black">
-                      <tr className="">
-                        <th scope="col" className="border-x border-black px-2">
-                          Fecha
-                        </th>
-                        <th scope="col" className="border-x border-black px-2">
-                          Semana
-                        </th>
-                        <th scope="col" className="border-x border-black px-2">
-                          Tema
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="border-b border-black">
-                      {claseQuery.data.plan.map((item, index) => (
-                        <tr
-                          key={index}
-                          className="border-b border-gray-200 py-2 text-center"
-                        >
-                          <td className="border-x border-black px-2">
-                            {item.fecha.toDate().toLocaleDateString()}{" "}
-                          </td>
-                          <td className="border-x border-black px-2">
-                            {item.semana}
-                          </td>
-                          <td className="border-x border-black px-4">
-                            {item.tema}
-                          </td>
+                <Modal
+                  show={openModal}
+                  onClose={() => setOpenModal(false)}
+                  className="bg-gray-400"
+                >
+                  <Modal.Header className="bg-gray-100">
+                    <h2 className="font-semibold text-black">Plan de Clase</h2>
+                  </Modal.Header>
+                  <Modal.Body className="bg-gray-100">
+                    <table className="text-md mx-auto mb-4 rounded shadow-md">
+                      <thead className="border-y border-black">
+                        <tr className="hover:bg-gray-200">
+                          <th
+                            scope="col"
+                            className="border-x border-black px-2"
+                          >
+                            Fecha
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-x border-black px-2"
+                          >
+                            Semana
+                          </th>
+                          <th
+                            scope="col"
+                            className="border-x border-black px-2"
+                          >
+                            Tema
+                          </th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                      </thead>
+                      <tbody className="border-b border-black">
+                        {claseQuery.data.plan.map((item, index) => (
+                          <tr
+                            key={index}
+                            className="border-b border-gray-200 text-center hover:bg-gray-200"
+                          >
+                            <td className="border-x border-black px-2">
+                              {item.fecha.toDate().toLocaleDateString()}{" "}
+                            </td>
+                            <td className="border-x border-black px-2">
+                              {item.semana}
+                            </td>
+                            <td className="border-x border-black px-4">
+                              {item.tema}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </Modal.Body>
+                </Modal>
               ))}
-            <div className="pr-40">
-              <Boton
-                texto="Generar reporte"
-                color="verde"
-                icono={<BarChartIcon />}
-                onClick={handleDownload}
-              />
-            </div>
           </div>
-          <div className="flex justify-center px-3 py-4">
-            <table className="text-md mb-4 w-5/6 rounded shadow-md">
-              <thead className="border-b border-black ">
-                <tr>
-                  <th scope="col" className="px-20">
-                    Cédula
-                  </th>
-                  <th scope="col" className="border-x border-black px-20">
-                    Nombre
-                  </th>
-                  <th scope="col" className="w-1/6 border-x border-black px-2">
-                    Asistencias
-                  </th>
-                  <th scope="col" className="w-1/6 border-x border-black px-2">
-                    Inasistencias
-                  </th>
-                  <th scope="col" className="w-1/6 px-2">
-                    % de inasistencias
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="">
-                {asistenciaQuery.data
-                  .filter((clase) => clase.data().idClase === idClase)
-                  .filter((clase) =>
-                    clase
-                      .data()
-                      .nombre.toLowerCase()
-                      .includes(busqueda.toLowerCase()),
-                  )
-                  .map((alumno, i) => (
-                    <tr key={i} className="text-center">
-                      <td>{alumno.data().cedula}</td>
-                      <td>{alumno.data().nombre}</td>
-                      <td>{alumno.data().asistencias}</td>
-                      <td>{alumno.data().inasistencias}</td>
-                      <td>
-                        {(
-                          (alumno.data().inasistencias * 100) /
-                          alumno.data().totalClases
-                        ).toFixed(2)}
-                      </td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-    )
+        </>
+      )}
+    </div>
   );
 }
 
