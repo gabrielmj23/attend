@@ -105,7 +105,7 @@ export default {
         azuloscuro: {
           DEFAULT: "#526FEB",
           activo: "#526FEB",
-        }
+        },
       },
       boxShadow: {
         // light

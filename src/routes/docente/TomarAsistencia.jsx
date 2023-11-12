@@ -10,11 +10,11 @@ import { useRef } from "react";
 import BotonAsistencia from "../../components/BotonAsistencia";
 import { useMutation } from "@tanstack/react-query";
 import { agregarAsistencia } from "../../api/asistencia";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { DocenteContext } from "./RootDocente";
-import { useNavigate } from "react-router-dom";
 
-function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
+function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   // Estado del escáner
   const [camaras, setCamaras] = useState([]);
   const [errorCamara, setErrorCamara] = useState(null);
@@ -28,15 +28,22 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
     }),
   );
 
+  // Estilo
+  const { colorClase } = useContext(DocenteContext);
+
   // Guardar asistencia en la base de datos
-  const { user } = useContext(DocenteContext);
+  const user = JSON.parse(sessionStorage.getItem("user"));
   const navigate = useNavigate();
+  if (!user) {
+    navigate("/docente/login");
+  }
   const mutation = useMutation({
     mutationFn: () => {
       return agregarAsistencia({
-        dir: `${user.user.uid}-${idClase}-${fecha}`,
+        dir: `${user.uid}-${idClase}-${fecha}`,
         asistencia,
         fecha,
+        semana,
       });
     },
     onSuccess: () => {
@@ -44,7 +51,21 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
       navigate("/docente/clases/" + idClase);
     },
     onError: (error) => {
-      alert(error.message);
+      console.error(error);
+      alert(
+        "Parece que no tienes conexión. Se guardará la asistencia localmente y podrás sincronizarla desde Ajustes",
+      );
+      const asistenciasLocales = JSON.parse(
+        localStorage.getItem("asistencias"),
+      );
+      localStorage.setItem(
+        "asistencias",
+        JSON.stringify([
+          ...asistenciasLocales,
+          { dir: `${user.uid}-${idClase}-${fecha}`, asistencia, fecha, semana },
+        ]),
+      );
+      navigate("/docente/clases/" + idClase);
     },
   });
 
@@ -71,7 +92,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
   return (
     <div className="flex flex-col gap-12 overflow-y-auto pb-32">
       <AppHeader
-        color="amarillo"
+        color={colorClase}
         titulo={nombreClase}
         atras={`/docente/clases/${idClase}`}
       />
@@ -80,7 +101,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista }) {
           Escanea el código de barras detrás de tu carnet
         </h2>
         {errorCamara ? (
-          <p className="text-center text-lg font-semibold text-red-800">
+        <p className="text-md text-center font-semibold text-red-800">
             Error activando camara - {errorCamara.toString()}
           </p>
         ) : null}
@@ -191,6 +212,7 @@ TomarAsistencia.propTypes = {
   fecha: PropTypes.string.isRequired,
   nombreClase: PropTypes.string.isRequired,
   lista: PropTypes.array.isRequired,
+  semana: PropTypes.number.isRequired,
 };
 
 export default TomarAsistencia;

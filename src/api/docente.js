@@ -179,6 +179,7 @@ export async function obtenerIDPeriodoActivo() {
  * @param {string} clase.nombre
  * @param {Array} clase.horario
  * @param {Array} clase.alumnos
+ * @param {string} clase.escuela
  * @param {Array} clase.plan
  */
 export async function agregarClase({
@@ -186,6 +187,7 @@ export async function agregarClase({
   nombre,
   horario,
   alumnos,
+  escuela,
   plan,
 }) {
   try {
@@ -197,12 +199,21 @@ export async function agregarClase({
     if (periodos.empty) {
       throw new Error("No hay un periodo activo");
     }
+    // Asegurarse de que todos los elementos del plan sean fechas
+    plan = plan.map((p) => {
+      if (p instanceof Date) return p;
+      else {
+        const [dd, mm, yyyy] = p.split("/");
+        return new Date(`${mm}/${dd}/${yyyy}`);
+      }
+    });
     // Crear clase
     const claseRef = await addDoc(clasesDocente, {
       nombre,
       horario,
       alumnos,
       plan,
+      escuela,
       totalClases: plan.length,
       idPeriodo: periodos.docs[0].id,
     });

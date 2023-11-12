@@ -8,16 +8,24 @@ import { obtenerClase, obtenerReportesDeClase } from "../../api/docente";
 import CarruselAsistencia from "../../components/CarruselAsistencia";
 import Input from "../../components/Input";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Clase() {
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const navigate = useNavigate();
   const { idClase } = useLoaderData();
-  const { user, navSetter, setLista, setNombreClase } =
+  const { navSetter, setLista, setNombreClase, colorClase } =
     useContext(DocenteContext);
+
+  // Verificar sesión
+  if (!user) {
+    navigate("/docente/login");
+  }
 
   // Obtener informacion de la clase
   const claseQuery = useQuery({
     queryKey: ["claseDocente"],
-    queryFn: () => obtenerClase({ idDocente: user.user.uid, idClase }),
+    queryFn: () => obtenerClase({ idDocente: user.uid, idClase }),
   });
 
   // Obtener información de los reportes
@@ -48,12 +56,16 @@ function Clase() {
         <>
           <AppHeader
             titulo={claseQuery.data.nombre}
-            color="amarillo"
+            color={colorClase}
             atras="/docente/home"
           />
           <div>
             <h2 className="py-3 ps-4 text-2xl font-semibold">Asistencias</h2>
-            <CarruselAsistencia idClase={idClase} plan={claseQuery.data.plan} />
+            <CarruselAsistencia
+              idClase={idClase}
+              plan={claseQuery.data.plan}
+              color={colorClase}
+            />
           </div>
           <div className="flex w-4/5 flex-col">
             <h2 className="py-3 ps-4 text-2xl font-semibold">Reportes</h2>

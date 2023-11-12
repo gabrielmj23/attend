@@ -1,21 +1,18 @@
-import React from "react";
 import { useLoaderData, Link } from "react-router-dom";
 import WebNav from "../../../components/WebNav";
-import AppHeader from "../../../components/AppHeader";
 import Input from "../../../components/Input";
 import Boton from "../../../components/Boton";
 import SearchIcon from "@mui/icons-material/Search";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { obtenerReportesDeClase } from "../../../api/docente";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import { set } from "react-hook-form";
+import { saveAs } from "file-saver";
+import * as XLSX from "xlsx";
 
 function VerClase() {
   const { idClase } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
-  const [reportes, setReportes] = useState(null);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
@@ -25,9 +22,34 @@ function VerClase() {
   const [busqueda, setBusqueda] = useState("");
 
   const asistenciaQuery = useQuery({
-    queryKey: ["obtenerReportes"],
+    queryKey: ["obtenerReportesAdmin"],
     queryFn: () => obtenerReportesDeClase(idClase),
   });
+
+  const handleDownload = () => {
+    const wb = XLSX.utils.book_new();
+    const filteredData = asistenciaQuery.data.filter(
+      (clase) => clase.data().idClase === idClase,
+    );
+    const data = filteredData.map((clase) => {
+      const claseData = clase.data(); // Obtiene los datos del documento
+      return {
+        Cedula: claseData.cedula,
+        Nombre: claseData.nombre,
+        Asistencias: claseData.asistencias,
+        Inasistencias: claseData.inasistencias,
+        "% de inasistencias":
+          (claseData.inasistencias * 100) / claseData.totalClases,
+      };
+    });
+    const ws = XLSX.utils.json_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, "Reportes");
+    const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    saveAs(
+      new Blob([wbout], { type: "application/octet-stream" }),
+      "reportes.xlsx",
+    );
+  };
 
   return (
     <div>
@@ -63,8 +85,15 @@ function VerClase() {
                 onChange={(e) => setBusqueda(e.target.value)}
               ></Input>
             </div>
+            <div className="pr-40">
+              <Boton
+                texto="Generar reporte"
+                color="verde"
+                icono={<BarChartIcon />}
+                onClick={handleDownload}
+              />
+            </div>
           </div>
-
           <div className="flex justify-center px-3 py-4">
             <table className="text-md mb-4 w-5/6 rounded shadow-md">
               <thead className="border-b border-black ">
