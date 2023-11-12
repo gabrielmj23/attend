@@ -10,13 +10,14 @@ import {
   createUserWithEmailAndPassword,
   initializeAuth,
   updateProfile,
+  signOut,
 } from "firebase/auth";
 import { app } from "./firebase";
 import { agregarAdmin } from "./admin";
 import { agregarDocente } from "./docente";
 import { agregarAlumno } from "./alumno";
 
-const auth = initializeAuth(app);
+export const auth = initializeAuth(app);
 
 /**
  * @param {Object} admin
@@ -113,4 +114,8 @@ export async function signUpAlumno({ nombre, cedula, correo, password }) {
     console.error(error);
     throw new Error("Ocurrió un error al crear el usuario");
   }
+}
+
+export async function logoutUser() {
+  await signOut(auth);
 }

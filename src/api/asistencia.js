@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { app } from "./firebase";
 import { obtenerClase } from "./docente";
+import { hayConexion } from "./conexion";
 
 const db = getFirestore(app);
 
@@ -38,28 +39,25 @@ export async function getAsistencia(dir) {
  * @param {string} datos.idClase
  * @param {string} datos.cedula
  */
-export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
+export async function getAsistenciasDeAlumno({ idClase, cedula }) {
   try {
-    const asistenciasClase = await getDocs(
-      query(
-        collection(db, "asistencias"),
-        where("idDocente", "==", idDocente),
-        where("idClase", "==", idClase),
-      ),
+    const snapshot = await getDocs(
+      query(collection(db, "asistencias"), where("idClase", "==", idClase)),
     );
-    if (asistenciasClase.empty) {
-      throw new Error("No se encontraron asistencias de la clase");
+    if (!snapshot.empty) {
+      const pepe = snapshot.docs
+        .map((doc) => doc.data())
+        .map((data) => {
+          return {
+            fecha: data.fecha,
+            tema: data.tema,
+            asistente: data.asistencia.find((ast) => ast.cedula === cedula)
+              .asistente,
+          };
+        });
+      return pepe;
     }
-    return asistenciasClase.docs
-      .map((doc) => doc.data())
-      .map((data) => {
-        return {
-          fecha: data.fecha,
-          tema: data.tema,
-          asistente: data.asistencia.find((ast) => ast.cedula === cedula)
-            .asistente,
-        };
-      });
+    return [];
   } catch (error) {
     console.error(error);
     throw error;
@@ -73,9 +71,19 @@ export async function getAsistenciasDeAlumno({ idDocente, idClase, cedula }) {
  * @param {string} asist.fecha
  * @param {Array} asist.asistencia
  * @param {string?} asist.tema
+ * @param {number} asist.semana
  */
-export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
+export async function agregarAsistencia({
+  dir,
+  fecha,
+  asistencia,
+  tema,
+  semana,
+}) {
   try {
+    if (!hayConexion()) {
+      throw new Error("No hay conexión a internet");
+    }
     // Conseguir tema de la clase correspondiente a esta asistencia
     let temaAst = tema;
     const dirSep = dir.split("-");
@@ -114,6 +122,7 @@ export async function agregarAsistencia({ dir, fecha, asistencia, tema }) {
       asistentes: asistencia.filter((a) => a.asistente).length,
       inasistentes: asistencia.filter((a) => !a.asistente).length,
       tema: temaAst,
+      semana,
     });
   } catch (error) {
     console.error(error);

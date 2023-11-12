@@ -16,7 +16,7 @@ function esCardActual(fecha, fechaCercana) {
   );
 }
 
-function CarruselAsistencia({ idClase, plan }) {
+function CarruselAsistencia({ idClase, plan, color }) {
   const actualRef = useRef();
   const hoy = new Date();
   const fechaCercana = plan.reduce((prev, curr) => {
@@ -39,7 +39,7 @@ function CarruselAsistencia({ idClase, plan }) {
           idClase={idClase}
           fecha={asistencia.fecha.toDate()}
           contenido={asistencia.tema}
-          color="amarillo"
+          color={color}
           refProps={
             esCardActual(asistencia.fecha.toDate(), fechaCercana.fecha.toDate())
               ? actualRef
@@ -54,6 +54,7 @@ function CarruselAsistencia({ idClase, plan }) {
 CarruselAsistencia.propTypes = {
   idClase: PropTypes.string.isRequired,
   plan: PropTypes.array.isRequired,
+  color: PropTypes.string.isRequired,
 };
 
 export default CarruselAsistencia;

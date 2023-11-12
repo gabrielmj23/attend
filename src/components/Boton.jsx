@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { BOTONES_PRIMARIO } from "../constants/colores";
+import { BOTONES_PRIMARIO, BOTONES_SECUNDARIO } from "../constants/colores";
 
 function Boton({
   texto,
@@ -13,7 +13,7 @@ function Boton({
   disabled,
 }) {
   let classNames =
-    "flex flex-row gap-2 rounded-md p-2 font-semibold hover:scale-105 active:scale-105 ";
+    "flex flex-row gap-2 rounded-md p-2 font-semibold hover:scale-105 active:scale-105 w-fit ";
   if (sombra) {
     classNames += " shadow-md ";
   }
@@ -24,7 +24,7 @@ function Boton({
       classNames += BOTONES_PRIMARIO[color];
     }
   } else {
-    classNames += " border-[#8c7027] border-[3px] text-[#8c7027] bg-slate-200";
+    classNames += BOTONES_SECUNDARIO[color];
   }
   return (
     <button

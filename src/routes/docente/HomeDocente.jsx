@@ -4,8 +4,9 @@ import CardClase from "../../components/CardClase";
 import { DocenteContext } from "./RootDocente";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const COLORES = ["amarillo", "azul", "verde"];
+const COLORES = ["amarillo", "azul", "verde", "morado", "azuloscuro"];
 
 /**
  * Página mostrada por la ruta /docente/
@@ -13,7 +14,12 @@ const COLORES = ["amarillo", "azul", "verde"];
  */
 function HomeDocente() {
   // Guardar contexto de la navegación actual
-  const { user, navSetter } = useContext(DocenteContext);
+  const user = JSON.parse(sessionStorage.getItem("user"));
+  const navigate = useNavigate();
+  if (!user) {
+    navigate("/docente/login");
+  }
+  const { navSetter } = useContext(DocenteContext);
   useEffect(() => {
     navSetter({ type: "Clases", ruta: "/docente/home" });
   }, [navSetter]);
@@ -21,7 +27,7 @@ function HomeDocente() {
   return (
     <div className="flex flex-col gap-4 overflow-y-auto pb-36">
       <AppHeader titulo="Tus Clases" color="amarillo" />
-      {user.user.resumen_clases?.length === 0 ? (
+      {user.resumen_clases?.length === 0 ? (
         <div>
           <p className="text-center">No tiene clases registradas</p>
           <p className="pt-3 text-center font-semibold">
@@ -31,7 +37,7 @@ function HomeDocente() {
           </p>
         </div>
       ) : (
-        user.user.resumen_clases.map((clase, index) => (
+        user.resumen_clases.map((clase, index) => (
           <CardClase
             id={clase.uid}
             key={clase.uid}

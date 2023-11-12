@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import Boton from "../../components/Boton";
 import Input from "../../components/Input";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { AlumnoContext } from "./RootAlumno";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +9,7 @@ import { loginUser } from "../../api/auth";
 import { useMutation } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import BotonAtras from "../../components/BotonAtras";
+import { Spinner } from "flowbite-react";
 
 const alumnoSchema = yup.object().shape({
   correo: yup
@@ -27,7 +26,6 @@ function LoginAlumno() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(alumnoSchema) });
   const navigate = useNavigate();
-  const { userSetter } = useContext(AlumnoContext);
 
   const mutation = useMutation({
     mutationFn: (data) => {
@@ -38,7 +36,7 @@ function LoginAlumno() {
       });
     },
     onSuccess: (data) => {
-      userSetter({ type: "login", user: data });
+      sessionStorage.setItem("user", JSON.stringify(data));
       navigate("/alumno/home");
     },
     onError: (error) => {
@@ -47,7 +45,7 @@ function LoginAlumno() {
   });
 
   return (
-    <div className=" from-degradado to-degradado2 flex h-screen flex-col justify-center gap-5 bg-gradient-to-br">
+    <div className=" flex h-screen flex-col justify-center gap-5 bg-gradient-to-br from-degradado to-degradado2">
       <div className="absolute left-5 top-5 flex flex-row align-middle">
         <BotonAtras path="/" text="Volver a inicio" />
       </div>
@@ -100,7 +98,11 @@ function LoginAlumno() {
           No tengo cuenta
         </Link>
       </form>
-      {mutation.isPending && <p className="text-center">Iniciando sesión...</p>}
+      {mutation.isPending && (
+        <span className="text-center">
+          <Spinner /> Iniciando sesión...
+        </span>
+      )}
     </div>
   );
 }
