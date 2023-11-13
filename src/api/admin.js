@@ -1,8 +1,8 @@
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, getFirestore, setDoc,getDoc } from "firebase/firestore";
 import { app } from "./firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
-
+import { query, where } from "firebase/firestore";
 const db = getFirestore(app);
 
 /**
@@ -70,5 +70,76 @@ export async function obtenerPeriodos() {
   } catch (error) {
     console.error(error);
     throw error;
+  }
+}
+
+export async function obtenerNombrePeriodo(idPeriodo) {
+  try {
+    const periodo = await getDoc(
+      doc(db, "periodos", idPeriodo)
+    );
+    if (periodo.exists()) {
+      console.log(periodo.data().nombre);
+      return periodo.data().nombre;
+    }
+    throw new Error("Periodo no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function obtenerAsistenciasPeriodo(idPeriodo){
+  try{
+    let asistencias = 0;
+    let inasistencias = 0;
+    const periodo = await getDocs(query(collection(db, "asistencias"), where("idPeriodo", "==", idPeriodo)));
+    for (const doc of periodo.docs) {
+      asistencias +=doc.data().asistentes;
+      inasistencias +=doc.data().inasistentes;
+    }
+    console.log(asistencias);
+    console.log(inasistencias);
+
+    if(periodo.empty){
+      return null;
+    }
+    return {asistencias, inasistencias};
+  }
+  catch (error) {
+     console.error(error);
+     throw error;
+  }
+}
+
+export async function obtenerAsistenciasSemanal(idClase){
+  
+  try{
+    
+    let informacionSemanal = Array.from({ length: 15 }, (_, i) => ({
+      name: (i + 1).toString(),
+      "Asistencias ": 0,
+      "Inasistencias ": 0,
+    }));
+    let informacionTotal = [
+      { name: "Total" ,
+        "Asistencias ":0, 
+        "Inasistencias ": 0 },
+    ];
+    const periodo = await getDocs(query(collection(db, "asistencias"), where("idClase", "==", idClase)));
+    for (const doc of periodo.docs) {
+      informacionSemanal[doc.data().semana-1]["Asistencias "] =doc.data().asistentes;
+      informacionSemanal[doc.data().semana-1]["Inasistencias "]=doc.data().inasistentes;
+      informacionTotal[0]["Asistencias "] +=doc.data().asistentes;
+      informacionTotal[0]["Inasistencias "]+=doc.data().inasistentes;
+    }
+    
+    console.log("ELPEPEEEEEEEEEE", informacionSemanal, informacionTotal);
+    
+    return {informacionSemanal, informacionTotal};
+  }
+  catch (error) {
+     console.error(error);
+     throw error;
   }
 }

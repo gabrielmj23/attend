@@ -9,11 +9,11 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { obtenerReportesDeClase } from "../../../api/docente";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import { set } from "react-hook-form";
+
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 
 function VerClase() {
-  const { idClase } = useLoaderData();
+  const { idClase, idDocente } = useLoaderData();
   const [searchTerm, setSearchTerm] = useState("");
   const [reportes, setReportes] = useState(null);
 
@@ -34,7 +34,7 @@ function VerClase() {
       <WebNav>
         <Link
           to="/admin/home"
-          className="text-neutral-800 hover:text-neutral-900 hover:underline"
+          className="font-bold text-neutral-800 hover:text-neutral-900 hover:underline"
         >
           Periodos
         </Link>
@@ -106,6 +106,19 @@ function VerClase() {
                           (alumno.data().inasistencias * 100) /
                           alumno.data().totalClases
                         ).toFixed(2)}
+                      </td>
+                      <td>
+                        <Link
+                          to={`/admin/clases/${idDocente}/${idClase}/${
+                            alumno.data().cedula
+                          }`}
+                        >
+                          <Boton
+                            icono={<EqualizerIcon />}
+                            color="verde"
+                            tipo="primario"
+                          />
+                        </Link>
                       </td>
                     </tr>
                   ))}

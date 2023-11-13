@@ -50,6 +50,27 @@ export async function eliminarDocente(idDocente) {
 
 /**
  *
+ 
+
+    @param {string} idClase*/
+
+export async function obtenerReportesDeClaseDeAlumno(cedula, idClase) {
+  try {
+    const reportes = await getDoc(
+      query(collection(db, "reportes", `${cedula}-${idClase}`)),
+    );
+    if (reportes.empty) {
+      return null;
+    }
+    return reportes.doc;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+/**
+ *
  * @param {string} idClase
  */
 export async function obtenerReportesDeClase(idClase) {
@@ -66,6 +87,8 @@ export async function obtenerReportesDeClase(idClase) {
     throw error;
   }
 }
+
+
 
 /**
  * @param {Object} obj
@@ -147,6 +170,24 @@ export async function obtenerClasesDeDocentes(idsDocente) {
   }
 }
 
+/**
+ *
+ * @param {Object<string,string>[]} idsDocente
+ */
+export async function obtenerIdClasesDeDocentes(idsDocente) {
+  try {
+    const todasLasClases = [];
+    for (const docente of idsDocente) {
+      const clases = await obtenerClasesDeDocente({ idDocente: docente.id });  
+      todasLasClases.push(...clases.id);
+    }
+    return todasLasClases;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function obtenerDocentes() {
   try {
     const docentesSnap = await getDocs(collection(db, "docentes"));
@@ -156,6 +197,8 @@ export async function obtenerDocentes() {
     throw error;
   }
 }
+
+
 
 export async function obtenerIDPeriodoActivo() {
   try {

@@ -1,12 +1,10 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
-import CardAsistencia from "./CardAsistencia";
 import Barras from "./Barras";
 
-const date = new Date();
 const tabClass =
-  "bg-white-200 mb-[-1px] cursor-pointer rounded px-5 py-2 text-lg hover:bg-gray-200";
-function Seleccionador() {
+  "bg-white-200 mb-[-1px] cursor-pointer rounded px-5 py-2 text-lg hover:underline";
+function Seleccionador({ datosGrafica }) {
   return (
     <div className="mx-auto w-1/2 pt-2">
       <Tabs
@@ -18,13 +16,7 @@ function Seleccionador() {
         </TabList>
 
         <TabPanel>
-          <Barras />
-        </TabPanel>
-        <TabPanel>
-          <Barras />
-        </TabPanel>
-        <TabPanel>
-          <Barras />
+          <Barras datosGrafica={datosGrafica} />
         </TabPanel>
       </Tabs>
     </div>
