@@ -73,6 +73,7 @@ export async function getAsistenciasDeAlumno({ idClase, cedula }) {
  * @param {string?} asist.tema
  * @param {number} asist.semana
  * @param {string} asist.idPeriodo
+ * @param {string} asist.escuela
  */
 export async function agregarAsistencia({
   dir,
@@ -81,6 +82,7 @@ export async function agregarAsistencia({
   tema,
   semana,
   idPeriodo,
+  escuela,
 }) {
   try {
     if (!hayConexion()) {
@@ -115,7 +117,6 @@ export async function agregarAsistencia({
         });
       }
     }
-
     // Guardar o actualizar
     const fecha2 = fecha.split("-").join("/");
     await setDoc(doc(db, "asistencias", dir), {
@@ -126,6 +127,7 @@ export async function agregarAsistencia({
       tema: temaAst,
       semana,
       idPeriodo,
+      escuela,
     });
   } catch (error) {
     console.error(error);

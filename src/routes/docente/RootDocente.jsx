@@ -39,6 +39,8 @@ const DocenteContext = createContext({
   setColorClase: () => {},
   periodoClase: null,
   setPeriodoClase: () => {},
+  escuelaClase: null,
+  setEscuelaClase: () => {},
 });
 
 /**
@@ -122,6 +124,7 @@ function RootDocente() {
   const [lista, setLista] = useState(null);
   const [nombreClase, setNombreClase] = useState(null);
   const [periodoClase, setPeriodoClase] = useState(null);
+  const [escuelaClase, setEscuelaClase] = useState(null);
   const [colorClase, setColorClase] = useState(null);
 
   const queryClient = new QueryClient({
@@ -149,6 +152,8 @@ function RootDocente() {
           setNombreClase,
           periodoClase,
           setPeriodoClase,
+          escuelaClase,
+          setEscuelaClase,
           colorClase,
           setColorClase,
         }}

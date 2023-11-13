@@ -31,6 +31,7 @@ function VerAsistencia({ idClase, asistencia }) {
         tema: asistencia.tema,
         semana: asistencia.semana,
         idPeriodo: asistencia.idPeriodo,
+        escuela: asistencia.escuela,
       });
     },
     onSuccess: () => {
@@ -50,6 +51,7 @@ function VerAsistencia({ idClase, asistencia }) {
             tema: asistencia.tema,
             semana: asistencia.semana,
             idPeriodo: asistencia.idPeriodo,
+            escuela: asistencia.escuela,
           },
         ]),
       );
