@@ -180,6 +180,16 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
                   alert("Cédula " + cedula + ": asistente");
                   return asistencia.map((alumno, idx) => {
                     if (index === idx) {
+                      setAsistenciaManual(
+                        asistenciaManual.map(
+                          (asistenciaTomada, indexManual) => {
+                            if (indexManual === idx) {
+                              return false;
+                            }
+                            return asistenciaTomada;
+                          },
+                        ),
+                      );
                       return { ...alumno, asistente: true };
                     }
                     return alumno;

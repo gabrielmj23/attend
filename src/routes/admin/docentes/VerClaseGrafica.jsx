@@ -1,4 +1,3 @@
-import React from "react";
 import SeleccionadorSemanal from "../../../components/SeleccionadorSemanal";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -89,7 +88,7 @@ function VerClaseGrafica() {
               className="flex flex-col items-center justify-center hover:underline"
             >
               <Boton
-                texto="Ver clases"
+                texto="Ver detalle"
                 icono={<ArrowForwardIcon />}
                 tipo="primario"
                 color={"verde"}
