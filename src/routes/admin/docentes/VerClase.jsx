@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { obtenerReportesDeClase, obtenerClase } from "../../../api/docente";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { Modal, Spinner } from "flowbite-react";
@@ -184,6 +185,19 @@ function VerClase() {
                             (alumno.data().inasistencias * 100) /
                             alumno.data().totalClases
                           ).toFixed(2)}
+                        </td>
+                        <td>
+                          <Link
+                            to={`/admin/clases/${idDocente}/${idClase}/${
+                              alumno.data().cedula
+                            }`}
+                          >
+                            <Boton
+                              icono={<EqualizerIcon />}
+                              color="verde"
+                              tipo="primario"
+                            />
+                          </Link>
                         </td>
                       </tr>
                     ))}
