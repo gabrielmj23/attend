@@ -5,14 +5,23 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 function Landing() {
   return (
     <div className="flex h-screen w-screen flex-col md:flex-row">
-      <div className="to-degradado2 from-degradado flex h-full w-full flex-col justify-center bg-gradient-to-br px-16 py-16 align-middle md:p-0">
-        <img
-          className="mx-auto pb-2 md:h-40 md:w-40"
-          src="/logo.png"
-          alt="Logo de Attend"
-          width="88"
-          height="88"
-        ></img>
+      <div className="flex h-full w-full flex-col justify-center bg-gradient-to-br from-degradado to-degradado2 px-16 py-16 align-middle md:p-0">
+        <div className="mx-auto mb-2 flex flex-row gap-2 rounded-xl bg-zinc-200 bg-opacity-50 p-3">
+          <img
+            className="pb-2 md:h-40 md:w-40"
+            src="/logo.png"
+            alt="Logo de Attend"
+            width="88"
+            height="88"
+          ></img>
+          <img
+            className="pb-2 md:h-40 md:w-40"
+            src="/LogoUCAB.png"
+            alt="Logo de la UCAB"
+            width="88"
+            height="88"
+          ></img>
+        </div>
         <h1 className="text-center text-4xl font-bold">Attend</h1>
         <p className="text-center text-xl">
           La asistencia, <strong>reinventada</strong>

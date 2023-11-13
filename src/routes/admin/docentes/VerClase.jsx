@@ -12,17 +12,11 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { Modal, Spinner } from "flowbite-react";
 import { obtenerNombreClase } from "../../../api/docente";
-import EqualizerIcon from "@mui/icons-material/Equalizer";
 
 function VerClase() {
   const { idClase, idDocente } = useLoaderData();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [reportes, setReportes] = useState(null);
 
   const [openModal, setOpenModal] = useState(false);
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   // Estado de búsqueda de reportes
   const [busqueda, setBusqueda] = useState("");
@@ -177,7 +171,15 @@ function VerClase() {
                         <td>{alumno.data().nombre}</td>
                         <td>{alumno.data().asistencias}</td>
                         <td>{alumno.data().inasistencias}</td>
-                        <td>
+                        <td
+                          className={
+                            (alumno.data().inasistencias * 100) /
+                              alumno.data().totalClases >=
+                            30
+                              ? "text-red-800"
+                              : null
+                          }
+                        >
                           {(
                             (alumno.data().inasistencias * 100) /
                             alumno.data().totalClases
@@ -209,13 +211,13 @@ function VerClase() {
                             scope="col"
                             className="border-x border-black px-2"
                           >
-                            Fecha
+                            Semana
                           </th>
                           <th
                             scope="col"
                             className="border-x border-black px-2"
                           >
-                            Semana
+                            Fecha
                           </th>
                           <th
                             scope="col"

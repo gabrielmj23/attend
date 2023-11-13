@@ -49,18 +49,15 @@ export async function eliminarDocente(idDocente) {
 }
 
 /**
- *
- 
-
-    @param {string} idClase*/
+ * @param {string} idClase
+ */
 
 export async function obtenerReportesDeClaseDeAlumno(cedula, idClase) {
-  
   try {
     const reporte = await getDoc(
       query(doc(db, "reportes", `${cedula}-${idClase}`)),
     );
-   
+
     if (reporte.empty) {
       return null;
     }
@@ -90,8 +87,6 @@ export async function obtenerReportesDeClase(idClase) {
   }
 }
 
-
-
 /**
  * @param {Object} obj
  * @param {string} obj.idDocente
@@ -113,13 +108,13 @@ export async function obtenerClase({ idDocente, idClase }) {
   }
 }
 
-export async function obtenerNombreClase( idDocente, idClase ) {
+export async function obtenerNombreClase(idDocente, idClase) {
   try {
     const clase = await getDoc(
       doc(db, "docentes", idDocente, "clases", idClase),
     );
     if (clase.exists()) {
-      console.log("hola")
+      console.log("hola");
       return clase.data().nombre;
     }
     throw new Error("Clase no existe");
@@ -128,8 +123,6 @@ export async function obtenerNombreClase( idDocente, idClase ) {
     throw error;
   }
 }
-
-
 
 /**
  *
@@ -199,7 +192,7 @@ export async function obtenerIdClasesDeDocentes(idsDocente) {
   try {
     const todasLasClases = [];
     for (const docente of idsDocente) {
-      const clases = await obtenerClasesDeDocente({ idDocente: docente.id });  
+      const clases = await obtenerClasesDeDocente({ idDocente: docente.id });
       todasLasClases.push(...clases.id);
     }
     return todasLasClases;
@@ -219,17 +212,19 @@ export async function obtenerDocentes() {
   }
 }
 
-
-
 export async function obtenerIDPeriodoActivo() {
   try {
-    const periodos = await getDocs(
-      query(collection(db, "periodos"), where("activo", "==", true)),
+    const periodos = await getDocs(collection(db, "periodos"));
+    const fechaActual = new Date(); // Fecha actual
+    const periodoActivo = periodos.docs.find(
+      (periodo) =>
+        periodo.data().fechaInicio.toDate() <= fechaActual &&
+        periodo.data().fechaFin.toDate() >= fechaActual,
     );
-    if (periodos.empty) {
+    if (!periodoActivo) {
       return null;
     }
-    return periodos.docs[0].id;
+    return periodoActivo.id;
   } catch (error) {
     console.error(error);
     throw error;
