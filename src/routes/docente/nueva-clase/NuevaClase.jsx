@@ -42,6 +42,8 @@ function NuevaClase() {
   const periodoQuery = useQuery({
     queryKey: ["hayPeriodo"],
     queryFn: () => obtenerIDPeriodoActivo(),
+    staleTime: 1000 * 60 * 60 * 24 * 7 * 15,
+    cacheTime: 1000 * 60 * 60 * 24 * 7 * 15,
   });
 
   // Para subir el formulario
@@ -54,6 +56,12 @@ function NuevaClase() {
       });
     },
     onSuccess: (data) => {
+      user.resumen_clases.push({
+        horario: formState.horario,
+        nombre: formState.nombre,
+        uid: data,
+      });
+      sessionStorage.setItem("user", JSON.stringify(user));
       navigate("/docente/clases/" + data);
     },
     onError: (error) => {

@@ -71,7 +71,8 @@ CardAsistencia.propTypes = {
   idClase: PropTypes.string.isRequired,
   fecha: PropTypes.instanceOf(Date).isRequired,
   contenido: PropTypes.string.isRequired,
-  color: PropTypes.oneOf(["amarillo", "azul", "verde", "gris"]).isRequired,
+  color: PropTypes.oneOf(["amarillo", "azul", "verde", "morado", "azuloscuro"])
+    .isRequired,
   refProps: PropTypes.any,
 };
 
