@@ -7,26 +7,45 @@ import { Link } from "react-router-dom";
 import WebNav from "../../../components/WebNav";
 import Boton from "../../../components/Boton";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { obtenerNombreClase } from "../../../api/docente";
+import { Spinner } from "flowbite-react";
+import { useState, useEffect } from "react";
 
 function VerClaseGrafica() {
   const params = useParams();
+  console.log("hola");
 
   const asistenciasQuery = useQuery({
     queryKey: ["obtenerAsistenciasSemanal"],
     queryFn: () => obtenerAsistenciasSemanal(params.idClase),
   });
 
+  const nombreQuery = useQuery({
+    queryKey: ["obtenerNombreClase"],
+    queryFn: () => obtenerNombreClase(params.idDocente, params.idClase),
+  });
+
+  let nombreClase = "";
+  nombreQuery.isPending
+    ? console.log("esperando nombre")
+    : console.log((nombreClase = nombreQuery.data));
+
   let informacionSemanal = null;
   let informacionTotal = null;
   asistenciasQuery.isPending
-    ? console.log("esperando asistenciasQuery")
-    : (console.log(
-        "ETESECHHHHHHH",
-        asistenciasQuery.data.informacionSemanal,
-        asistenciasQuery.data.informacionTotal,
-      ),
-      (informacionSemanal = asistenciasQuery.data.informacionSemanal),
+    ? 0
+    : ((informacionSemanal = asistenciasQuery.data.informacionSemanal),
       (informacionTotal = asistenciasQuery.data.informacionTotal));
+
+  const [showSpinner, setShowSpinner] = useState(true);
+  useEffect(() => {
+    setShowSpinner(true);
+    const timer = setTimeout(() => {
+      setShowSpinner(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [asistenciasQuery.isPending]);
 
   return (
     <div>
@@ -43,26 +62,42 @@ function VerClaseGrafica() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
 
-      <h2 className="pl- py-8 ps-16 text-2xl font-semibold">Clase: {}</h2>
-      <div className="space-y-4 pb-4">
-        <SeleccionadorSemanal
-          datosGraficaTotal={informacionTotal}
-          datosGraficaSemanal={informacionSemanal}
-        />
-        <Link
-          to={`/admin/clases/${params.idDocente}/${params.idClase}/detalle`}
-          className="flex flex-col items-center justify-center hover:underline"
-        >
-          <Boton
-            texto="Ver clases"
-            icono={<ArrowForwardIcon />}
-            tipo="primario"
-            color={"verde"}
-          />
-        </Link>
-      </div>
+      {showSpinner ? (
+        <span className="pt-8 text-center">
+          <Spinner color="success" /> Cargando...
+        </span>
+      ) : (
+        <div>
+          <h2 className="pl- py-8 ps-16 text-2xl font-semibold">
+            Clase: {nombreClase}
+          </h2>
+          <div className="space-y-4 pb-4">
+            <SeleccionadorSemanal
+              datosGraficaTotal={informacionTotal}
+              datosGraficaSemanal={informacionSemanal}
+            />
+            <Link
+              to={`/admin/clases/${params.idDocente}/${params.idClase}/detalle`}
+              className="flex flex-col items-center justify-center hover:underline"
+            >
+              <Boton
+                texto="Ver clases"
+                icono={<ArrowForwardIcon />}
+                tipo="primario"
+                color={"verde"}
+              />
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

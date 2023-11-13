@@ -55,14 +55,16 @@ export async function eliminarDocente(idDocente) {
     @param {string} idClase*/
 
 export async function obtenerReportesDeClaseDeAlumno(cedula, idClase) {
+  
   try {
-    const reportes = await getDoc(
-      query(collection(db, "reportes", `${cedula}-${idClase}`)),
+    const reporte = await getDoc(
+      query(doc(db, "reportes", `${cedula}-${idClase}`)),
     );
-    if (reportes.empty) {
+   
+    if (reporte.empty) {
       return null;
     }
-    return reportes.doc;
+    return reporte.data();
   } catch (error) {
     console.error(error);
     throw error;
@@ -109,6 +111,24 @@ export async function obtenerClase({ idDocente, idClase }) {
     throw error;
   }
 }
+
+export async function obtenerNombreClase( idDocente, idClase ) {
+  try {
+    const clase = await getDoc(
+      doc(db, "docentes", idDocente, "clases", idClase),
+    );
+    if (clase.exists()) {
+      console.log("hola")
+      return clase.data().nombre;
+    }
+    throw new Error("Clase no existe");
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+
 
 /**
  *

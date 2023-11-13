@@ -9,6 +9,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { obtenerReportesDeClase } from "../../../api/docente";
+import { obtenerNombreClase } from "../../../api/docente";
 
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 
@@ -24,10 +25,20 @@ function VerClase() {
   // Estado de búsqueda de reportes
   const [busqueda, setBusqueda] = useState("");
 
+  const nombreQuery = useQuery({
+    queryKey: ["obtenerNombreClase"],
+    queryFn: () => obtenerNombreClase(params.idDocente, params.idClase),
+  });
+
   const asistenciaQuery = useQuery({
     queryKey: ["obtenerReportes"],
     queryFn: () => obtenerReportesDeClase(idClase),
   });
+
+  let nombreClase = "";
+  nombreQuery.isPending
+    ? console.log("esperando nombre")
+    : console.log((nombreClase = nombreQuery.data));
 
   return (
     <div>
@@ -44,13 +55,21 @@ function VerClase() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
 
       {asistenciaQuery.isPending ? (
         <div>Cargando</div>
       ) : (
         <div>
-          <h2 className="pl- py-8 ps-16 text-2xl font-semibold">Clase</h2>
+          <h2 className="pl- py-8 ps-16 text-2xl font-semibold">
+            Clase: {nombreClase}
+          </h2>
           <div className="flex items-end justify-between">
             <div className="pl-40">
               <Input

@@ -8,6 +8,7 @@ import { obtenerClasesDeDocentes, obtenerDocentes } from "../../../api/docente";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "flowbite-react";
+import { obtenerNombrePeriodo } from "../../../api/admin";
 
 function VerPeriodo() {
   const { idPeriodo } = useParams();
@@ -41,6 +42,17 @@ function VerPeriodo() {
     }
   }, [clasesQuery.isPending, clasesQuery.data, idPeriodo]);
 
+  const periodoQuery = useQuery({
+    queryKey: ["obtenerNombrePeriodo"],
+    queryFn: () => obtenerNombrePeriodo(idPeriodo),
+  });
+
+  let nombrePeriodo = "";
+
+  periodoQuery.isPending
+    ? console.log("periodoquery")
+    : (nombrePeriodo = periodoQuery.data);
+
   return (
     <div>
       <WebNav>
@@ -53,6 +65,12 @@ function VerPeriodo() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
       {clasesQuery.isPending ? (
         <div className="pt-8 text-center">
@@ -60,7 +78,9 @@ function VerPeriodo() {
         </div>
       ) : (
         <div>
-          <h2 className="py-8 ps-16 text-2xl font-semibold">Período: </h2>
+          <h2 className="py-8 ps-16 text-2xl font-semibold">
+            Período: {nombrePeriodo}{" "}
+          </h2>
           {clasesPeriodoActual && clasesPeriodoActual.length === 0 ? (
             <div>
               <p className="text-center font-semibold">

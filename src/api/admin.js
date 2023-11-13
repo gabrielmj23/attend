@@ -3,6 +3,7 @@ import { app } from "./firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
 import { query, where } from "firebase/firestore";
+import { escuelas } from "../constants/escuelas";
 const db = getFirestore(app);
 
 /**
@@ -79,7 +80,7 @@ export async function obtenerNombrePeriodo(idPeriodo) {
       doc(db, "periodos", idPeriodo)
     );
     if (periodo.exists()) {
-      console.log(periodo.data().nombre);
+    
       return periodo.data().nombre;
     }
     throw new Error("Periodo no existe");
@@ -133,13 +134,49 @@ export async function obtenerAsistenciasSemanal(idClase){
       informacionTotal[0]["Asistencias "] +=doc.data().asistentes;
       informacionTotal[0]["Inasistencias "]+=doc.data().inasistentes;
     }
-    
-    console.log("ELPEPEEEEEEEEEE", informacionSemanal, informacionTotal);
-    
+
     return {informacionSemanal, informacionTotal};
   }
   catch (error) {
      console.error(error);
      throw error;
   }
+}
+
+export async function obtenerAsistenciasEscuelas(){
+  try {
+    const escuelasInfo = escuelas.map(escuela => ({
+      name: escuela,
+      "Asistencias ": 0,
+      "Inasistencias ": 0,
+    }));
+    const escuelasDocumentos = await getDocs(
+      query(collection(db, "asistencias"))
+    );
+    console.log("elpepe",escuelasDocumentos.docs)
+    for(const doc of escuelasDocumentos.docs){
+  if(doc.data().escuela != undefined){
+    console.log("etesech",doc.data());
+    const escuelaInfo = escuelasInfo.find(e => e.name === doc.data().escuela);
+    if (escuelaInfo) {
+      escuelaInfo["Asistencias "] += doc.data().asistentes;
+      escuelaInfo["Inasistencias "] += doc.data().inasistentes;
+      console.log(escuelaInfo["Asistencias "] );
+      console.log(escuelaInfo["Inasistencias "]);
+    }
+  }
+}
+
+    console.log("tilinazo",escuelasInfo);
+
+    return escuelasInfo;
+
+
+    
+  
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+
 }
