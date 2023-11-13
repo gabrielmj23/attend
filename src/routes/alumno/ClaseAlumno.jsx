@@ -68,7 +68,7 @@ function ClaseAlumno() {
           ) : (
             <div className="flex flex-col justify-center gap-4 px-4">
               <p>
-                Has faltado a {resumen_clase.inasistencias} clases{" "}
+                Has faltado a {data.length} clases{" "}
                 <strong>({porcentajeInasistencias}% del total)</strong>
               </p>
               <p>Recuerda que un 30% o más de inasistencias te hará reprobar</p>

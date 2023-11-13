@@ -7,8 +7,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Link } from "react-router-dom";
 import { signUpAlumno } from "../../api/auth";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AlumnoContext } from "./RootAlumno";
 import { useMutation } from "@tanstack/react-query";
 import BotonAtras from "../../components/BotonAtras";
 
@@ -37,7 +35,6 @@ function SignUpAlumno() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(alumnoSchema) });
   const navigate = useNavigate();
-  const { userSetter } = useContext(AlumnoContext);
 
   const mutation = useMutation({
     mutationFn: (data) => {
@@ -49,7 +46,7 @@ function SignUpAlumno() {
       });
     },
     onSuccess: (data) => {
-      userSetter({ type: "login", user: data });
+      sessionStorage.setItem("user", JSON.stringify(data));
       navigate("/alumno/home");
     },
     onError: (error) => {
@@ -58,7 +55,7 @@ function SignUpAlumno() {
   });
 
   return (
-    <div className="from-degradado to-degradado2 flex h-screen flex-col items-center justify-center bg-gradient-to-br">
+    <div className="flex h-screen flex-col items-center justify-center bg-gradient-to-br from-degradado to-degradado2">
       <div className="absolute left-5 top-5 flex flex-row align-middle">
         <BotonAtras path="/" text="Volver a inicio" />
       </div>
