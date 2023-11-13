@@ -40,9 +40,15 @@ function VerDocentes() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
 
-      <AppHeader titulo="Docentes" color="blanco" />
+      <h1 className="pl- py-8 ps-16 text-2xl font-semibold">Docente</h1>
 
       <div className="flex items-end justify-between">
         <div className="pl-40">

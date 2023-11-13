@@ -11,13 +11,26 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 import { Modal, Spinner } from "flowbite-react";
+import { obtenerNombreClase } from "../../../api/docente";
+import EqualizerIcon from "@mui/icons-material/Equalizer";
 
 function VerClase() {
-  const { idDocente, idClase } = useLoaderData();
+  const { idClase, idDocente } = useLoaderData();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [reportes, setReportes] = useState(null);
+
   const [openModal, setOpenModal] = useState(false);
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
 
   // Estado de búsqueda de reportes
   const [busqueda, setBusqueda] = useState("");
+
+  const nombreQuery = useQuery({
+    queryKey: ["obtenerNombreClase"],
+    queryFn: () => obtenerNombreClase(idDocente, idClase),
+  });
 
   const asistenciaQuery = useQuery({
     queryKey: ["obtenerReportes"],
@@ -56,13 +69,17 @@ function VerClase() {
       `Reporte ${idClase}.xlsx`,
     );
   };
+  let nombreClase = "";
+  nombreQuery.isPending
+    ? console.log("esperando nombre")
+    : console.log((nombreClase = nombreQuery.data));
 
   return (
     <div>
       <WebNav>
         <Link
           to="/admin/home"
-          className="text-neutral-800 hover:text-neutral-900 hover:underline"
+          className="font-bold text-neutral-800 hover:text-neutral-900 hover:underline"
         >
           Periodos
         </Link>
@@ -71,6 +88,12 @@ function VerClase() {
           className="hover:text-neutral-900 hover:underline"
         >
           Docentes
+        </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
         </Link>
       </WebNav>
 

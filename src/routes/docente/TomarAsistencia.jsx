@@ -8,7 +8,7 @@ import Quagga from "@ericblade/quagga2";
 import { useState } from "react";
 import { useRef } from "react";
 import BotonAsistencia from "../../components/BotonAsistencia";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { agregarAsistencia } from "../../api/asistencia";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
@@ -62,6 +62,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   if (!user) {
     navigate("/docente/login");
   }
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: () => {
       return agregarAsistencia({
@@ -74,6 +75,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
       });
     },
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: "pagAsistencia" });
       alert("Guardada con éxito");
       navigate("/docente/clases/" + idClase);
     },

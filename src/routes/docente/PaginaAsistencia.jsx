@@ -33,6 +33,8 @@ function PaginaAsistencia() {
   const asistenciaQuery = useQuery({
     queryKey: ["pagAsistencia"],
     queryFn: () => getAsistencia(`${user.uid}-${idClase}-${fecha}`),
+    staleTime: 10 * 60 * 60 * 1000,
+    cacheTime: 10 * 60 * 60 * 1000,
   });
 
   // Obtener semana de la clase
@@ -40,6 +42,8 @@ function PaginaAsistencia() {
     queryKey: ["pagClase"],
     queryFn: () => obtenerClase({ idDocente: user.uid, idClase }),
     enabled: asistenciaQuery.isSuccess && !asistenciaQuery.data,
+    staleTime: Infinity,
+    cacheTime: Infinity,
   });
 
   // Guardar contexto de la navegación actual

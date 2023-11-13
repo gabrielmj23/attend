@@ -32,12 +32,16 @@ function Clase() {
   const claseQuery = useQuery({
     queryKey: ["claseDocente"],
     queryFn: () => obtenerClase({ idDocente: user.uid, idClase }),
+    staleTime: Infinity,
+    cacheTime: Infinity,
   });
 
   // Obtener información de los reportes
   const reportesQuery = useQuery({
     queryKey: ["reportesClase"],
     queryFn: () => obtenerReportesDeClase(idClase),
+    staleTime: 8 * 60 * 60 * 1000,
+    cacheTime: 8 * 60 * 60 * 1000,
   });
 
   // Estado de búsqueda de reportes

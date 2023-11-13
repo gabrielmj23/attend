@@ -127,6 +127,7 @@ export async function agregarAsistencia({
       tema: temaAst,
       semana,
       idPeriodo,
+      idClase: dirSep[1],
       escuela,
     });
   } catch (error) {

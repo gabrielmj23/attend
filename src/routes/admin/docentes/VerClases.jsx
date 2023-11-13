@@ -44,6 +44,12 @@ function VerClases() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
 
       {docenteQuery.isPending ||

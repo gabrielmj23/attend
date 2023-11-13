@@ -43,6 +43,8 @@ function ClaseAlumno() {
         idClase,
         cedula: user.cedula,
       }),
+    staleTime: 1000 * 60 * 60 * 10,
+    cacheTime: 1000 * 60 * 60 * 10,
   });
 
   return (
