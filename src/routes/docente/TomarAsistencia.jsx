@@ -74,6 +74,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
         escuela: escuelaClase,
       });
     },
+    retry: false,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: "pagAsistencia" });
       alert("Guardada con éxito");
