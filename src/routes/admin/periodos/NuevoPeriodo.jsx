@@ -88,6 +88,12 @@ function NuevoPeriodo() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
       <h1 className="py-8 ps-16 text-2xl font-semibold">Agregar un periodo</h1>
       <div className="flex w-screen flex-row justify-center">

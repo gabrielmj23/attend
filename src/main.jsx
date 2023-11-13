@@ -26,6 +26,10 @@ import VerClases from "./routes/admin/docentes/VerClases.jsx";
 import VerClase from "./routes/admin/docentes/VerClase.jsx";
 import NuevoPeriodo from "./routes/admin/periodos/NuevoPeriodo.jsx";
 import VerPeriodo from "./routes/admin/periodos/VerPeriodo.jsx";
+import VerPeriodoGrafica from "./routes/admin/docentes/VerPeriodoGrafica.jsx";
+import VerClaseGrafica from "./routes/admin/docentes/VerClaseGrafica.jsx";
+import VerGraficaAlumno from "./routes/admin/docentes/VerGraficaAlumno.jsx";
+import VerEscuelaGrafica from "./routes/admin/escuela/VerEscuelaGrafica.jsx";
 
 const router = createBrowserRouter([
   {
@@ -78,6 +82,10 @@ const router = createBrowserRouter([
     element: <RootAdmin />,
     children: [
       {
+        path: "escuela",
+        element: <VerEscuelaGrafica />,
+      },
+      {
         path: "login",
         element: <LoginAdmin />,
       },
@@ -95,6 +103,15 @@ const router = createBrowserRouter([
       },
       {
         path: "periodos/:idPeriodo",
+        element: <VerPeriodoGrafica />,
+        loader: ({ params }) => {
+          return {
+            idPeriodo: params.idPeriodo,
+          };
+        },
+      },
+      {
+        path: "periodos/:idPeriodo/detalle",
         element: <VerPeriodo />,
         loader: ({ params }) => {
           return {
@@ -130,11 +147,32 @@ const router = createBrowserRouter([
       },
       {
         path: "clases/:idDocente/:idClase",
+        element: <VerClaseGrafica />,
+        loader: ({ params }) => {
+          return {
+            idDocente: params.idDocente,
+            idClase: params.idClase,
+          };
+        },
+      },
+      {
+        path: "clases/:idDocente/:idClase/detalle",
         element: <VerClase />,
         loader: ({ params }) => {
           return {
             idDocente: params.idDocente,
             idClase: params.idClase,
+          };
+        },
+      },
+      {
+        path: "clases/:idDocente/:idClase/:cedula",
+        element: <VerGraficaAlumno />,
+        loader: ({ params }) => {
+          return {
+            idDocente: params.idDocente,
+            idClase: params.idClase,
+            cedula: params.cedula,
           };
         },
       },

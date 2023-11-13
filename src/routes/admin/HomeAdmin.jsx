@@ -44,6 +44,12 @@ function HomeAdmin() {
         >
           Docentes
         </Link>
+        <Link
+          to="/admin/escuela"
+          className=" hover:text-neutral-900 hover:underline"
+        >
+          Escuelas
+        </Link>
       </WebNav>
       {isPending ? (
         <div className="w-full pt-8">
