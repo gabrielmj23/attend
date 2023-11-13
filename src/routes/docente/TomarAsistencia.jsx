@@ -54,7 +54,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
   };
 
   // Estilo
-  const { colorClase, periodoClase } = useContext(DocenteContext);
+  const { colorClase, periodoClase, escuelaClase } = useContext(DocenteContext);
 
   // Guardar asistencia en la base de datos
   const user = JSON.parse(sessionStorage.getItem("user"));
@@ -70,6 +70,7 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
         fecha,
         semana,
         idPeriodo: periodoClase,
+        escuela: escuelaClase,
       });
     },
     onSuccess: () => {
@@ -88,7 +89,14 @@ function TomarAsistencia({ idClase, fecha, nombreClase, lista, semana }) {
         "asistencias",
         JSON.stringify([
           ...asistenciasLocales,
-          { dir: `${user.uid}-${idClase}-${fecha}`, asistencia, fecha, semana },
+          {
+            dir: `${user.uid}-${idClase}-${fecha}`,
+            asistencia,
+            fecha,
+            semana,
+            idPeriodo: periodoClase,
+            escuela: escuelaClase,
+          },
         ]),
       );
       navigate("/docente/clases/" + idClase);
